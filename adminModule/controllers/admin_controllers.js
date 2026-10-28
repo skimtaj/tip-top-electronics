@@ -8,7 +8,6 @@ const exceljs = require('exceljs');
 const bcryptjs = require('bcryptjs');
 
 
-
 const addNewProduct = async (req, res) => {
 
     const totalUnreadOrder = await order_model.find({ is_read: false }).countDocuments();
@@ -506,7 +505,7 @@ const doenloadStockBalance = async (req, res) => {
 
 };
 
-const donloadUserList = async (req, res) => {
+const downloadUserList = async (req, res) => {
 
     try {
 
@@ -759,4 +758,4 @@ const adminLoginPost = async (req, res) => {
 
 
 
-module.exports = { adminLoginPost, adminLogin, adminRegisterPost, adminRegister, downloadSalesReport, approvereturn, donloadUserList, doenloadStockBalance, adminDsahboard, makeDeliver, approveCancel, viewOrder, orderList, editProductPost, editProduct, deleteProduct, productList, addNewProduct, addNewProductPost };
+module.exports = { adminLoginPost, adminLogin, adminRegisterPost, adminRegister, downloadSalesReport, approvereturn, downloadUserList, doenloadStockBalance, adminDsahboard, makeDeliver, approveCancel, viewOrder, orderList, editProductPost, editProduct, deleteProduct, productList, addNewProduct, addNewProductPost };
