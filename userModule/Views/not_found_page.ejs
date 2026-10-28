@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%-include('header')%>
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>No Results</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            }
+
+            :root {
+                --light-bg: #F8F9FA;
+                --light-text: #6C757D;
+                --card-bg: #FFFFFF;
+                --shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            }
+
+            body {
+                background-color: var(--light-bg);
+                line-height: 1.6;
+                padding-top: 15px;
+            }
+
+            .container {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 0 15px;
+                margin-top: 130px;
+            }
+
+            .vertical-products-section {
+                background-color: var(--card-bg);
+                border-radius: 10px;
+                box-shadow: var(--shadow);
+                padding: 15px;
+                margin-bottom: 15px;
+            }
+
+            .new-arrivals-empty {
+                text-align: center;
+                padding: 30px 15px;
+                color: var(--light-text);
+                font-size: 14px;
+                background: #f9fafb;
+                border-radius: 8px;
+                border: 1px dashed #e0e3e7;
+            }
+
+            .new-arrivals-empty i {
+                font-size: 32px;
+                color: #cfd4da;
+                margin-bottom: 8px;
+                display: block;
+            }
+
+            .new-arrivals-empty p {
+                margin: 4px 0;
+            }
+        </style>
+    </head>
+
+    <body>
+        <main class="container">
+            <section class="vertical-products-section">
+                <div class="new-arrivals-empty">
+                    <i class="fas fa-search-minus"></i>
+                    <p><strong>No results for your search query.</strong></p>
+                    <p>Try checking your spelling or use more general terms</p>
+                </div>
+            </section>
+        </main>
+    </body>
+
+</html>

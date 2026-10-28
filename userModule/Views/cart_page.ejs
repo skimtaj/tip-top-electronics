@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <title>Order Form — order_model</title>
+    <style>
+        :root {
+            --bg: #f5f7fb;
+            --ink: #0f172a;
+            --muted: #64748b;
+            --brand: #4f46e5;
+            --brand-2: #7c3aed;
+            --line: #e2e8f0;
+            --soft: #f1f5f9;
+            --danger: #dc2626;
+            --radius: 16px;
+            --shadow: 0 1px 2px rgba(15, 23, 42, .06), 0 14px 34px -20px rgba(15, 23, 42, .35);
+        }
+
+        * { box-sizing: border-box; }
+        [hidden] { display: none !important; }
+
+        html {
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+        }
+
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: var(--ink);
+            background:
+                radial-gradient(900px 500px at 110% -10%, #e0e7ff 0%, transparent 60%),
+                radial-gradient(800px 500px at -10% 0%, #fce7f3 0%, transparent 55%),
+                var(--bg);
+            min-height: 100vh;
+            min-height: 100dvh;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ============================================================
+           WRAP / PAGE PADDING
+           ============================================================ */
+        .wrap {
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 20px 14px 56px;
+        }
+
+        @media (min-width: 640px) {
+            .wrap { padding: 28px 18px 72px; }
+        }
+
+        /* iPhone notch / home indicator safe area */
+        @supports (padding: max(0px)) {
+            .wrap {
+                padding-left: max(14px, env(safe-area-inset-left));
+                padding-right: max(14px, env(safe-area-inset-right));
+                padding-bottom: max(56px, env(safe-area-inset-bottom));
+            }
+        }
+
+        /* ============================================================
+           HEADER
+           ============================================================ */
+        .head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .head h1 {
+            margin: 0 0 4px;
+            font-size: 22px;
+            letter-spacing: -.02em;
+            line-height: 1.2;
+        }
+
+        .head h1 span { color: var(--brand); }
+
+        .brand-badge {
+            width: 44px;
+            height: 44px;
+            border-radius: 13px;
+            display: grid;
+            place-items: center;
+            font-size: 20px;
+            background: #fff;
+            box-shadow: var(--shadow);
+            flex: none;
+        }
+
+        @media (min-width: 640px) {
+            .head { margin-bottom: 26px; }
+            .head h1 { font-size: clamp(24px, 3vw, 30px); }
+            .brand-badge {
+                width: 56px; height: 56px;
+                border-radius: 18px; font-size: 26px;
+            }
+        }
+
+        /* ============================================================
+           MAIN LAYOUT
+           ============================================================ */
+        .layout {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+            align-items: start;
+        }
+
+        @media (min-width: 981px) {
+            .layout {
+                grid-template-columns: minmax(0, 1fr) 360px;
+                gap: 22px;
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .layout {
+                grid-template-columns: minmax(0, 1fr) 390px;
+            }
+        }
+
+        /* ============================================================
+           SECTION HEAD
+           ============================================================ */
+        .section-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .section-head h2 {
+            font-size: 13px;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: .09em;
+            color: var(--muted);
+        }
+
+        @media (min-width: 640px) {
+            .section-head { margin-bottom: 14px; }
+            .section-head h2 { font-size: 14px; }
+        }
+
+        .pill {
+            font-size: 12px;
+            font-weight: 700;
+            background: #eef2ff;
+            color: var(--brand);
+            padding: 5px 11px;
+            border-radius: 999px;
+            white-space: nowrap;
+        }
+
+        /* ============================================================
+           PRODUCT CARD
+           ============================================================ */
+        .product-card {
+            background: #fff;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .pc-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 12px 14px;
+            border-bottom: 1px dashed var(--line);
+            background: linear-gradient(180deg, #fff, #fbfcff);
+        }
+
+        .pc-head h3 {
+            margin: 0;
+            font-size: 15px;
+            letter-spacing: -.01em;
+        }
+
+        .pc-head small {
+            display: block;
+            color: var(--muted);
+            font-size: 11.5px;
+            margin-top: 2px;
+        }
+
+        .pc-body { padding: 14px; }
+
+        @media (min-width: 640px) {
+            .product-card { border-radius: var(--radius); }
+            .pc-head { padding: 16px 20px; }
+            .pc-head h3 { font-size: 16px; }
+            .pc-head small { font-size: 12px; margin-top: 3px; }
+            .pc-body { padding: 18px 20px 20px; }
+        }
+
+        .hint {
+            margin: 0 0 12px;
+            font-size: 12px;
+            color: var(--muted);
+            line-height: 1.55;
+        }
+
+        .hint b { color: #334155; }
+
+        @media (min-width: 640px) {
+            .hint { margin: 0 0 14px; font-size: 12.5px; line-height: 1.6; }
+        }
+
+        /* ============================================================
+           PRODUCT ROWS — desktop grid
+           ============================================================ */
+        .pf-labels,
+        .product-row {
+            display: grid;
+            grid-template-columns:
+                80px minmax(140px, 2fr) minmax(80px, 1fr) 64px minmax(90px, 1fr) 40px;
+            column-gap: 8px;
+        }
+
+        .pf-labels {
+            align-items: center;
+            padding: 0 0 8px;
+            color: var(--muted);
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+        }
+
+        .product-row {
+            grid-template-areas: "thumb name price qty amount remove";
+            row-gap: 8px;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--soft);
+            transition: opacity .2s, background .15s;
+        }
+
+        .product-row:last-child { border-bottom: 0; }
+
+        .product-row.invalid {
+            background: #fef2f2;
+            border-radius: 10px;
+            padding-left: 8px;
+            padding-right: 8px;
+        }
+
+        .product-row.removing {
+            opacity: .4;
+            pointer-events: none;
+        }
+
+        .product-row .thumb        { grid-area: thumb; }
+        .product-row .p-item_name  { grid-area: name; }
+        .product-row .p-price      { grid-area: price; }
+        .product-row .p-qty        { grid-area: qty; }
+        .product-row .p-item_amount { grid-area: amount; }
+        .product-row .remove-btn   { grid-area: remove; }
+
+        /* Inputs inside product rows */
+        .product-row input:not([type="hidden"]) {
+            width: 100%;
+            min-width: 0;
+            font: inherit;
+            font-size: 14px;
+            padding: 10px 12px;
+            border: 1.5px solid var(--line);
+            border-radius: 10px;
+            background: #f8fafc;
+            color: var(--ink);
+            transition: .16s;
+            min-height: 40px;
+        }
+
+        .product-row input:focus {
+            outline: 0;
+            border-color: var(--brand);
+            background: #fff;
+            box-shadow: 0 0 0 4px #eef2ff;
+        }
+
+        .product-row input[readonly] {
+            background: #eef2ff;
+            cursor: default;
+        }
+
+        .product-row.invalid input:not([type="hidden"]) {
+            border-color: var(--danger);
+            background: #fff;
+        }
+
+        .product-row input[type="number"] {
+            text-align: right;
+            font-variant-numeric: tabular-nums;
+            -moz-appearance: textfield;
+            appearance: textfield;
+        }
+
+        .product-row input[type="number"]::-webkit-outer-spin-button,
+        .product-row input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* ============================================================
+           THUMBNAIL
+           ============================================================ */
+        .thumb {
+            width: 80px;
+            height: 80px;
+            border-radius: 10px;
+            overflow: hidden;
+            flex: none;
+            border: 1px solid #eee;
+            background: #f5f5f5;
+        }
+
+        .thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform .3s;
+        }
+
+        .product-row:hover .thumb img { transform: scale(1.05); }
+
+        .p-item_amount {
+            text-align: right;
+            font-weight: 800;
+            font-size: 14px;
+            font-variant-numeric: tabular-nums;
+            color: #334155;
+            white-space: nowrap;
+        }
+
+        /* ============================================================
+           REMOVE BUTTON
+           ============================================================ */
+        .remove-btn {
+            width: 32px;
+            height: 32px;
+            border: 1.5px solid #fecaca;
+            background: #fff;
+            color: #dc2626;
+            border-radius: 9px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            line-height: 1;
+            display: grid;
+            place-items: center;
+            transition: .15s;
+            padding: 0;
+        }
+
+        .remove-btn:hover:not(:disabled) { background: #fef2f2; }
+        .remove-btn:active:not(:disabled) { transform: scale(.92); }
+        .remove-btn:disabled { opacity: .5; cursor: not-allowed; }
+
+        /* ============================================================
+           MOBILE PRODUCT ROW  (<= 640px)  — compact card
+           ============================================================ */
+        @media (max-width: 640px) {
+            .pf-labels { display: none; }
+
+            .product-row {
+                grid-template-columns: 64px 1fr 1fr 36px;
+                grid-template-areas:
+                    "thumb name   name   remove"
+                    "thumb price  qty    remove"
+                    "thumb amount amount remove";
+                row-gap: 6px;
+                column-gap: 8px;
+                align-items: center;
+                padding: 12px 10px;
+                border: 1px solid var(--line);
+                border-radius: 12px;
+                margin-bottom: 10px;
+            }
+
+            .product-row:last-child {
+                border-bottom: 1px solid var(--line);
+                margin-bottom: 0;
+            }
+
+            .product-row.invalid {
+                padding: 11px 9px;
+                border-color: var(--danger);
+            }
+
+            .thumb {
+                width: 64px;
+                height: 64px;
+                border-radius: 8px;
+                align-self: start;
+                margin-top: 2px;
+            }
+
+            .product-row input:not([type="hidden"]) {
+                font-size: 16px;   /* stops iOS Safari auto-zoom */
+                padding: 8px 10px;
+                min-height: 42px;
+                border-radius: 9px;
+            }
+
+            .p-item_name {
+                font-weight: 600;
+                padding: 6px 8px !important;
+                min-height: 0 !important;
+                background: transparent;
+                border-color: transparent;
+                font-size: 14px !important;
+                color: var(--ink);
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            .p-item_name:focus { background: #f8fafc; border-color: var(--line); }
+
+            .p-item_amount {
+                text-align: left;
+                font-size: 13px;
+                align-self: center;
+                padding-left: 2px;
+            }
+
+            .p-item_amount::before {
+                content: "Amount";
+                font-weight: 600;
+                color: var(--muted);
+                font-size: 10.5px;
+                text-transform: uppercase;
+                letter-spacing: .06em;
+                margin-right: 6px;
+            }
+
+            .remove-btn {
+                width: 36px;
+                height: 36px;
+                font-size: 20px;
+                border-radius: 10px;
+                align-self: start;
+            }
+
+            .pc-total {
+                padding: 12px 14px;
+                border-radius: 12px;
+                margin-top: 14px;
+            }
+
+            .pc-total .value { font-size: 18px; }
+            .pc-total .label { font-size: 11px; }
+        }
+
+        /* ============================================================
+           VERY SMALL PHONES (<= 380px)
+           ============================================================ */
+        @media (max-width: 380px) {
+            .wrap { padding-left: 10px; padding-right: 10px; }
+
+            .head h1 { font-size: 20px; }
+            .brand-badge { width: 40px; height: 40px; font-size: 18px; }
+
+            .product-row {
+                grid-template-columns: 56px 1fr 1fr 34px;
+                column-gap: 6px;
+                padding: 10px 8px;
+            }
+
+            .thumb { width: 56px; height: 56px; }
+
+            .pc-body { padding: 12px; }
+
+            .remove-btn { width: 34px; height: 34px; font-size: 18px; }
+
+            .pc-total .value { font-size: 16px; }
+        }
+
+        /* ============================================================
+           TOTAL BAR
+           ============================================================ */
+        .pc-total {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 16px;
+            padding: 14px 16px;
+            border-radius: 13px;
+            background: linear-gradient(180deg, #eef2ff, #e8edff);
+            border: 1px solid #dbe2ff;
+        }
+
+        .pc-total .label {
+            font-size: 11.5px;
+            font-weight: 800;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            color: #4338ca;
+        }
+
+        .pc-total .value {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--brand);
+            letter-spacing: -.02em;
+            font-variant-numeric: tabular-nums;
+        }
+
+        @media (min-width: 640px) {
+            .pc-total { padding: 16px 18px; }
+            .pc-total .label { font-size: 12px; }
+            .pc-total .value { font-size: 22px; }
+        }
+
+        /* ============================================================
+           EMPTY CART
+           ============================================================ */
+        .empty-cart {
+            padding: 26px 14px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 13.5px;
+            line-height: 1.6;
+        }
+
+        .empty-cart a {
+            color: var(--brand);
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .empty-cart a:hover { text-decoration: underline; }
+
+        /* ============================================================
+           CUSTOMER PANEL
+           ============================================================ */
+        .panel {
+            background: #fff;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 16px;
+            box-shadow: var(--shadow);
+        }
+
+        @media (min-width: 640px) {
+            .panel { border-radius: var(--radius); padding: 22px; }
+        }
+
+        @media (min-width: 981px) {
+            .panel {
+                position: sticky;
+                top: 24px;
+            }
+        }
+
+        .panel h2 {
+            margin: 0 0 16px;
+            font-size: 16px;
+            letter-spacing: -.01em;
+        }
+
+        @media (min-width: 640px) {
+            .panel h2 { margin: 0 0 18px; font-size: 18px; }
+        }
+
+        /* ============================================================
+           FIELDS
+           ============================================================ */
+        .field { margin-bottom: 12px; }
+
+        @media (min-width: 640px) {
+            .field { margin-bottom: 14px; }
+        }
+
+        .field label {
+            display: block;
+            font-size: 12.5px;
+            font-weight: 700;
+            color: #334155;
+            margin-bottom: 6px;
+        }
+
+        .field label code {
+            font-size: 11.5px;
+            color: var(--muted);
+            font-weight: 600;
+            margin-left: 4px;
+        }
+
+        .req { color: var(--danger); }
+
+        .field input,
+        .field textarea {
+            width: 100%;
+            font: inherit;
+            font-size: 16px;           /* stop iOS auto-zoom */
+            padding: 11px 13px;
+            border: 1.5px solid var(--line);
+            border-radius: 10px;
+            background: #f8fafc;
+            color: var(--ink);
+            transition: .16s;
+            font-family: inherit;
+            min-height: 44px;
+        }
+
+        @media (min-width: 640px) {
+            .field input,
+            .field textarea { font-size: 14px; }
+        }
+
+        .field textarea {
+            resize: vertical;
+            min-height: 80px;
+            line-height: 1.5;
+        }
+
+        .field input:focus,
+        .field textarea:focus {
+            outline: 0;
+            border-color: var(--brand);
+            background: #fff;
+            box-shadow: 0 0 0 4px #eef2ff;
+        }
+
+        .field input[readonly] {
+            background: #eef2ff;
+            border-color: #c7d2fe;
+            font-weight: 700;
+            color: var(--brand);
+            cursor: default;
+        }
+
+        .field input[readonly]#total_amount {
+            font-size: 17px;
+            font-weight: 800;
+        }
+
+        /* Date field */
+        .field input[type="date"] {
+            cursor: pointer;
+            -webkit-appearance: none;
+            appearance: none;
+            background-image:
+                linear-gradient(45deg, transparent 50%, var(--brand) 50%),
+                linear-gradient(135deg, var(--brand) 50%, transparent 50%);
+            background-position: calc(100% - 20px) 50%, calc(100% - 14px) 50%;
+            background-size: 6px 6px, 6px 6px;
+            background-repeat: no-repeat;
+            padding-right: 40px;
+        }
+
+        .field input[type="date"]::-webkit-calendar-picker-indicator {
+            opacity: 0;
+            position: absolute;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .field.date-field { position: relative; }
+
+        /* Error text */
+        .err {
+            margin: 5px 0 0;
+            font-size: 12px;
+            color: var(--danger);
+            display: none;
+        }
+
+        .field.invalid input,
+        .field.invalid textarea {
+            border-color: var(--danger);
+            background: #fef2f2;
+        }
+
+        .field.invalid .err { display: block; }
+
+        /* ============================================================
+           SUBMIT BUTTON
+           ============================================================ */
+        .btn-primary {
+            width: 100%;
+            border: 0;
+            cursor: pointer;
+            font: inherit;
+            font-weight: 800;
+            font-size: 15px;
+            color: #fff;
+            padding: 14px;
+            border-radius: 12px;
+            margin-top: 6px;
+            min-height: 50px;
+            background: linear-gradient(135deg, var(--brand), var(--brand-2));
+            box-shadow: 0 10px 22px -12px var(--brand);
+            transition: .18s;
+        }
+
+        .btn-primary:hover { filter: brightness(1.07); }
+        .btn-primary:active { transform: scale(.985); }
+        .btn-primary:disabled { opacity: .7; cursor: not-allowed; }
+
+        /* Make sure SweetAlert2 is mobile friendly */
+        .swal2-popup {
+            font-size: 15px !important;
+            border-radius: 14px !important;
+        }
+
+        @media (max-width: 480px) {
+            .swal2-popup { width: 90% !important; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header partial -->
+    <%- include('header') %>
+
+    <% const msgs = (typeof locals !== 'undefined' && locals.messages) || {}; %>
+    <% const safeMsg = v => JSON.stringify(String(v == null ? '' : v)).replace(/</g, '\\u003c'); %>
+
+    <% if (msgs.success) { %>
+    <script>
+        Swal.fire({
+            toast: true, position: "top-end", icon: "success",
+            title: <%- safeMsg(msgs.success) %>, showConfirmButton: false,
+            timer: 3000, timerProgressBar: true,
+            background: "#ffffff", iconColor: "#00b894", color: "#333",
+            customClass: { popup: 'custom-swal-toast' },
+            didOpen: (toast) => {
+                toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
+                toast.style.borderRadius = '8px';
+                toast.style.padding = '0.75rem 1.25rem';
+            }
+        });
+    </script>
+    <% } %>
+
+    <% if (msgs.error) { %>
+    <script>
+        Swal.fire({
+            toast: true, position: "top-end", icon: "error",
+            title: <%- safeMsg(msgs.error) %>, showConfirmButton: false,
+            timer: 3000, timerProgressBar: true,
+            background: "#ffffff", iconColor: "#dc2626", color: "#333",
+            customClass: { popup: 'custom-swal-toast' },
+            didOpen: (toast) => {
+                toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
+                toast.style.borderRadius = '8px';
+                toast.style.padding = '0.75rem 1.25rem';
+            }
+        });
+    </script>
+    <% } %>
+
+    <div class="wrap">
+        <header class="head">
+            <div>
+                <h1>Quick<span>Cart</span> Order Form</h1>
+            </div>
+            <div class="brand-badge">🧾</div>
+        </header>
+
+        <form id="orderForm" method="post" action="/user/orders" novalidate>
+            <input type="hidden" name="order_token" id="orderToken" value="" />
+
+            <div class="layout" id="mainLayout">
+
+                <section>
+                    <div class="section-head">
+                        <h2>Order Items</h2>
+                        <span class="pill" id="itemCount">0 items</span>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="pc-head">
+                            <div>
+                                <h3>Product Entry</h3>
+                                <small id="billDate">—</small>
+                            </div>
+                        </div>
+
+                        <div class="pc-body">
+                            <p class="hint">
+                                Loaded from your cart: <b>product_image</b>, <b>product_name</b>,
+                                <b>sale_price</b>.
+                                Click <b>×</b> to remove an item from your cart.
+                            </p>
+
+                            <div class="pf-labels">
+                                <span></span>
+                                <span>item_name</span>
+                                <span>price</span>
+                                <span>qty</span>
+                                <span>item_amount</span>
+                                <span></span>
+                            </div>
+
+                            <div id="productRows">
+                                <% if (userSourse.cart && userSourse.cart.length > 0) { %>
+                                <% userSourse.cart.forEach(function(product, index) { %>
+                                <div class="product-row"
+                                    data-product-id="<%= product._id %>"
+                                    data-product-image="<%= product.product_image %>">
+
+                                    <input type="hidden" class="p-image-input"
+                                        name="items[<%= index %>][product_image]"
+                                        value="<%= product.product_image %>" />
+                                    <input type="hidden" class="p-product-id-input"
+                                        name="items[<%= index %>][product_id]"
+                                        value="<%= product._id %>" />
+                                    <input type="hidden" class="p-item_amount_input"
+                                        name="items[<%= index %>][item_amount]" value="0" />
+
+                                    <span class="thumb">
+                                        <img src="/uploads/<%= product.product_image %>"
+                                             alt="<%= product.product_name %>"
+                                             loading="lazy" />
+                                    </span>
+
+                                    <input class="p-item_name" type="text"
+                                        name="items[<%= index %>][item_name]"
+                                        value="<%= product.product_name %>" readonly />
+                                    <input class="p-price" type="number" min="0" step="0.01"
+                                        name="items[<%= index %>][price]"
+                                        value="<%= product.sale_price %>"  readonly />
+                                    <input class="p-qty" type="number" min="1" step="1"
+                                        name="items[<%= index %>][qty]" value="1" />
+                                    <output class="p-item_amount"></output>
+                                    <button type="button" class="remove-btn" aria-label="Remove">×</button>
+                                </div>
+                                <% }); %>
+                                <% } %>
+                            </div>
+
+                            <div class="pc-total">
+                                <span class="label">total_amount</span>
+                                <span class="value" id="grandTotal">₹0</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <aside class="panel">
+                    <h2>Customer Details</h2>
+
+                    <div class="field date-field">
+                        <label for="order_date">Order Date <span class="req">*</span><code>order_date</code></label>
+                        <input id="order_date" name="order_date" type="date" readonly />
+                        <p class="err"></p>
+                    </div>
+
+                    <div class="field">
+                        <label for="customer_name">Full Name <span class="req">*</span><code>customer_name</code></label>
+                        <input id="customer_name" name="customer_name" type="text"
+                            value="<%= userSourse.name %>" readonly />
+                        <p class="err"></p>
+                    </div>
+
+                    <div class="field">
+                        <label for="mobile">Mobile Number <span class="req">*</span><code>mobile</code></label>
+                        <input id="mobile" name="mobile" type="tel" maxlength="10"
+                            value="<%= userSourse.mobile %>" readonly />
+                        <p class="err"></p>
+                    </div>
+
+                    <div class="field">
+                        <label for="email">Email Address <span class="req">*</span><code>email</code></label>
+                        <input id="email" name="email" type="email" value="<%= userSourse.email %>" readonly />
+                        <p class="err"></p>
+                    </div>
+
+                    <div class="field">
+                        <label for="full_address">Full Address <span class="req">*</span><code>full_address</code></label>
+                        <textarea id="full_address" name="full_address"
+                            placeholder="Flat / House no, Street, Landmark, City, Pincode"></textarea>
+                        <p class="err"></p>
+                    </div>
+
+                    <div class="field">
+                        <label for="total_amount">Total Amount <code>total_amount</code></label>
+                        <input id="total_amount" type="text" readonly value="₹0" />
+                        <input type="hidden" id="total_amount_value" name="total_amount" value="0" />
+                        <p class="err"></p>
+                    </div>
+
+                    <button type="submit" class="btn-primary" id="submitBtn">Place Order</button>
+                </aside>
+
+            </div>
+        </form>
+    </div>
+
+    <script>
+        'use strict';
+
+        /* =========================================================
+           CONFIG
+           ========================================================= */
+        const CONFIG = {
+            REMOVE_URL: '/user/remove-card/',
+            REMOVE_METHOD: 'GET',
+        };
+
+        /* =========================================================
+           HELPERS
+           ========================================================= */
+        const inr = new Intl.NumberFormat('en-IN', {
+            style: 'currency', currency: 'INR',
+            minimumFractionDigits: 0, maximumFractionDigits: 2
+        });
+        const money = n => Math.round((+n || 0) * 100) / 100;
+        const fmt = n => inr.format(+n || 0);
+
+        const todayISO = () => {
+            const d = new Date();
+            const p = n => String(n).padStart(2, '0');
+            return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
+        };
+
+        const $ = id => document.getElementById(id);
+
+        /* =========================================================
+           DOM (cached once)
+           ========================================================= */
+        const el = {
+            form: $('orderForm'),
+            rows: $('productRows'),
+            grand: $('grandTotal'),
+            count: $('itemCount'),
+            billDate: $('billDate'),
+            date: $('order_date'),
+            name: $('customer_name'),
+            mobile: $('mobile'),
+            email: $('email'),
+            addr: $('full_address'),
+            total: $('total_amount'),
+            totalSubmit: $('total_amount_value'),
+            submit: $('submitBtn'),
+        };
+
+        /* =========================================================
+           ROW INDEXING
+           ========================================================= */
+        const liveRows = new Set();
+
+        function indexRow(row) {
+            row._refs = {
+                productId: row.querySelector('.p-product-id-input'),
+                name: row.querySelector('.p-item_name'),
+                price: row.querySelector('.p-price'),
+                qty: row.querySelector('.p-qty'),
+                amount: row.querySelector('.p-item_amount'),
+                amountInput: row.querySelector('.p-item_amount_input'),
+                imageInput: row.querySelector('.p-image-input'),
+                btn: row.querySelector('.remove-btn'),
+            };
+            row._amount = 0;
+            liveRows.add(row);
+        }
+
+        /* =========================================================
+           RECALC
+           ========================================================= */
+        let rafId = null;
+        function scheduleRecalc() {
+            if (rafId) return;
+            rafId = requestAnimationFrame(() => { rafId = null; recalc(); });
+        }
+
+        function recalc() {
+            let total = 0, qtySum = 0;
+
+            for (const row of liveRows) {
+                const r = row._refs;
+                const price = Math.max(0, money(r.price.value));
+                const qty = Math.max(0, Math.floor(+r.qty.value) || 0);
+                const amount = money(price * qty);
+
+                if (row._amount !== amount) {
+                    r.amount.textContent = fmt(amount);
+                    r.amountInput.value = amount;
+                    row._amount = amount;
+                }
+                total += amount;
+                qtySum += qty;
+            }
+
+            const totalAmount = money(total);
+            if (el.grand._v !== totalAmount) {
+                el.grand.textContent = fmt(totalAmount);
+                el.total.value = fmt(totalAmount);
+                el.totalSubmit.value = totalAmount;
+                el.grand._v = totalAmount;
+            }
+            el.count.textContent = `${qtySum} item${qtySum === 1 ? '' : 's'}`;
+
+            if (totalAmount > 0) setFieldError(el.total, '');
+            return totalAmount;
+        }
+
+        /* =========================================================
+           EMPTY STATE
+           ========================================================= */
+        function syncEmptyState() {
+            if (liveRows.size > 0) {
+                el.submit.disabled = false;
+                el.submit.textContent = 'Place Order';
+                return;
+            }
+            el.rows.innerHTML = `<div class="empty-cart">Your cart is empty. <a href="/products">Browse products</a> to add items.</div>`;
+            el.submit.disabled = true;
+            el.submit.textContent = 'Add items to cart first';
+        }
+
+        /* =========================================================
+           VALIDATION
+           ========================================================= */
+        function setFieldError(input, message) {
+            const field = input.closest('.field');
+            if (!field) return;
+            field.classList.toggle('invalid', !!message);
+            const err = field.querySelector('.err');
+            if (err) err.textContent = message || '';
+        }
+
+        el.date.addEventListener('input', () => setFieldError(el.date, ''));
+        el.addr.addEventListener('input', () => setFieldError(el.addr, ''));
+
+        function validate() {
+            const errors = [];
+
+            if (!el.date.value) {
+                setFieldError(el.date, 'Please select the order date.');
+                errors.push(el.date);
+            } else setFieldError(el.date, '');
+
+            let firstRowInput = null;
+            for (const row of liveRows) {
+                const r = row._refs;
+                const nameOk = r.name.value.trim().length > 0;
+                const priceOk = +r.price.value > 0;
+                const qtyOk = Number.isInteger(+r.qty.value) && +r.qty.value >= 1;
+                const ok = nameOk && priceOk && qtyOk;
+
+                row.classList.toggle('invalid', !ok);
+                if (!ok && !firstRowInput) {
+                    firstRowInput = row.querySelector(
+                        !nameOk ? '.p-item_name' : !priceOk ? '.p-price' : '.p-qty'
+                    );
+                }
+            }
+
+            const total = recalc();
+            if (!firstRowInput && total <= 0) {
+                setFieldError(el.total, 'Add valid items to calculate total_amount.');
+                errors.push(el.total);
+            } else if (!firstRowInput) setFieldError(el.total, '');
+            if (firstRowInput) errors.push(firstRowInput);
+
+            if (!el.addr.value.trim()) {
+                setFieldError(el.addr, 'full_address is required for delivery.');
+                errors.push(el.addr);
+            } else setFieldError(el.addr, '');
+
+            return errors;
+        }
+
+        /* =========================================================
+           REINDEX
+           ========================================================= */
+        function reindexRows() {
+            let i = 0;
+            for (const row of liveRows) {
+                const r = row._refs;
+                r.productId.name = `items[${i}][product_id]`;
+                r.imageInput.name = `items[${i}][product_image]`;
+                r.name.name = `items[${i}][item_name]`;
+                r.price.name = `items[${i}][price]`;
+                r.qty.name = `items[${i}][qty]`;
+                r.amountInput.name = `items[${i}][item_amount]`;
+                r.amountInput.value = row._amount;
+                i++;
+            }
+        }
+
+        /* =========================================================
+           EVENT DELEGATION
+           ========================================================= */
+        el.rows.addEventListener('input', e => {
+            if (!e.target.matches('.p-price, .p-qty')) return;
+            e.target.closest('.product-row').classList.remove('invalid');
+            scheduleRecalc();
+        });
+
+        el.rows.addEventListener('click', async e => {
+            const btn = e.target.closest('.remove-btn');
+            if (!btn || btn.disabled) return;
+
+            const row = btn.closest('.product-row');
+            const id = row.dataset.productId;
+
+            if (!id) { removeRow(row); return; }
+
+            const originalText = btn.textContent;
+            btn.disabled = true;
+            btn.textContent = '…';
+            row.classList.add('removing');
+
+            try {
+                const res = await fetch(CONFIG.REMOVE_URL + encodeURIComponent(id), {
+                    method: CONFIG.REMOVE_METHOD,
+                    headers: { Accept: 'application/json' },
+                });
+                if (!res.ok) throw new Error(`HTTP ${res.status} ${res.statusText}`);
+                removeRow(row);
+            } catch (err) {
+                console.error('remove-card failed:', err);
+                row.classList.remove('removing');
+                btn.disabled = false;
+                btn.textContent = originalText;
+            }
+        });
+
+        function removeRow(row) {
+            liveRows.delete(row);
+            row.remove();
+            reindexRows();
+            recalc();
+            syncEmptyState();
+        }
+
+        /* =========================================================
+           DUPLICATE ORDER GUARD
+           ========================================================= */
+        const DUP_KEY = 'qc_order_fp';
+        const DUP_WINDOW_MS = 60 * 1000;
+        let submitting = false;
+        const origReadOnly = new WeakMap();
+
+        (function setOrderToken() {
+            const tokenInput = $('orderToken');
+            if (!tokenInput) return;
+            tokenInput.value =
+                (window.crypto && crypto.randomUUID && crypto.randomUUID()) ||
+                ('t' + Date.now() + Math.random().toString(36).slice(2));
+        })();
+
+        function rawFingerprint() {
+            const parts = [el.addr.value.trim().toLowerCase()];
+            for (const row of liveRows) {
+                const r = row._refs;
+                parts.push(
+                    (r.productId.value || '') + ':' +
+                    money(r.price.value) + ':' +
+                    (parseInt(r.qty.value, 10) || 0)
+                );
+            }
+            parts.push(money(el.totalSubmit.value));
+            return parts.join('|');
+        }
+
+        async function fingerprint() {
+            const raw = rawFingerprint();
+            try {
+                if (!(window.crypto && crypto.subtle)) throw new Error('no subtle crypto');
+                const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(raw));
+                return Array.from(new Uint8Array(buf))
+                    .map(b => b.toString(16).padStart(2, '0'))
+                    .join('');
+            } catch {
+                return 'raw:' + raw;
+            }
+        }
+
+        function lockForm() {
+            el.form.querySelectorAll('input, textarea, button').forEach(node => {
+                if (!origReadOnly.has(node)) {
+                    origReadOnly.set(node, ('readOnly' in node) ? node.readOnly : false);
+                }
+                if ('readOnly' in node) node.readOnly = true;
+                if (node instanceof HTMLButtonElement) node.disabled = true;
+            });
+        }
+
+        function unlockForm() {
+            el.form.querySelectorAll('input, textarea, button').forEach(node => {
+                if (origReadOnly.has(node) && 'readOnly' in node) {
+                    node.readOnly = origReadOnly.get(node);
+                }
+            });
+            if (liveRows.size > 0) {
+                el.submit.disabled = false;
+                el.submit.textContent = 'Place Order';
+            }
+        }
+
+        /* =========================================================
+           SUBMIT
+           ========================================================= */
+        el.form.addEventListener('submit', async e => {
+
+            if (submitting) {
+                e.preventDefault();
+                return;
+            }
+
+            const errors = validate();
+            if (errors.length) {
+                e.preventDefault();
+                errors[0].focus();
+                return;
+            }
+
+            const fp = await fingerprint();
+            const now = Date.now();
+            let previous = null;
+            try { previous = JSON.parse(sessionStorage.getItem(DUP_KEY) || 'null'); } catch {}
+
+            if (previous && previous.fp === fp && (now - previous.ts) < DUP_WINDOW_MS) {
+                e.preventDefault();
+                const remaining = Math.ceil((DUP_WINDOW_MS - (now - previous.ts)) / 1000);
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Duplicate order',
+                    html: `This order was just submitted. Please do not submit it again.<br>
+                           <small>You can try again in ${remaining} seconds.</small>`,
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#4f46e5'
+                });
+                return;
+            }
+
+            submitting = true;
+            try { sessionStorage.setItem(DUP_KEY, JSON.stringify({ fp, ts: now })); } catch {}
+
+            reindexRows();
+            lockForm();
+            el.submit.disabled = true;
+            el.submit.textContent = 'Processing…';
+        });
+
+        window.addEventListener('pageshow', () => {
+            submitting = false;
+            unlockForm();
+            if (liveRows.size === 0) syncEmptyState();
+        });
+
+        /* =========================================================
+           INIT
+           ========================================================= */
+        (function init() {
+            el.date.value = todayISO();
+            el.date.max = todayISO();
+            el.billDate.textContent =
+                'Date: ' + new Date().toLocaleDateString('en-IN', {
+                    day: '2-digit', month: 'short', year: 'numeric'
+                });
+
+            for (const row of el.rows.querySelectorAll('.product-row')) {
+                indexRow(row);
+            }
+
+            recalc();
+            syncEmptyState();
+        })();
+    </script>
+</body>
+
+</html>

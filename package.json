@@ -37,6 +37,7 @@
     "pdf-lib": "^1.17.1",
     "qrcode": "^1.5.4",
     "regenerator-runtime": "^0.14.1",
+    "sharp": "^0.35.5",
     "sweetalert": "^2.1.2"
   }
 }

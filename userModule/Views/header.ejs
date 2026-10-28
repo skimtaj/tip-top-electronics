@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tip Top Electronics - Header</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        :root {
+            --meesho-purple: #9f2089;
+            --meesho-light-bg: #ffffff;
+            --meesho-text-dark: #333333;
+            --meesho-text-light: #666666;
+            --meesho-border: #e0e0e0;
+            --meesho-hover-bg: #f5f5f5;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: var(--meesho-text-dark);
+            padding-top: 130px;
+            /* Space for fixed header */
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: padding-top 0.3s ease;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* ============================================================
+           HEADER MAIN
+        ============================================================ */
+        .site-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: var(--meesho-light-bg);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Top Row */
+        .header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 4%;
+            border-bottom: 1px solid var(--meesho-border);
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        /* Logo */
+        .logo {
+            text-decoration: none;
+            color: var(--meesho-purple);
+            font-weight: 800;
+            font-size: 28px;
+            /* Adjusted for longer text */
+            letter-spacing: -1px;
+            flex-shrink: 0;
+            margin-right: 30px;
+            font-family: 'Mier B', 'Segoe UI', sans-serif;
+            transition: font-size 0.3s ease;
+        }
+
+        /* Search Bar */
+        .search-container {
+            flex: 1;
+            max-width: 600px;
+            display: flex;
+            align-items: center;
+            border: 1px solid #999;
+            border-radius: 4px;
+            padding: 8px 12px;
+            margin-right: 30px;
+            background: #fff;
+            transition: all 0.3s ease;
+        }
+
+        .search-container label {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+        }
+
+        .search-container label i {
+            color: #666;
+            font-size: 16px;
+            transition: color 0.2s;
+        }
+
+        .search-container label:hover i {
+            color: var(--meesho-purple);
+        }
+
+        .search-container input {
+            border: none;
+            outline: none;
+            width: 100%;
+            font-size: 15px;
+            color: var(--meesho-text-dark);
+            background: transparent;
+        }
+
+        .search-container input::placeholder {
+            color: #888;
+            font-weight: 400;
+        }
+
+        /* Right Actions */
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-shrink: 0;
+            transition: gap 0.3s ease;
+        }
+
+        .header-link {
+            text-decoration: none;
+            color: var(--meesho-text-dark);
+            font-size: 14px;
+            font-weight: 500;
+            white-space: nowrap;
+            transition: color 0.2s;
+        }
+
+        .header-link:hover {
+            color: var(--meesho-purple);
+        }
+
+        .divider {
+            height: 20px;
+            width: 1px;
+            background-color: var(--meesho-border);
+        }
+
+        /* Action Icons (Profile & Cart) */
+        .action-icon-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: var(--meesho-text-dark);
+            font-size: 12px;
+            cursor: pointer;
+            position: relative;
+            padding: 5px 0;
+            transition: color 0.2s;
+        }
+
+        .action-icon-group i {
+            font-size: 20px;
+            margin-bottom: 4px;
+            color: var(--meesho-text-dark);
+            transition: color 0.2s, font-size 0.3s ease;
+        }
+
+        .action-icon-group:hover,
+        .action-icon-group.active {
+            color: var(--meesho-purple);
+        }
+
+        .action-icon-group:hover i,
+        .action-icon-group.active i {
+            color: var(--meesho-purple);
+        }
+
+        .action-icon-group.active::after {
+            content: '';
+            position: absolute;
+            bottom: -13px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: var(--meesho-purple);
+            transition: all 0.3s ease;
+        }
+
+        /* Profile Dropdown */
+        .profile-container {
+            position: relative;
+        }
+
+        .profile-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            width: 260px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            border: 1px solid #eee;
+            padding: 0;
+            margin-top: 15px;
+            display: none;
+            z-index: 1001;
+            text-align: left;
+            transition: all 0.3s ease;
+        }
+
+        /* Show dropdown on hover */
+        .profile-container:hover .profile-dropdown {
+            display: block;
+        }
+
+        /* Arrow on top of dropdown */
+        .profile-dropdown::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            right: 25px;
+            width: 12px;
+            height: 12px;
+            background: #fff;
+            transform: rotate(45deg);
+            border-top: 1px solid #eee;
+            border-left: 1px solid #eee;
+            transition: all 0.3s ease;
+        }
+
+        /* Dropdown Header */
+        .dropdown-header {
+            padding: 16px 16px 10px 16px;
+        }
+
+        .dropdown-header h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--meesho-text-dark);
+            margin-bottom: 2px;
+        }
+
+        .dropdown-header p {
+            font-size: 12px;
+            color: var(--meesho-text-light);
+            margin-bottom: 12px;
+        }
+
+        /* Dropdown Login Button */
+        .dropdown-login-btn {
+            width: calc(100% - 32px);
+            margin: 0 16px 16px 16px;
+            padding: 10px;
+            background-color: var(--meesho-purple);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .dropdown-login-btn:hover {
+            background-color: #8a1b76;
+        }
+
+        /* Dropdown Divider */
+        .dropdown-divider {
+            height: 1px;
+            background-color: #eee;
+            width: 100%;
+            margin: 0;
+        }
+
+        /* Dropdown Menu (For Orders & Cart) */
+        .dropdown-menu {
+            list-style: none;
+            padding: 8px 0;
+            margin: 0;
+        }
+
+        .dropdown-menu li a {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px 20px;
+            color: var(--meesho-text-dark);
+            text-decoration: none;
+            font-size: 14px;
+            transition: background-color 0.2s;
+        }
+
+        .dropdown-menu li a:hover {
+            background-color: #f9f9f9;
+            color: var(--meesho-purple);
+        }
+
+        .dropdown-menu li a i {
+            font-size: 16px;
+            width: 20px;
+            text-align: center;
+            color: #555;
+        }
+
+        .dropdown-menu li a:hover i {
+            color: var(--meesho-purple);
+        }
+
+        /* Cart Badge */
+        .cart-badge {
+            position: absolute;
+            top: -2px;
+            right: -5px;
+            min-width: 18px;
+            height: 18px;
+            padding: 0 4px;
+            border-radius: 9px;
+            background: var(--meesho-purple);
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--meesho-light-bg);
+        }
+
+        .cart-badge.visible {
+            display: flex;
+        }
+
+        /* Bottom Row - Categories */
+        .header-nav {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 4%;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+            gap: 24px;
+            overflow-x: auto;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            /* Firefox */
+            transition: all 0.3s ease;
+        }
+
+        .header-nav::-webkit-scrollbar {
+            display: none;
+            /* Chrome/Safari */
+        }
+
+        .header-nav a {
+            text-decoration: none;
+            color: var(--meesho-text-dark);
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .header-nav a:hover {
+            color: var(--meesho-purple);
+        }
+
+        /* ============================================================
+           AUTH MODAL
+        ============================================================ */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            backdrop-filter: blur(3px);
+            overflow-y: auto;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: #fff;
+            border-radius: 14px;
+            width: 100%;
+            max-width: 400px;
+            padding: 28px 24px;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+            animation: modalIn 0.3s ease;
+            max-height: 92vh;
+            overflow-y: auto;
+            margin: auto;
+        }
+
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px) scale(0.97);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: #f1f3f5;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 16px;
+            transition: background 0.2s;
+        }
+
+        .modal-close:hover {
+            background: #e0e3e7;
+            color: #333;
+        }
+
+        .modal h3 {
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 4px;
+            color: #333;
+        }
+
+        .modal .modal-sub {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #e0e3e7;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-group input:focus {
+            border-color: var(--meesho-purple);
+            box-shadow: 0 0 0 3px rgba(159, 32, 137, 0.12);
+        }
+
+        .phone-input-wrap {
+            display: flex;
+            align-items: stretch;
+            border: 1px solid #e0e3e7;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #fff;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .phone-input-wrap:focus-within {
+            border-color: var(--meesho-purple);
+            box-shadow: 0 0 0 3px rgba(159, 32, 137, 0.12);
+        }
+
+        .phone-prefix {
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            background: #f1f3f5;
+            color: #333;
+            font-weight: 600;
+            font-size: 14px;
+            border-right: 1px solid #e0e3e7;
+            user-select: none;
+        }
+
+        .phone-input-wrap input {
+            border: none !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .modal-submit {
+            width: 100%;
+            padding: 11px;
+            border: none;
+            border-radius: 8px;
+            background: var(--meesho-purple);
+            color: white;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 6px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .modal-submit:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(159, 32, 137, 0.35);
+        }
+
+        .modal-switch {
+            text-align: center;
+            font-size: 13px;
+            color: #666;
+            margin-top: 16px;
+        }
+
+        .modal-switch a {
+            color: var(--meesho-purple);
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-switch a:hover {
+            text-decoration: underline;
+        }
+
+        .forgot-password-link {
+            display: block;
+            text-align: right;
+            font-size: 12px;
+            color: var(--meesho-purple);
+            text-decoration: none;
+            margin-top: 5px;
+            font-weight: 500;
+        }
+
+        .forgot-password-link:hover {
+            text-decoration: underline;
+        }
+
+        .modal-form {
+            display: none;
+        }
+
+        .modal-form.active {
+            display: block;
+        }
+
+        /* ============================================================
+           RESPONSIVE MEDIA QUERIES
+        ============================================================ */
+
+        /* Tablets (992px and below) */
+        @media (max-width: 992px) {
+            .search-container {
+                max-width: 400px;
+                margin-right: 20px;
+            }
+
+            .header-link {
+                display: none;
+            }
+
+            .divider {
+                display: none;
+            }
+        }
+
+        /* Large Phones & Small Tablets (768px and below) */
+        @media (max-width: 768px) {
+            body {
+                padding-top: 120px;
+            }
+
+            .logo {
+                font-size: 24px;
+                margin-right: 15px;
+            }
+
+            .search-container {
+                padding: 6px 10px;
+            }
+
+            .search-container input {
+                font-size: 14px;
+            }
+
+            .header-actions {
+                gap: 15px;
+            }
+
+            .header-nav {
+                justify-content: flex-start;
+                padding: 10px 4%;
+                gap: 18px;
+            }
+
+            .profile-dropdown {
+                right: -40px;
+                width: 250px;
+            }
+
+            .profile-dropdown::before {
+                right: 65px;
+            }
+        }
+
+        /* Small Phones (576px and below) */
+        @media (max-width: 576px) {
+
+            /* Increase top padding to account for the wrapped header height */
+            body {
+                padding-top: 140px;
+            }
+
+            /* Restructure the header layout */
+            .header-top {
+                padding: 10px 4%;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            /* Logo */
+            .logo {
+                font-size: 20px;
+                margin-right: auto;
+                order: 1;
+            }
+
+            /* Actions (Profile & Cart) */
+            .header-actions {
+                order: 2;
+                gap: 15px;
+            }
+
+            /* Search bar drops to second line */
+            .search-container {
+                order: 3;
+                flex: 0 0 100%;
+                max-width: 100%;
+                margin-right: 0;
+                margin-top: 8px;
+                padding: 10px 12px;
+                /* Taller for better touch targets */
+            }
+
+            /* Hide text labels under icons on mobile */
+            .action-icon-group span {
+                display: none;
+            }
+
+            /* Adjust icon sizes */
+            .action-icon-group i {
+                font-size: 22px;
+                margin-bottom: 0;
+            }
+
+            /* Adjust purple underline position */
+            .action-icon-group.active::after {
+                bottom: -8px;
+            }
+
+            /* Adjust dropdown positioning */
+            .profile-dropdown {
+                right: -15px;
+                width: 250px;
+                margin-top: 12px;
+            }
+
+            .profile-dropdown::before {
+                right: 40px;
+            }
+
+            /* Bottom Navigation */
+            .header-nav {
+                gap: 15px;
+                padding-bottom: 5px;
+            }
+
+            .header-nav a {
+                font-size: 13.5px;
+            }
+
+            /* Modal adjustments for small screens */
+            .modal {
+                padding: 24px 20px;
+            }
+
+            .modal h3 {
+                font-size: 20px;
+            }
+        }
+
+        /* Very Small Phones (400px and below) */
+        @media (max-width: 400px) {
+            .header-actions {
+                gap: 12px;
+            }
+
+            .logo {
+                font-size: 18px;
+            }
+
+            .profile-dropdown {
+                right: -25px;
+                width: 230px;
+            }
+
+            .profile-dropdown::before {
+                right: 50px;
+            }
+
+            .modal {
+                padding: 20px 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ============================================================
+         HEADER
+    ============================================================ -->
+    <header class="site-header">
+        <!-- Top Main Bar -->
+        <div class="header-top">
+            <!-- Logo -->
+            <a href="/" class="logo" aria-label="Tip Top Electronics Home">
+                Tip Top Electronics
+            </a>
+
+            <!-- Search Form -->
+            <form method="get" action="/" class="search-container" id="searchForm" role="search">
+                <!-- Linkable/Clickable Search Icon -->
+                <label for="searchInput" aria-label="Search">
+                    <i class="fas fa-search"></i>
+                </label>
+                <input type="text" id="searchInput" name="search"
+                    placeholder="Try Saree,Kurti or Search by Product Code" autocomplete="off">
+            </form>
+
+            <!-- Actions -->
+            <div class="header-actions">
+                <!-- Supplier & Investor Links (Hidden on Mobile) -->
+                <a href="/supplier" class="header-link">Become a Supplier</a>
+                <div class="divider"></div>
+                <a href="/investor" class="header-link">Investor Relations</a>
+                <div class="divider"></div>
+
+                <!-- Profile Dropdown Container -->
+                <div class="profile-container">
+                    <div class="action-icon-group active" id="profileBtn">
+                        <i class="fa-regular fa-user"></i>
+                        <span>Profile</span>
+                    </div>
+
+                    <!-- Dropdown Menu -->
+                    <div class="profile-dropdown" id="profileDropdown">
+                        <div class="dropdown-header">
+                            <h4>Hello User</h4>
+                            <p>To access your Meesho account</p>
+                        </div>
+                        <button class="dropdown-login-btn" id="openLoginModal">Login</button>
+
+                        <!-- Divider -->
+                        <hr class="dropdown-divider">
+
+                        <!-- My Orders & My Cart Buttons -->
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="/user/order">
+                                    <i class="fas fa-box"></i>
+                                    My Orders
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/user/carts">
+                                    <i class="fas fa-shopping-cart"></i>
+                                    My Cart
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Bottom Category Navigation -->
+        <nav class="header-nav">
+            <a href="/ac-category">Air Condition</a>
+            <a href="/fridge-category">Fridge</a>
+            <a href="/mobile-category">Mobile</a>
+            <a href="/mobile-acceseries-category">Mobile Acceseries</a>
+           
+        </nav>
+    </header>
+
+    <!-- ============================================================
+         AUTH MODAL
+    ============================================================ -->
+    <div class="modal-overlay" id="authModal">
+        <div class="modal" role="dialog" aria-modal="true">
+            <button class="modal-close" id="modalClose" aria-label="Close">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <!-- Login Form (Default Active) -->
+            <div class="modal-form active" id="loginFormContainer">
+                <h3>Welcome Back</h3>
+                <p class="modal-sub">Login to your account</p>
+                <form id="loginForm" method="post" action="/auth/login">
+                    <div class="form-group">
+                        <label for="loginEmail">Email address</label>
+                        <input type="email" id="loginEmail" placeholder="you@example.com" required name="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" placeholder="Enter your password" name="password"
+                            required>
+                        <!-- Forgot Password Link inside Modal -->
+                        <a href="#" class="forgot-password-link" id="forgotPasswordLink">Forgot Password?</a>
+                    </div>
+                    <button type="submit" class="modal-submit">Login</button>
+                </form>
+                <p class="modal-switch">
+                    Don't have an account?
+                    <a id="switchToCreate">Sign Up</a>
+                </p>
+            </div>
+
+            <!-- Create Account Form -->
+            <div class="modal-form" id="createFormContainer">
+                <h3>Sign Up</h3>
+                <p class="modal-sub">Join and start shopping</p>
+                <form id="createForm" method="post" action="/auth/register">
+                    <div class="form-group">
+                        <label for="createName">Full name</label>
+                        <input type="text" id="createName" placeholder="Your name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="createEmail">Email address</label>
+                        <input type="email" id="createEmail" placeholder="you@example.com" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="createPhone">Mobile number</label>
+                        <div class="phone-input-wrap">
+                            <span class="phone-prefix">+91</span>
+                            <input type="tel" id="createPhone" placeholder="10-digit mobile number" name="mobile"
+                                required inputmode="numeric" pattern="[0-9]{10}" maxlength="10">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="createPassword">Password</label>
+                        <input type="password" id="createPassword" placeholder="Create a password" name="password"
+                            required minlength="6">
+                    </div>
+                    <button type="submit" class="modal-submit">Create Account</button>
+                </form>
+                <p class="modal-switch">
+                    Already have an account?
+                    <a id="switchToLogin">Login</a>
+                </p>
+            </div>
+
+            <!-- Forgot Password Form -->
+            <div class="modal-form" id="forgotPasswordFormContainer">
+                <h3>Reset Password</h3>
+                <p class="modal-sub">Enter your email address and we'll send you a link to reset your password.</p>
+                <form id="forgotPasswordForm">
+                    <div class="form-group">
+                        <label for="forgotEmail">Email address</label>
+                        <input type="email" id="forgotEmail" placeholder="you@example.com" required>
+                    </div>
+                    <button type="submit" class="modal-submit">Send Reset Link</button>
+                </form>
+                <p class="modal-switch">
+                    Remember your password?
+                    <a id="backToLogin">Login</a>
+                </p>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // ============================================================
+        // MODAL LOGIC
+        // ============================================================
+        const authModal = document.getElementById('authModal');
+        const modalClose = document.getElementById('modalClose');
+
+        // Dropdown Triggers
+        const openLoginModal = document.getElementById('openLoginModal');
+
+        // Modal Containers
+        const loginFormContainer = document.getElementById('loginFormContainer');
+        const createFormContainer = document.getElementById('createFormContainer');
+        const forgotPasswordFormContainer = document.getElementById('forgotPasswordFormContainer');
+
+        // Links
+        const switchToCreate = document.getElementById('switchToCreate');
+        const switchToLogin = document.getElementById('switchToLogin');
+        const forgotPasswordLink = document.getElementById('forgotPasswordLink');
+        const backToLogin = document.getElementById('backToLogin');
+
+        // Functions
+        function openModal(view) {
+            authModal.classList.add('active');
+
+            // Hide all forms first
+            loginFormContainer.classList.remove('active');
+            createFormContainer.classList.remove('active');
+            forgotPasswordFormContainer.classList.remove('active');
+
+            // Show requested form
+            if (view === 'create') {
+                createFormContainer.classList.add('active');
+            } else if (view === 'forgot') {
+                forgotPasswordFormContainer.classList.add('active');
+            } else {
+                loginFormContainer.classList.add('active');
+            }
+        }
+
+        function closeModal() {
+            authModal.classList.remove('active');
+        }
+
+        // Event Listeners
+        openLoginModal.addEventListener('click', () => openModal('login'));
+        modalClose.addEventListener('click', closeModal);
+
+        authModal.addEventListener('click', (e) => {
+            if (e.target === authModal) closeModal();
+        });
+
+        // Switch Views
+        switchToCreate.addEventListener('click', (e) => {
+            e.preventDefault();
+            openModal('create');
+        });
+
+        switchToLogin.addEventListener('click', (e) => {
+            e.preventDefault();
+            openModal('login');
+        });
+
+        forgotPasswordLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            openModal('forgot');
+        });
+
+        backToLogin.addEventListener('click', (e) => {
+            e.preventDefault();
+            openModal('login');
+        });
+
+    </script>
+</body>
+
+</html>

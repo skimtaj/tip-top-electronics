@@ -1,0 +1,1366 @@
+<!DOCTYPE html>
+<html lang="en">
+<%-include('admin_sidebar')%>
+
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport"
+            content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover" />
+        <title>ABM Public School - Edit Product</title>
+
+        <!-- Bootstrap & jQuery & SweetAlert -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <style>
+            /* ================= RESET & VARIABLES ================= */
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            }
+
+            body {
+                background: #EDF5F1;
+                min-height: 100vh;
+                color: #0F1F1A;
+                -webkit-font-smoothing: antialiased;
+            }
+
+            /* ================= NEW PALETTE: EMERALD + AMBER ================= */
+            :root {
+                --primary: #065F46;
+                --primary-light: #10B981;
+                --primary-dark: #022C22;
+                --accent: #F59E0B;
+                --accent-soft: #FEF3C7;
+                --white: #ffffff;
+                --gray-bg: #F0F7F4;
+                --border: #B8D4C8;
+                --shadow: 0 2px 8px rgba(6, 95, 70, 0.08);
+                --shadow-md: 0 4px 16px rgba(6, 95, 70, 0.10);
+                --shadow-lg: 0 12px 28px rgba(6, 95, 70, 0.14);
+                --sidebar: 260px;
+                --radius: 8px;
+            }
+
+            .container {
+                width: 100%;
+                padding: 12px 16px;
+                margin: 0 auto;
+            }
+
+            .main {
+                display: grid;
+                gap: 20px;
+                width: 100%;
+                grid-template-columns: 1fr;
+                margin-top: 50px;
+            }
+
+            @media (max-width:575.98px) {
+                .container {
+                    padding: 8px 10px;
+                }
+
+                .main {
+                    gap: 12px;
+                    margin-top: 42px;
+                }
+
+                .admin-profile-section {
+                    padding: 0.9rem;
+                    flex-direction: column;
+                    align-items: flex-start;
+                }
+
+                .admin-profile-img {
+                    width: 52px;
+                    height: 52px;
+                }
+
+                .admin-profile-name {
+                    font-size: 0.95rem;
+                }
+
+                .reg-card {
+                    padding: 1rem 0.9rem;
+                }
+
+                .form-title {
+                    font-size: 1.05rem;
+                }
+
+                .section-head {
+                    font-size: 0.85rem;
+                }
+
+                .form-actions {
+                    flex-direction: column-reverse;
+                }
+
+                .form-actions .btn-submit-marksheet,
+                .form-actions .btn-reset-form,
+                .form-actions .btn-cancel-form {
+                    width: 100%;
+                    justify-content: center;
+                }
+            }
+
+            @media (min-width:576px) and (max-width:767.98px) {
+                .container {
+                    padding: 12px 16px;
+                }
+
+                .reg-card {
+                    padding: 1.2rem;
+                }
+            }
+
+            @media (min-width:768px) and (max-width:991.98px) {
+                .container {
+                    padding: 16px 20px;
+                }
+            }
+
+            @media (min-width:992px) {
+                .container {
+                    margin-left: var(--sidebar);
+                    padding: 24px 32px;
+                    max-width: calc(100% - var(--sidebar));
+                }
+
+                .main {
+                    gap: 22px;
+                    margin-top: 58px;
+                }
+            }
+
+            /* ================= ADMIN PROFILE HEADER ================= */
+            .admin-profile-section {
+                display: flex;
+                align-items: center;
+                padding: 1.5rem;
+                background: linear-gradient(135deg, rgba(6, 95, 70, 0.96), rgba(2, 44, 34, 0.98)),
+                    url('https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=2070&auto=format') center/cover no-repeat;
+                border-radius: 16px;
+                box-shadow: var(--shadow-lg);
+                gap: 1rem;
+                color: white;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .admin-profile-section::before {
+                content: '';
+                position: absolute;
+                top: -50%;
+                right: -20%;
+                width: 300px;
+                height: 300px;
+                background: radial-gradient(circle, rgba(245, 158, 11, 0.22), transparent 70%);
+                border-radius: 50%;
+            }
+
+            .admin-profile-img {
+                width: 70px;
+                height: 70px;
+                border-radius: 50%;
+                object-fit: cover;
+                border: 3px solid var(--accent);
+            }
+
+            .admin-status-indicator {
+                position: absolute;
+                bottom: 2px;
+                right: 4px;
+                width: 14px;
+                height: 14px;
+                background: var(--accent);
+                border: 2px solid var(--primary);
+                border-radius: 50%;
+            }
+
+            .admin-profile-info {
+                flex: 1;
+                z-index: 1;
+            }
+
+            .admin-profile-name {
+                font-size: 1.25rem;
+                font-weight: 800;
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                gap: 0.6rem;
+            }
+
+            .admin-profile-badge {
+                font-size: 0.7rem;
+                background: var(--accent);
+                color: var(--primary-dark);
+                padding: 0.2rem 0.7rem;
+                border-radius: 30px;
+                font-weight: 700;
+                letter-spacing: 0.5px;
+            }
+
+            .admin-profile-detail {
+                display: flex;
+                align-items: center;
+                gap: 0.6rem;
+                font-size: 0.8rem;
+                opacity: 0.92;
+                margin-top: 4px;
+            }
+
+            /* ================= CARD ================= */
+            .reg-card {
+                background: var(--white);
+                border-radius: 16px;
+                box-shadow: var(--shadow-md);
+                padding: 1.5rem 1.8rem;
+                transition: box-shadow 0.2s;
+            }
+
+            .reg-card:hover {
+                box-shadow: var(--shadow-lg);
+            }
+
+            .form-title {
+                font-weight: 700;
+                font-size: 1.4rem;
+                color: var(--primary-dark);
+                border-bottom: 2px solid var(--primary);
+                padding-bottom: 0.6rem;
+                margin-bottom: 0.4rem;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            .form-title small {
+                font-size: 0.8rem;
+                font-weight: 400;
+                color: #4E6B60;
+            }
+
+            /* ================= SECTION HEADINGS ================= */
+            .section-head {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                font-weight: 700;
+                font-size: 0.95rem;
+                color: var(--primary-dark);
+                margin: 1.6rem 0 0.9rem;
+                padding-bottom: 0.5rem;
+                border-bottom: 2px dashed #D5E7DD;
+            }
+
+            .section-head .num {
+                width: 26px;
+                height: 26px;
+                flex: 0 0 26px;
+                border-radius: 50%;
+                background: var(--primary);
+                color: #fff;
+                font-size: 0.75rem;
+                font-weight: 700;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            /* ================= GRID ================= */
+            .form-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+                gap: 14px 16px;
+            }
+
+            .form-grid .span-full {
+                grid-column: 1 / -1;
+            }
+
+            .form-grid .col-name {
+                grid-column: span 2;
+            }
+
+            @media (max-width: 640px) {
+                .form-grid .col-name {
+                    grid-column: 1 / -1;
+                }
+            }
+
+            /* ================= FORM CONTROLS ================= */
+            .form-group-custom {
+                margin-bottom: 0;
+                min-width: 0;
+            }
+
+            .form-group-custom label {
+                font-weight: 600;
+                font-size: 0.78rem;
+                color: var(--primary-dark);
+                margin-bottom: 0.25rem;
+                display: block;
+            }
+
+            .req {
+                color: #d9534f;
+                font-weight: 700;
+                margin-left: 2px;
+            }
+
+            .form-control-custom {
+                border: 1px solid var(--border);
+                border-radius: var(--radius);
+                padding: 0.45rem 0.75rem;
+                font-size: 0.85rem;
+                transition: border 0.15s, box-shadow 0.15s;
+                background: white;
+                width: 100%;
+                color: #0F1F1A;
+            }
+
+            .form-control-custom:focus {
+                border-color: var(--primary-light);
+                box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.20);
+                outline: none;
+            }
+
+            .form-control-custom::placeholder {
+                color: #93A9A0;
+                font-weight: 300;
+            }
+
+            /* ===== CUSTOM SELECT ===== */
+            select.form-control-custom {
+                appearance: none;
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                padding: 0.45rem 2.2rem 0.45rem 0.75rem;
+                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23065F46'/%3E%3C/svg%3E");
+                background-repeat: no-repeat;
+                background-position: right 0.75rem center;
+                background-size: 10px 6px;
+                cursor: pointer;
+                color: #0F1F1A;
+            }
+
+            select.form-control-custom:invalid,
+            select.form-control-custom option[value=""] {
+                color: #93A9A0;
+            }
+
+            select.form-control-custom option {
+                color: #0F1F1A;
+                font-weight: 500;
+            }
+
+            .form-control-custom[readonly] {
+                background: #E4F0EA;
+                color: #4E6B60;
+                cursor: not-allowed;
+            }
+
+            textarea.form-control-custom {
+                resize: vertical;
+                min-height: 90px;
+            }
+
+            .hint {
+                font-size: 0.68rem;
+                color: #6C857B;
+                margin-top: 3px;
+                display: block;
+            }
+
+            .is-invalid {
+                border-color: #d9534f !important;
+                box-shadow: 0 0 0 2px rgba(217, 83, 79, 0.12) !important;
+            }
+
+            input[type=number]::-webkit-inner-spin-button,
+            input[type=number]::-webkit-outer-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+
+            input[type=number] {
+                -moz-appearance: textfield;
+                appearance: textfield;
+            }
+
+            /* ================= PRODUCT IMAGE UPLOAD ================= */
+            .image-upload-wrapper {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+                width: 100%;
+            }
+
+            .image-upload-input {
+                position: absolute;
+                left: -9999px;
+                width: 1px;
+                height: 1px;
+                opacity: 0;
+            }
+
+            .image-upload-label {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 100%;
+                min-height: 190px;
+                border: 2px dashed var(--border);
+                border-radius: var(--radius);
+                background: #F0F7F4;
+                cursor: pointer;
+                padding: 1rem;
+                margin: 0;
+                transition: border 0.2s, background 0.2s;
+                overflow: hidden;
+            }
+
+            .image-upload-label:hover {
+                border-color: var(--primary-light);
+                background: #E4F0EA;
+            }
+
+            .image-upload-label.dragover {
+                border-color: var(--primary);
+                background: #D1E7DD;
+            }
+
+            .image-upload-placeholder {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 8px;
+                color: #4E6B60;
+                text-align: center;
+                padding: 0.4rem;
+            }
+
+            .image-upload-placeholder svg {
+                width: 42px;
+                height: 42px;
+                color: var(--primary-light);
+            }
+
+            .image-upload-placeholder .upload-title {
+                font-size: 0.85rem;
+                font-weight: 600;
+                color: var(--primary-dark);
+            }
+
+            .image-upload-placeholder .upload-hint {
+                font-size: 0.72rem;
+                color: #7E958B;
+            }
+
+            .image-preview-wrap {
+                display: none;
+                flex-direction: column;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .image-preview-wrap.is-visible {
+                display: flex;
+            }
+
+            .image-preview-img {
+                max-width: 100%;
+                max-height: 260px;
+                object-fit: contain;
+                border-radius: var(--radius);
+                border: 1px solid var(--border);
+                background: #fff;
+                display: block;
+            }
+
+            .image-preview-meta {
+                font-size: 0.7rem;
+                color: #4E6B60;
+                font-weight: 600;
+            }
+
+            .btn-remove-image {
+                display: none;
+                align-items: center;
+                gap: 6px;
+                background: #fff;
+                border: 1px solid #f0b9b4;
+                color: #b02a25;
+                font-size: 0.75rem;
+                font-weight: 700;
+                padding: 0.35rem 0.9rem;
+                border-radius: var(--radius);
+                cursor: pointer;
+                transition: all 0.2s;
+            }
+
+            .btn-remove-image:hover {
+                background: #fdecea;
+                border-color: #d9534f;
+            }
+
+            .btn-remove-image.is-visible {
+                display: inline-flex;
+            }
+
+            /* ================= PRICE SUMMARY CHIPS ================= */
+            .price-summary {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+                margin-top: 4px;
+            }
+
+            .price-chip {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                font-size: 0.73rem;
+                font-weight: 700;
+                padding: 0.32rem 0.85rem;
+                border-radius: 30px;
+                background: #E4F0EA;
+                color: var(--primary-dark);
+                border: 1px solid #CFE3D8;
+            }
+
+            .price-chip.good {
+                background: #D1FAE5;
+                color: #065F46;
+                border-color: #A7F3D0;
+            }
+
+            .price-chip.bad {
+                background: #fdecea;
+                color: #b02a25;
+                border-color: #f5c2bd;
+            }
+
+            .price-chip.accent {
+                background: #FEF3C7;
+                color: #92400E;
+                border-color: var(--accent-soft);
+            }
+
+            /* ================= ACTION BUTTONS ================= */
+            .form-actions {
+                margin-top: 1.4rem;
+                padding-top: 1rem;
+                border-top: 2px dashed #D5E7DD;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: flex-end;
+                gap: 12px;
+            }
+
+            .btn-submit-marksheet {
+                background: var(--primary);
+                border: none;
+                border-radius: var(--radius) !important;
+                padding: 0.5rem 2rem;
+                font-size: 0.82rem;
+                font-weight: 700;
+                color: white;
+                transition: all 0.2s;
+                cursor: pointer;
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                box-shadow: 0 2px 6px rgba(6, 95, 70, 0.30);
+                white-space: nowrap;
+            }
+
+            .btn-submit-marksheet:hover {
+                background: var(--primary-light);
+                transform: translateY(-2px);
+                box-shadow: 0 6px 16px rgba(6, 95, 70, 0.35);
+            }
+
+            .btn-submit-marksheet:disabled {
+                opacity: 0.75;
+                cursor: not-allowed;
+                transform: none;
+            }
+
+            .btn-reset-form {
+                background: #fff;
+                border: 1px solid var(--border);
+                border-radius: var(--radius) !important;
+                padding: 0.5rem 1.6rem;
+                font-size: 0.82rem;
+                font-weight: 700;
+                color: #4E6B60;
+                cursor: pointer;
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                transition: all 0.2s;
+                text-decoration: none;
+            }
+
+            .btn-reset-form:hover {
+                background: #E4F0EA;
+                color: var(--primary-dark);
+                text-decoration: none;
+            }
+
+            /* New: Cancel button (link styled as button) */
+            .btn-cancel-form {
+                background: #fff;
+                border: 1px solid #e0b8b8;
+                border-radius: var(--radius) !important;
+                padding: 0.5rem 1.6rem;
+                font-size: 0.82rem;
+                font-weight: 700;
+                color: #a02b2b;
+                cursor: pointer;
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                transition: all 0.2s;
+                text-decoration: none;
+            }
+
+            .btn-cancel-form:hover {
+                background: #fdecea;
+                color: #7f1d1d;
+                text-decoration: none;
+            }
+
+            /* ================= ANIMATION ================= */
+            .fade-in {
+                animation: fadeInUp 0.4s ease forwards;
+                opacity: 0;
+            }
+
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(12px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            @media (max-width: 400px) {
+                .form-grid {
+                    grid-template-columns: 1fr;
+                }
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <% if (typeof messages !=='undefined' && messages.success) { %>
+            <script>
+                Swal.fire({
+                    toast: true,
+                    position: "top-end",
+                    icon: "success",
+                    title: "<%= messages.success %>",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: function (toast) {
+                        toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
+                        toast.style.borderRadius = '8px';
+                    }
+                });
+            </script>
+            <% } %>
+
+                <% if (typeof messages !=='undefined' && messages.error) { %>
+                    <script>
+                        Swal.fire({
+                            toast: true,
+                            position: "top-end",
+                            icon: "error",
+                            title: "<%= messages.error %>",
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            didOpen: function (toast) {
+                                toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
+                                toast.style.borderRadius = '8px';
+                            }
+                        });
+                    </script>
+                    <% } %>
+
+                        <div class="sidebar-placeholder"></div>
+
+                        <div class="container" id="top">
+                            <main class="content">
+                                <div class="main">
+
+                                    <!-- ================= HEADER ================= -->
+                                    <div class="admin-profile-section fade-in">
+                                        <div style="position:relative;">
+                                            <img src="https://ui-avatars.com/api/?name=Edit&background=065F46&color=fff&size=140"
+                                                alt="Product" class="admin-profile-img" />
+                                            <span class="admin-status-indicator"></span>
+                                        </div>
+                                        <div class="admin-profile-info">
+                                            <div class="admin-profile-name">
+                                                Edit Product
+                                                <span class="admin-profile-badge">EDIT MODE</span>
+                                            </div>
+                                            <div class="admin-profile-detail">
+                                                Update the required (<span style="color:#F59E0B;">*</span>) fields
+                                                carefully
+                                            </div>
+                                            <div class="admin-profile-detail">
+                                                Product master · Update &amp; Save changes
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- ================= FORM ================= -->
+                                    <form id="productForm" method="post"
+                                        action="/admin-dashbaord/products/edit/<%= productSourse._id %>"
+                                        enctype="multipart/form-data" autocomplete="off" novalidate>
+
+                                        <!-- Hidden product ID (safe fallback) -->
+                                        <input type="hidden" name="product_id"
+                                            value="<%= productSourse._id || productSourse.id || '' %>" />
+
+                                        <div class="reg-card fade-in">
+
+                                            <div class="form-title">
+                                                <span>Product Details</span>
+                                                <small>Editing existing product</small>
+                                            </div>
+
+                                            <!-- ============ 1. BASIC INFORMATION ============ -->
+                                            <div class="section-head">
+                                                <span class="num">1</span> Basic Information
+                                            </div>
+
+                                            <div class="form-grid">
+                                                <div class="form-group-custom col-name">
+                                                    <label for="productName">Product Name <span
+                                                            class="req">*</span></label>
+                                                    <input type="text" class="form-control-custom" name="product_name"
+                                                        id="productName" placeholder="e.g. Cotton Casual Shirt - Blue"
+                                                        maxlength="150" autocomplete="off"
+                                                        value="<%= productSourse.product_name || '' %>" />
+                                                    <span class="hint">Keep it short, clear and unique</span>
+                                                </div>
+
+                                                <div class="form-group-custom">
+                                                    <label for="productCategory">Category <span
+                                                            class="req">*</span></label>
+                                                    <select class="form-control-custom" name="category"
+                                                        id="productCategory" required>
+                                                        <option value="" disabled <%=!productSourse.category
+                                                            ? 'selected' : '' %>>-- Select category --</option>
+
+                                                        <option value="Mobile" <%=productSourse.category==='Mobile'
+                                                            ? 'selected' : '' %>>Mobile</option>
+
+                                                        <option value="AC" <%=productSourse.category==='AC' ? 'selected'
+                                                            : '' %>>AC</option>
+
+                                                        <option value="Fridge" <%=productSourse.category==='Fridge'
+                                                            ? 'selected' : '' %>>Fridge</option>
+
+                                                        <option value="Mobile Acceseries"
+                                                            <%=productSourse.category==='Mobile Acceseries' ? 'selected'
+                                                            : '' %>>Mobile Acceseries</option>
+                                                    </select>
+                                                    <span class="hint">Used for filtering &amp; Excel export</span>
+                                                </div>
+
+                                                <div class="form-group-custom span-full">
+                                                    <label for="shortDescription">Short Description</label>
+                                                    <textarea class="form-control-custom" name="short_description"
+                                                        id="shortDescription" rows="3" maxlength="500"
+                                                        autocomplete="off"
+                                                        placeholder="A brief one-paragraph description shown to customers"><%= productSourse.short_description || '' %></textarea>
+                                                    <span class="hint">Maximum 500 characters</span>
+                                                </div>
+                                            </div>
+
+                                            <!-- ============ 2. PRODUCT IMAGE ============ -->
+                                            <div class="section-head">
+                                                <span class="num">2</span> Product Image
+                                            </div>
+
+                                            <div class="form-grid">
+                                                <div class="form-group-custom span-full">
+                                                    <label for="productImage">Product Image</label>
+                                                    <div class="image-upload-wrapper">
+
+                                                        <!-- Track existing image filename -->
+                                                        <input type="hidden" name="existing_image" id="existingImage"
+                                                            value="<%= productSourse.product_image || '' %>" />
+
+                                                        <!-- File input: no value attribute -->
+                                                        <input type="file" id="productImage" name="product_image"
+                                                            class="image-upload-input"
+                                                            accept="image/png,image/jpeg,image/jpg,image/webp" />
+
+                                                        <label for="productImage" class="image-upload-label"
+                                                            id="imageUploadLabel">
+                                                            <div class="image-upload-placeholder" id="imagePlaceholder">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                    viewBox="0 0 24 24" stroke="currentColor"
+                                                                    stroke-width="1.8">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                                        d="M3 16.5V18a2.25 2.25 0 0 0 2.25 2.25h13.5A2.25 2.25 0 0 0 21 18v-1.5M16.5 7.5 12 3m0 0L7.5 7.5M12 3v13.5" />
+                                                                </svg>
+                                                                <span class="upload-title">Click or drag &amp; drop to
+                                                                    replace</span>
+                                                                <span class="upload-hint">JPG / PNG / WEBP · Max 150
+                                                                    KB</span>
+                                                            </div>
+                                                            <div class="image-preview-wrap" id="imagePreviewWrap">
+                                                                <img id="imagePreviewImg" class="image-preview-img"
+                                                                    data-existing-src="<%= productSourse.product_image ? '/uploads/' + productSourse.product_image : '' %>"
+                                                                    alt="Product preview" />
+                                                                <span class="image-preview-meta"
+                                                                    id="imagePreviewMeta"></span>
+                                                            </div>
+                                                        </label>
+                                                        <button type="button" class="btn-remove-image"
+                                                            id="removeImageBtn">
+                                                            &#10005; Remove image
+                                                        </button>
+                                                    </div>
+                                                    <span class="hint">
+                                                        Optional · Image file size must be <strong>150 KB or
+                                                            less</strong>
+                                                        (JPG, PNG or WEBP)
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            <!-- ============ 3. PRICING ============ -->
+                                            <div class="section-head">
+                                                <span class="num">3</span> Pricing
+                                            </div>
+
+                                            <div class="form-grid">
+                                                <div class="form-group-custom">
+                                                    <label for="purchasePrice">Purchase Price (&#8377;) <span
+                                                            class="req">*</span></label>
+                                                    <input type="text" class="form-control-custom decimal"
+                                                        name="purchase_price" id="purchasePrice" inputmode="decimal"
+                                                        maxlength="10" placeholder="e.g. 450.00" required
+                                                        value="<%= productSourse.purchase_price || '' %>" />
+                                                    <span class="hint">Cost at which you buy the product</span>
+                                                </div>
+
+                                                <div class="form-group-custom">
+                                                    <label for="normalPrice">Normal Price / MRP (&#8377;) <span
+                                                            class="req">*</span></label>
+                                                    <input type="text" class="form-control-custom decimal" name="mrp"
+                                                        id="normalPrice" inputmode="decimal" maxlength="10"
+                                                        placeholder="e.g. 999.00" required
+                                                        value="<%= productSourse.mrp || '' %>" />
+                                                    <span class="hint">Printed / list price</span>
+                                                </div>
+
+                                                <div class="form-group-custom">
+                                                    <label for="salePrice">Sale Price (&#8377;) <span
+                                                            class="req">*</span></label>
+                                                    <input type="text" class="form-control-custom decimal"
+                                                        name="sale_price" id="salePrice" inputmode="decimal"
+                                                        value="<%= productSourse.sale_price || '' %>" maxlength="10"
+                                                        placeholder="e.g. 799.00" required />
+                                                    <span class="hint">Final selling price to the customer</span>
+                                                </div>
+
+                                                <div class="form-group-custom span-full">
+                                                    <div class="price-summary" id="priceSummary" style="display:none;">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- ============ 4. INVENTORY ============ -->
+                                            <div class="section-head">
+                                                <span class="num">4</span> Inventory
+                                            </div>
+
+                                            <div class="form-grid">
+                                                <div class="form-group-custom">
+                                                    <label for="stockQty">Stock Quantity <span
+                                                            class="req">*</span></label>
+                                                    <input type="text" class="form-control-custom numeric"
+                                                        name="stock_qty" id="stockQty" inputmode="numeric" maxlength="7"
+                                                        placeholder="e.g. 50" required
+                                                        value="<%= productSourse.stock_qty || '' %>" />
+                                                    <span class="hint">Units currently available</span>
+                                                </div>
+                                            </div>
+
+                                            <!-- ============ ACTIONS ============ -->
+                                            <div class="form-actions">
+                                                <a href="/admin-dashbaord/products" class="btn-cancel-form">
+                                                    Cancel
+                                                </a>
+                                                <button type="reset" class="btn-reset-form" id="resetBtn">
+                                                    Reset
+                                                </button>
+                                                <button type="submit" class="btn-submit-marksheet"
+                                                    id="submitProductBtn">
+                                                    Update Product
+                                                </button>
+                                            </div>
+
+                                        </div>
+                                    </form>
+
+                                </div>
+                            </main>
+                        </div>
+
+                        <script>
+                            (function ($) {
+                                'use strict';
+
+                                /* ============================================================
+                                   CONFIG
+                                ============================================================ */
+                                const MAX_IMAGE_SIZE = 150 * 1024; // 150 KB
+                                const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+
+                                /* ============================================================
+                                   DOM CACHE
+                                ============================================================ */
+                                const $productForm = $('#productForm');
+                                const $submitBtn = $('#submitProductBtn');
+                                const $priceSummary = $('#priceSummary');
+
+                                const $imageInput = $('#productImage');
+                                const $imagePreviewImg = $('#imagePreviewImg');
+                                const $imagePreviewWrap = $('#imagePreviewWrap');
+                                const $imagePreviewMeta = $('#imagePreviewMeta');
+                                const $imagePlaceholder = $('#imagePlaceholder');
+                                const $imageUploadLabel = $('#imageUploadLabel');
+                                const $removeImageBtn = $('#removeImageBtn');
+                                const $existingImageField = $('#existingImage');
+
+                                /* ============================================================
+                                   1. NUMBER / DECIMAL INPUT FORMATTERS
+                                ============================================================ */
+                                $(document).on('input', '.numeric', function () {
+                                    let v = this.value.replace(/[^0-9]/g, '');
+                                    v = v.replace(/^0+(?=\d)/, '');
+                                    this.value = v;
+                                });
+
+                                $(document).on('input', '.decimal', function () {
+                                    let v = this.value.replace(/[^0-9.]/g, '');
+                                    const firstDot = v.indexOf('.');
+                                    if (firstDot !== -1) {
+                                        v = v.slice(0, firstDot + 1) +
+                                            v.slice(firstDot + 1).replace(/\./g, '');
+                                    }
+                                    const dot = v.indexOf('.');
+                                    if (dot !== -1 && v.length > dot + 3) {
+                                        v = v.slice(0, dot + 3);
+                                    }
+                                    this.value = v;
+                                    updatePriceSummary();
+                                });
+
+                                $(document).on('blur', '.decimal', function () {
+                                    let v = (this.value || '').trim();
+                                    if (!v) return;
+                                    if (v.endsWith('.')) v = v.slice(0, -1);
+                                    if (v.startsWith('.')) v = '0' + v;
+                                    this.value = v;
+                                    updatePriceSummary();
+                                });
+
+                                /* ============================================================
+                                   2. LIVE PRICE SUMMARY
+                                ============================================================ */
+                                function num(selector) {
+                                    const v = parseFloat($(selector).val());
+                                    return isNaN(v) ? 0 : v;
+                                }
+
+                                function money(n) {
+                                    return '\u20B9' + n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                                }
+
+                                function updatePriceSummary() {
+                                    const purchase = num('#purchasePrice');
+                                    const normal = num('#normalPrice');
+                                    const sale = num('#salePrice');
+
+                                    if (!purchase && !normal && !sale) {
+                                        $priceSummary.hide().empty();
+                                        return;
+                                    }
+
+                                    let html = '';
+
+                                    if (sale > 0) {
+                                        const profit = sale - purchase;
+                                        const cls = profit > 0 ? 'good' : (profit < 0 ? 'bad' : '');
+                                        const label = profit >= 0 ? 'Profit / unit' : 'Loss / unit';
+                                        html += '<span class="price-chip ' + cls + '">' +
+                                            label + ': ' + money(Math.abs(profit)) + '</span>';
+                                    }
+
+                                    if (normal > 0 && sale > 0 && normal >= sale) {
+                                        const disc = normal - sale;
+                                        const pct = (disc / normal) * 100;
+                                        html += '<span class="price-chip accent">Discount: ' +
+                                            money(disc) + ' (' + pct.toFixed(1) + '%)</span>';
+                                    }
+
+                                    if (sale > 0 && purchase > 0) {
+                                        const margin = ((sale - purchase) / sale) * 100;
+                                        html += '<span class="price-chip">Margin: ' +
+                                            margin.toFixed(1) + '%</span>';
+                                    }
+
+                                    if (!html) {
+                                        $priceSummary.hide().empty();
+                                        return;
+                                    }
+
+                                    $priceSummary.html(html).show();
+                                }
+
+                                // Run once so the price summary is visible on edit load
+                                updatePriceSummary();
+
+                                /* ============================================================
+                                   3. PRODUCT IMAGE UPLOAD
+                                ============================================================ */
+                                function formatKB(bytes) {
+                                    return (bytes / 1024).toFixed(1) + ' KB';
+                                }
+
+                                function showExistingImage() {
+                                    const src = $imagePreviewImg.data('existing-src');
+                                    if (!src) return;
+
+                                    $imagePreviewImg.attr('src', src);
+                                    $imagePreviewWrap.addClass('is-visible');
+                                    $imagePlaceholder.hide();
+                                    $removeImageBtn.addClass('is-visible');
+                                    $imagePreviewMeta.text('Current image');
+                                }
+
+                                function resetImagePreview(clearExisting) {
+                                    $imagePreviewImg.attr('src', '').removeAttr('src');
+                                    $imagePreviewMeta.text('');
+                                    $imagePreviewWrap.removeClass('is-visible');
+                                    $imagePlaceholder.show();
+                                    $removeImageBtn.removeClass('is-visible');
+                                    $imageInput.val('');
+
+                                    if (clearExisting) {
+                                        $existingImageField.val('');
+                                        $imagePreviewImg.removeData('existing-src');
+                                    }
+                                }
+
+                                function showImageError(message) {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Invalid image',
+                                        text: message,
+                                        confirmButtonColor: '#065F46'
+                                    });
+                                }
+
+                                function handleImageFile(file) {
+                                    if (!file) {
+                                        if ($existingImageField.val()) {
+                                            showExistingImage();
+                                        } else {
+                                            resetImagePreview(false);
+                                        }
+                                        return;
+                                    }
+
+                                    if (ALLOWED_IMAGE_TYPES.indexOf(file.type) === -1) {
+                                        showImageError('Only JPG, PNG and WEBP images are allowed.');
+                                        resetImagePreview(false);
+                                        if ($existingImageField.val()) showExistingImage();
+                                        return;
+                                    }
+
+                                    if (file.size > MAX_IMAGE_SIZE) {
+                                        showImageError(
+                                            'Image must be 150 KB or smaller ' +
+                                            '(uploaded: ' + formatKB(file.size) + '). ' +
+                                            'Please compress the image and try again.'
+                                        );
+                                        resetImagePreview(false);
+                                        if ($existingImageField.val()) showExistingImage();
+                                        return;
+                                    }
+
+                                    const reader = new FileReader();
+                                    reader.onload = function (e) {
+                                        $imagePreviewImg.attr('src', e.target.result);
+                                        $imagePreviewMeta.text('New image · ' + formatKB(file.size));
+                                        $imagePreviewWrap.addClass('is-visible');
+                                        $imagePlaceholder.hide();
+                                        $removeImageBtn.addClass('is-visible');
+                                        // A new file will replace the existing one on the server
+                                        $existingImageField.val('');
+                                    };
+                                    reader.readAsDataURL(file);
+                                }
+
+                                $imageInput.on('change', function () {
+                                    handleImageFile(this.files && this.files[0]);
+                                });
+
+                                $removeImageBtn.on('click', function (e) {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    resetImagePreview(true);
+                                });
+
+                                $removeImageBtn.on('mousedown', function (e) {
+                                    e.stopPropagation();
+                                });
+
+                                // Drag & drop
+                                $imageUploadLabel.on('dragover dragenter', function (e) {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    $(this).addClass('dragover');
+                                });
+
+                                $imageUploadLabel.on('dragleave dragend drop', function (e) {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    $(this).removeClass('dragover');
+                                });
+
+                                $imageUploadLabel.on('drop', function (e) {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+
+                                    const dt = e.originalEvent.dataTransfer;
+                                    if (!dt || !dt.files || !dt.files.length) return;
+
+                                    const file = dt.files[0];
+
+                                    try {
+                                        const dataTransfer = new DataTransfer();
+                                        dataTransfer.items.add(file);
+                                        $imageInput[0].files = dataTransfer.files;
+                                    } catch (err) {
+                                        // DataTransfer unsupported — preview still works
+                                    }
+
+                                    handleImageFile(file);
+                                });
+
+                                // Show existing image on page load (edit mode)
+                                showExistingImage();
+
+                                /* ============================================================
+                                   4. VALIDATION
+                                ============================================================ */
+                                function markInvalid($el, message) {
+                                    $el.addClass('is-invalid');
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Invalid input',
+                                        text: message,
+                                        confirmButtonColor: '#065F46'
+                                    }).then(function () {
+                                        try { $el.trigger('focus'); } catch (e) { }
+                                    });
+                                    return false;
+                                }
+
+                                function validateForm() {
+                                    const name = $.trim($('#productName').val());
+                                    if (!name) {
+                                        return markInvalid($('#productName'),
+                                            'Please enter the product name.');
+                                    }
+                                    if (name.length < 3) {
+                                        return markInvalid($('#productName'),
+                                            'Product name must be at least 3 characters long.');
+                                    }
+
+                                    const category = $.trim($('#productCategory').val());
+                                    if (!category) {
+                                        return markInvalid($('#productCategory'),
+                                            'Please select a product category.');
+                                    }
+
+                                    const imageFile = $imageInput[0].files && $imageInput[0].files[0];
+                                    if (imageFile) {
+                                        if (ALLOWED_IMAGE_TYPES.indexOf(imageFile.type) === -1) {
+                                            return markInvalid($imageInput,
+                                                'Product image must be a JPG, PNG or WEBP file.');
+                                        }
+                                        if (imageFile.size > MAX_IMAGE_SIZE) {
+                                            return markInvalid($imageInput,
+                                                'Product image must be 150 KB or smaller ' +
+                                                '(uploaded: ' + formatKB(imageFile.size) + ').');
+                                        }
+                                    }
+
+                                    const purchaseRaw = ($('#purchasePrice').val() || '').trim();
+                                    if (purchaseRaw === '') {
+                                        return markInvalid($('#purchasePrice'),
+                                            'Please enter the purchase price.');
+                                    }
+                                    const purchase = parseFloat(purchaseRaw);
+                                    if (isNaN(purchase) || purchase < 0) {
+                                        return markInvalid($('#purchasePrice'),
+                                            'Purchase price must be a valid non-negative number.');
+                                    }
+
+                                    const normalRaw = ($('#normalPrice').val() || '').trim();
+                                    if (normalRaw === '') {
+                                        return markInvalid($('#normalPrice'),
+                                            'Please enter the normal price.');
+                                    }
+                                    const normal = parseFloat(normalRaw);
+                                    if (isNaN(normal) || normal <= 0) {
+                                        return markInvalid($('#normalPrice'),
+                                            'Normal price must be a number greater than 0.');
+                                    }
+
+                                    const saleRaw = ($('#salePrice').val() || '').trim();
+                                    if (saleRaw === '') {
+                                        return markInvalid($('#salePrice'),
+                                            'Please enter the sale price.');
+                                    }
+                                    const sale = parseFloat(saleRaw);
+                                    if (isNaN(sale) || sale <= 0) {
+                                        return markInvalid($('#salePrice'),
+                                            'Sale price must be a number greater than 0.');
+                                    }
+                                    if (sale > normal) {
+                                        return markInvalid($('#salePrice'),
+                                            'Sale price cannot be greater than the normal price (\u20B9' +
+                                            normal + ').');
+                                    }
+
+                                    const qtyRaw = ($('#stockQty').val() || '').trim();
+                                    if (qtyRaw === '') {
+                                        return markInvalid($('#stockQty'),
+                                            'Please enter the stock quantity.');
+                                    }
+                                    const qty = parseInt(qtyRaw, 10);
+                                    if (isNaN(qty) || qty < 0) {
+                                        return markInvalid($('#stockQty'),
+                                            'Stock quantity must be a non-negative integer.');
+                                    }
+
+                                    return true;
+                                }
+
+                                /* ============================================================
+                                   5. FORM RESET (edit form — keep original values)
+                                ============================================================ */
+                                const originalValues = {
+                                    product_name: $('#productName').val(),
+                                    category: $('#productCategory').val(),
+                                    short_description: $('#shortDescription').val(),
+                                    purchase_price: $('#purchasePrice').val(),
+                                    mrp: $('#normalPrice').val(),
+                                    sale_price: $('#salePrice').val(),
+                                    stock_qty: $('#stockQty').val()
+                                };
+                                const originalExistingImage = $existingImageField.val();
+
+                                $('#resetBtn').on('click', function () {
+                                    setTimeout(function () {
+                                        // Restore original values
+                                        $('#productName').val(originalValues.product_name);
+                                        $('#productCategory').val(originalValues.category);
+                                        $('#shortDescription').val(originalValues.short_description);
+                                        $('#purchasePrice').val(originalValues.purchase_price);
+                                        $('#normalPrice').val(originalValues.mrp);
+                                        $('#salePrice').val(originalValues.sale_price);
+                                        $('#stockQty').val(originalValues.stock_qty);
+
+                                        $('.is-invalid').removeClass('is-invalid');
+                                        updatePriceSummary();
+
+                                        // Restore original image state
+                                        $existingImageField.val(originalExistingImage);
+                                        if (originalExistingImage) {
+                                            $imagePreviewImg.attr('data-existing-src',
+                                                '/uploads/' + originalExistingImage);
+                                            showExistingImage();
+                                        } else {
+                                            resetImagePreview(true);
+                                        }
+                                    }, 10);
+                                });
+
+                                /* ============================================================
+                                   6. SUBMIT
+                                ============================================================ */
+                                let isSubmitting = false;
+
+                                $productForm.on('submit', function (e) {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+
+                                    if (isSubmitting) return;
+
+                                    if (!validateForm()) return;
+
+                                    isSubmitting = true;
+                                    $submitBtn.prop('disabled', true).html('Updating...');
+
+                                    setTimeout(function () {
+                                        if (isSubmitting) {
+                                            isSubmitting = false;
+                                            $submitBtn.prop('disabled', false)
+                                                .html('Update Product');
+                                        }
+                                    }, 15000);
+
+                                    this.submit();
+                                });
+
+                                /* ============================================================
+                                   7. CLEAR INVALID STATE WHILE TYPING
+                                ============================================================ */
+                                $(document).on('input change', '.form-control-custom', function () {
+                                    $(this).removeClass('is-invalid');
+                                });
+
+                                $(document).on('change', '#productImage', function () {
+                                    $(this).removeClass('is-invalid');
+                                });
+
+                            })(jQuery);
+                        </script>
+
+    </body>
+
+</html>

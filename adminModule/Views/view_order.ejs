@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Order Items - ShopEasy</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ============================================================
+           BASE / RESET
+        ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #4361EE;
+            --secondary: #7209B7;
+            --bg: #F5F7FB;
+            --card: #FFFFFF;
+            --text: #1B2437;
+            --muted: #6B7488;
+            --line: #E8ECF3;
+            --red: #B42318;
+            --red-soft: #FDECEC;
+            --green: #0F7B5A;
+            --green-soft: #E7F7F0;
+            --amber: #9A6700;
+            --amber-soft: #FEF4E6;
+            --radius: 14px;
+            --shadow-sm: 0 1px 2px rgba(16, 24, 40, .05);
+            --shadow-md: 0 8px 24px rgba(16, 24, 40, .09);
+
+            /* Matches actual admin sidebar width */
+            --sidebar: 260px;
+        }
+
+        html {
+            -webkit-text-size-adjust: 100%;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.55;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+            padding-left: var(--sidebar);
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        /* ============================================================
+           LAYOUT
+        ============================================================ */
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 60px auto 0;
+            padding: 20px 16px calc(96px + env(safe-area-inset-bottom));
+        }
+
+        .products-section {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            padding: 16px;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+            gap: 16px;
+        }
+
+        /* ============================================================
+           PRODUCT CARD
+        ============================================================ */
+        .product-card {
+            display: flex;
+            flex-direction: column;
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+            border-color: #DCE3F0;
+        }
+
+        .product-image-link {
+            position: relative;
+            display: block;
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            background: #F7F9FC;
+            padding: 14px;
+            overflow: hidden;
+        }
+
+        .product-image-link img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transition: transform .35s ease;
+        }
+
+        .product-card:hover .product-image-link img {
+            transform: scale(1.05);
+        }
+
+        /* ============================================================
+           PRODUCT INFO
+        ============================================================ */
+        .product-info {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 12px 12px 14px;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .product-title {
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 1.45;
+            color: var(--text);
+            text-decoration: none;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            min-height: 41px;
+            overflow-wrap: anywhere;
+            transition: color .2s ease;
+        }
+
+        .product-title:hover {
+            color: var(--primary);
+        }
+
+        .product-price {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text);
+            letter-spacing: -.2px;
+        }
+
+        /* ============================================================
+           STATUS PILL
+        ============================================================ */
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            align-self: flex-start;
+            gap: 6px;
+            max-width: 100%;
+            padding: 4px 10px;
+            font-size: 11.5px;
+            font-weight: 600;
+            line-height: 1.4;
+            border-radius: 999px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            background: #F1F4FA;
+            color: var(--muted);
+        }
+
+        .status-pill::before {
+            content: '';
+            flex: 0 0 auto;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        .status-danger {
+            background: var(--red-soft);
+            color: var(--red);
+        }
+
+        .status-success {
+            background: var(--green-soft);
+            color: var(--green);
+        }
+
+        .status-warning {
+            background: var(--amber-soft);
+            color: var(--amber);
+        }
+
+        /* ============================================================
+           ACTION BUTTON
+        ============================================================ */
+        .btn-accept {
+            margin-top: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            width: 100%;
+            min-height: 42px;
+            padding: 10px 14px;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 600;
+            color: #fff;
+            text-decoration: none;
+            border: none;
+            border-radius: 9px;
+            background: linear-gradient(135deg, #F04438 0%, #B42318 100%);
+            box-shadow: 0 2px 6px rgba(180, 35, 24, .25);
+            cursor: pointer;
+            transition: filter .2s ease, transform .2s ease, box-shadow .2s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .btn-accept:hover {
+            filter: brightness(1.08);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(180, 35, 24, .3);
+        }
+
+        .btn-accept:active {
+            transform: translateY(0);
+            filter: brightness(.96);
+        }
+
+        .btn-accept:focus-visible {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
+
+        .btn-return {
+            background: linear-gradient(135deg, #F59E0B 0%, #B45309 100%);
+            box-shadow: 0 2px 6px rgba(180, 83, 9, .25);
+        }
+
+        .btn-return:hover {
+            box-shadow: 0 4px 12px rgba(180, 83, 9, .3);
+        }
+
+        /* ============================================================
+           EMPTY STATE
+        ============================================================ */
+        .empty-state {
+            text-align: center;
+            padding: 48px 20px;
+            background: var(--card);
+            border: 1px dashed var(--line);
+            border-radius: var(--radius);
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .empty-state i {
+            width: 58px;
+            height: 58px;
+            margin: 0 auto 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: #F1F4FA;
+            color: #A9B4C7;
+            font-size: 23px;
+        }
+
+        .empty-state h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+
+        .empty-state p {
+            font-size: 13px;
+        }
+
+        /* ============================================================
+           STICKY CONTACT
+        ============================================================ */
+        .sticky-contact {
+            position: fixed;
+            right: 16px;
+            bottom: calc(16px + env(safe-area-inset-bottom));
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 99;
+        }
+
+        .sticky-contact a {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 19px;
+            text-decoration: none;
+            box-shadow: 0 6px 18px rgba(16, 24, 40, .22);
+            transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .whatsapp-btn {
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+        }
+
+        .call-btn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+        }
+
+        .sticky-contact a:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 10px 22px rgba(16, 24, 40, .28);
+        }
+
+        .sticky-contact a:active {
+            transform: scale(.96);
+        }
+
+        .sticky-contact a:focus-visible {
+            outline: 2px solid var(--primary);
+            outline-offset: 3px;
+        }
+
+        /* ============================================================
+           RESPONSIVE — full breakpoint chain
+        ============================================================ */
+
+        /* Small laptops — narrow sidebar */
+        @media (max-width: 1200px) {
+            :root {
+                --sidebar: 220px;
+            }
+        }
+
+        /* Sidebar collapses to icon-only rail */
+        @media (max-width: 992px) {
+            :root {
+                --sidebar: 60px;
+            }
+        }
+
+        /* Tablet landscape — tighter grid */
+        @media (max-width: 1024px) {
+            .product-grid {
+                grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
+                gap: 14px;
+            }
+        }
+
+        /* Sidebar becomes off-canvas drawer — content fills full width */
+        @media (max-width: 768px) {
+            :root {
+                --sidebar: 0px;
+            }
+
+            body {
+                padding-left: 0;
+            }
+
+            .container {
+                padding: 14px 12px calc(92px + env(safe-area-inset-bottom));
+            }
+
+            .products-section {
+                padding: 12px;
+                border-radius: 12px;
+            }
+
+            .product-grid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+                gap: 12px;
+            }
+
+            .product-info {
+                padding: 11px 11px 13px;
+                gap: 7px;
+            }
+
+            .product-title {
+                font-size: 13px;
+                min-height: 38px;
+            }
+
+            .product-price {
+                font-size: 15px;
+            }
+
+            .btn-accept {
+                min-height: 40px;
+                font-size: 12.5px;
+                padding: 9px 12px;
+            }
+
+            .sticky-contact {
+                right: 12px;
+                bottom: calc(12px + env(safe-area-inset-bottom));
+                gap: 8px;
+            }
+
+            .sticky-contact a {
+                width: 42px;
+                height: 42px;
+                font-size: 17px;
+            }
+        }
+
+        /* Phones — exactly 2 cards per row */
+        @media (max-width: 560px) {
+            .container {
+                padding: 10px 10px calc(90px + env(safe-area-inset-bottom));
+            }
+
+            .products-section {
+                padding: 10px;
+                border-radius: 10px;
+            }
+
+            .product-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 10px;
+            }
+
+            .product-image-link {
+                padding: 10px;
+            }
+
+            .product-info {
+                padding: 10px;
+                gap: 6px;
+            }
+
+            .product-title {
+                font-size: 12.5px;
+                min-height: 36px;
+            }
+
+            .product-price {
+                font-size: 14px;
+            }
+
+            .status-pill {
+                font-size: 10.5px;
+                padding: 3px 8px;
+            }
+
+            .btn-accept {
+                min-height: 38px;
+                font-size: 12px;
+                padding: 8px 10px;
+                border-radius: 8px;
+            }
+        }
+
+        /* Very small phones */
+        @media (max-width: 380px) {
+            .product-grid {
+                gap: 8px;
+            }
+
+            .product-image-link {
+                padding: 8px;
+            }
+
+            .product-title {
+                font-size: 12px;
+                min-height: 34px;
+            }
+
+            .product-price {
+                font-size: 13px;
+            }
+
+            .status-pill {
+                font-size: 10px;
+            }
+
+            .btn-accept {
+                font-size: 11.5px;
+                padding: 8px 8px;
+            }
+
+            .sticky-contact a {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                transition-duration: .001ms !important;
+                animation-duration: .001ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <%- include('admin_sidebar') %>
+
+        <main class="container">
+
+            <% if (!orderSourse || !orderSourse.items || !orderSourse.items.length) { %>
+
+                <!-- Empty state -->
+                <div class="empty-state">
+                    <i class="fas fa-box-open" aria-hidden="true"></i>
+                    <h3>No items found</h3>
+                    <p>There are no order items to display right now.</p>
+                </div>
+
+                <% } else { %>
+
+                    <section class="products-section" aria-label="Order items">
+                        <div class="product-grid">
+
+                            <% orderSourse.items.forEach(function (i) { var status=(i.item_status || ''
+                                ).toString().trim().toLowerCase(); var isCancel=status.includes('cancel'); var
+                                isReturn=status.includes('return'); var cls='' ; if (isCancel) cls='status-danger' ;
+                                else if (isReturn) cls='status-warning' ; else if (/deliver|complete/.test(status))
+                                cls='status-success' ; else if (/pending|process|ship|pack/.test(status))
+                                cls='status-warning' ; %>
+
+                                <article class="product-card">
+
+                                    <a href="/products/view-details/<%= i._id %>" class="product-image-link">
+                                        <img src="/uploads/<%= i.product_image %>" alt="<%= i.item_name %>" width="400"
+                                            height="400" loading="lazy" decoding="async">
+                                    </a>
+
+                                    <div class="product-info">
+
+                                        <a href="/products/view-details/<%= i._id %>" class="product-title">
+                                            <%= i.item_name %>
+                                        </a>
+
+                                        <div class="product-price">₹<%= i.item_amount %>
+                                        </div>
+
+                                        <% if (status) { %>
+                                            <span class="status-pill <%= cls %>">
+                                                <%= i.item_status %>
+                                            </span>
+                                            <% } %>
+
+                                                <% if (isCancel) { %>
+                                                    <a href="/admin-dashboard/orders/<%= orderSourse._id %>/items/<%= i._id %>/approve-cancellation"
+                                                        class="btn-accept">
+                                                        <i class="fas fa-check" aria-hidden="true"></i>
+                                                        <span>Accept Cancellation</span>
+                                                    </a>
+                                                    <% } %>
+
+                                                        <% if (isReturn) { %>
+                                                            <a href="/admin-dashboard/orders/<%= orderSourse._id %>/items/<%= i._id %>/approve-return"
+                                                                class="btn-accept btn-return">
+                                                                <i class="fas fa-check" aria-hidden="true"></i>
+                                                                <span>Accept Return</span>
+                                                            </a>
+                                                            <% } %>
+
+                                    </div>
+
+                                </article>
+
+                                <% }); %>
+
+                        </div>
+                    </section>
+
+                    <% } %>
+
+        </main>
+
+        <!-- Sticky Contact -->
+        <div class="sticky-contact">
+            <a href="https://wa.me/1234567890" class="whatsapp-btn" target="_blank" rel="noopener"
+                aria-label="Contact us on WhatsApp">
+                <i class="fab fa-whatsapp" aria-hidden="true"></i>
+            </a>
+            <a href="tel:+1234567890" class="call-btn" aria-label="Call us">
+                <i class="fas fa-phone" aria-hidden="true"></i>
+            </a>
+        </div>
+
+</body>
+
+</html>

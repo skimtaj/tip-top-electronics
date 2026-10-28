@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%-include('header')%>
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Search Results - ShopEasy</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            }
+
+            :root {
+                --primary: #4361EE;
+                --secondary: #7209B7;
+                --accent: #F72585;
+                --light-bg: #F8F9FA;
+                --dark-text: #212529;
+                --light-text: #6C757D;
+                --white: #ffffff;
+                --card-bg: #FFFFFF;
+                --shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+                --hover-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+            }
+
+            body {
+                background-color: var(--light-bg);
+                color: var(--dark-text);
+                line-height: 1.6;
+                padding-top: 15px;
+                overflow-x: hidden;
+            }
+
+            .container {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 0 15px;
+                margin-top: 130px;
+            }
+
+            /* ============================================================
+           SECTION SHARED
+        ============================================================ */
+            .vertical-products-section {
+                background-color: var(--card-bg);
+                border-radius: 10px;
+                box-shadow: var(--shadow);
+                padding: 15px;
+                margin-bottom: 15px;
+            }
+
+            .section-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 15px;
+                padding-bottom: 8px;
+                border-bottom: 1px solid #eee;
+                gap: 10px;
+                flex-wrap: wrap;
+            }
+
+            .section-title {
+                font-size: 18px;
+                font-weight: 700;
+                color: var(--dark-text);
+                position: relative;
+            }
+
+            .section-title::after {
+                content: '';
+                position: absolute;
+                bottom: -10px;
+                left: 0;
+                width: 40px;
+                height: 2px;
+                background: linear-gradient(to right, var(--accent), var(--secondary));
+                border-radius: 2px;
+            }
+
+            .result-count {
+                font-size: 14px;
+                font-weight: 500;
+                color: var(--light-text);
+                margin-left: 4px;
+            }
+
+            .view-all {
+                color: var(--primary);
+                text-decoration: none;
+                font-weight: 600;
+                transition: color 0.3s;
+                display: flex;
+                align-items: center;
+                font-size: 13px;
+                white-space: nowrap;
+            }
+
+            .view-all:hover {
+                color: var(--secondary);
+            }
+
+            .view-all i {
+                margin-left: 4px;
+                font-size: 12px;
+            }
+
+            .search-clear-link {
+                color: var(--accent);
+            }
+
+            .search-clear-link:hover {
+                color: var(--secondary);
+            }
+
+            /* ============================================================
+           VERTICAL PRODUCTS / SEARCH RESULTS
+        ============================================================ */
+            .vertical-products-list {
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .vertical-product-row {
+                display: flex;
+                align-items: center;
+                gap: 18px;
+                padding: 14px;
+                border: 1px solid #eee;
+                border-radius: 8px;
+                background: var(--card-bg);
+                transition: box-shadow 0.3s, transform 0.3s;
+                cursor: pointer;
+                position: relative;
+            }
+
+            .vertical-product-row:hover {
+                box-shadow: var(--hover-shadow);
+                transform: translateY(-2px);
+            }
+
+            .vertical-product-image {
+                flex-shrink: 0;
+                width: 120px;
+                height: 120px;
+                border-radius: 8px;
+                overflow: hidden;
+                background: #f5f5f5;
+            }
+
+            .vertical-product-image img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                transition: transform 0.3s;
+            }
+
+            .vertical-product-row:hover .vertical-product-image img {
+                transform: scale(1.05);
+            }
+
+            .vertical-product-info {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+                min-width: 0;
+            }
+
+            .vertical-product-info .product-title {
+                font-size: 16px;
+                font-weight: 600;
+                color: var(--dark-text);
+                text-decoration: none;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                line-height: 1.4;
+                margin: 0;
+            }
+
+            .vertical-product-info .product-title:hover {
+                color: var(--primary);
+            }
+
+            .vertical-product-info .product-price {
+                font-size: 16px;
+                font-weight: 700;
+                color: var(--dark-text);
+                margin: 0;
+            }
+
+            .vertical-product-info .add-to-cart {
+                align-self: flex-start;
+                padding: 7px 18px;
+                font-size: 13px;
+                width: auto;
+                margin-top: 2px;
+                background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-weight: 600;
+                transition: all 0.3s;
+                font-family: inherit;
+            }
+
+            .vertical-product-info .add-to-cart:hover {
+                transform: translateY(-1px);
+            }
+
+            /* ============================================================
+           EMPTY STATE
+        ============================================================ */
+            .new-arrivals-empty {
+                text-align: center;
+                padding: 30px 15px;
+                color: var(--light-text);
+                font-size: 14px;
+                background: #f9fafb;
+                border-radius: 8px;
+                border: 1px dashed #e0e3e7;
+            }
+
+            .new-arrivals-empty i {
+                font-size: 32px;
+                color: #cfd4da;
+                margin-bottom: 8px;
+                display: block;
+            }
+
+            .new-arrivals-empty p {
+                margin: 4px 0;
+            }
+
+            .new-arrivals-empty p strong {
+                color: var(--dark-text);
+            }
+
+            /* ============================================================
+           STICKY CONTACT
+        ============================================================ */
+            .sticky-contact {
+                position: fixed;
+                bottom: 15px;
+                right: 15px;
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+                z-index: 99;
+            }
+
+            .whatsapp-btn,
+            .call-btn {
+                width: 42px;
+                height: 42px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                font-size: 18px;
+                box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+                transition: transform 0.3s, box-shadow 0.3s;
+                text-decoration: none;
+            }
+
+            .whatsapp-btn {
+                background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+            }
+
+            .call-btn {
+                background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            }
+
+            .whatsapp-btn:hover,
+            .call-btn:hover {
+                transform: scale(1.05);
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            }
+
+            /* ============================================================
+           RESPONSIVE BREAKPOINTS
+        ============================================================ */
+            @media (max-width: 768px) {
+                .vertical-products-section {
+                    padding: 12px;
+                    margin-bottom: 12px;
+                }
+
+                .section-header {
+                    margin-bottom: 12px;
+                }
+
+                .section-title {
+                    font-size: 16px;
+                }
+
+                .result-count {
+                    font-size: 12px;
+                }
+
+                .view-all {
+                    font-size: 12px;
+                }
+
+                .vertical-product-row {
+                    gap: 14px;
+                    padding: 12px;
+                }
+
+                .vertical-product-image {
+                    width: 100px;
+                    height: 100px;
+                }
+
+                .vertical-product-info .product-title {
+                    font-size: 14px;
+                }
+
+                .vertical-product-info .product-price {
+                    font-size: 14px;
+                }
+
+                .vertical-product-info .add-to-cart {
+                    padding: 6px 14px;
+                    font-size: 12px;
+                }
+
+                .sticky-contact {
+                    bottom: 12px;
+                    right: 12px;
+                }
+
+                .whatsapp-btn,
+                .call-btn {
+                    width: 38px;
+                    height: 38px;
+                    font-size: 16px;
+                }
+            }
+
+            @media (max-width: 576px) {
+                .vertical-products-section {
+                    padding: 10px;
+                    margin-bottom: 10px;
+                }
+
+                .vertical-product-row {
+                    gap: 12px;
+                    padding: 10px;
+                }
+
+                .vertical-product-image {
+                    width: 90px;
+                    height: 90px;
+                }
+
+                .vertical-product-info {
+                    gap: 6px;
+                }
+
+                .vertical-product-info .product-title {
+                    font-size: 13px;
+                }
+
+                .vertical-product-info .product-price {
+                    font-size: 13px;
+                }
+
+                .vertical-product-info .add-to-cart {
+                    padding: 5px 12px;
+                    font-size: 11px;
+                }
+
+                .whatsapp-btn,
+                .call-btn {
+                    width: 36px;
+                    height: 36px;
+                    font-size: 15px;
+                }
+            }
+
+            @media (max-width: 420px) {
+                .vertical-product-row {
+                    flex-wrap: wrap;
+                    gap: 10px;
+                }
+
+                .vertical-product-image {
+                    width: 100%;
+                    height: 170px;
+                }
+
+                .vertical-product-info {
+                    flex-basis: 100%; /* Updated to take full width since heart is removed */
+                }
+
+                .section-title {
+                    font-size: 15px;
+                }
+
+                .section-title::after {
+                    width: 32px;
+                }
+            }
+        </style>
+    </head>
+
+    <body>
+        <!-- ============================================================
+         SEARCH RESULTS PAGE
+         - searchProducts has items  → results list
+         - otherwise                 → empty state message
+    ============================================================ -->
+        <main class="container">
+            <% const hasSearchResults=Array.isArray(searchProducts) && searchProducts.length> 0;
+
+                const searchQueryText =
+                (typeof searchQuery !== 'undefined' && searchQuery !== null)
+                ? String(searchQuery).trim()
+                : '';
+                %>
+
+                <% if (hasSearchResults) { %>
+
+                    <!-- ============================================================
+                 SEARCH RESULTS
+            ============================================================ -->
+                    <section class="vertical-products-section">
+                        <div class="section-header">
+                            <h2 class="section-title">
+                                Search Results
+                                <span class="result-count">(<%= searchProducts.length %>)</span>
+                            </h2>
+                            <a href="/" class="view-all search-clear-link">
+                                Clear Search <i class="fas fa-times"></i>
+                            </a>
+                        </div>
+                        <div class="vertical-products-list">
+
+                            <% searchProducts.forEach((sp, idx)=> { %>
+
+                                <div class="vertical-product-row">
+                                    <div class="vertical-product-image">
+                                        <a href="/products/view-details/<%=sp._id%>" class="image-link">
+                                            <img src="/uploads/<%= sp.product_image %>" alt="<%= sp.product_name %>">
+                                        </a>
+                                    </div>
+                                    <div class="vertical-product-info">
+                                        <a href="#" class="product-title">
+                                            <%= sp.product_name %>
+                                        </a>
+                                        <div class="product-price">₹<%= sp.sale_price %>
+                                        </div>
+                                        <button class="add-to-cart">Add to Cart</button>
+                                    </div>
+                                </div>
+
+                                <% }) %>
+
+                        </div>
+                    </section>
+
+                    <% } else { %>
+
+                        <!-- ============================================================
+                 NO RESULTS
+            ============================================================ -->
+                        <section class="vertical-products-section">
+                            <div class="section-header">
+                                <h2 class="section-title">
+                                    Search Results
+                                    <span class="result-count">(0)</span>
+                                </h2>
+                                <a href="/" class="view-all search-clear-link">
+                                    Clear Search <i class="fas fa-times"></i>
+                                </a>
+                            </div>
+                            <div class="new-arrivals-empty">
+                                <i class="fas fa-search-minus"></i>
+                                <p><strong>No results for your search query.</strong></p>
+                                <p>Try checking your spelling or use more general terms</p>
+                                <% if (searchQueryText) { %>
+                                    <p style="margin-top: 10px; font-size: 12px; opacity: 0.8;">
+                                        Search term: "<strong>
+                                            <%= searchQueryText %>
+                                        </strong>"
+                                    </p>
+                                    <% } %>
+                            </div>
+                        </section>
+
+                        <% } %>
+        </main>
+
+        <!-- Sticky Contact Buttons -->
+        <div class="sticky-contact">
+            <a href="https://wa.me/1234567890" class="whatsapp-btn" target="_blank" aria-label="Contact on WhatsApp">
+                <i class="fab fa-whatsapp"></i>
+            </a>
+            <a href="tel:+1234567890" class="call-btn" aria-label="Call us">
+                <i class="fas fa-phone"></i>
+            </a>
+        </div>
+
+        <script>
+            // ============================================
+            // Add to cart functionality
+            // ============================================
+            const addToCartButtons = document.querySelectorAll('.add-to-cart');
+            let cartItems = [];
+
+            addToCartButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const productRow = button.closest('.vertical-product-row');
+                    const titleEl = productRow.querySelector('.product-title');
+                    const productTitle = titleEl.textContent.trim();
+                    const productPrice = productRow.querySelector('.product-price').textContent;
+
+                    cartItems.push({
+                        title: productTitle,
+                        price: productPrice
+                    });
+
+                    alert(`${productTitle} added to cart!`);
+                    console.log('Cart items:', cartItems);
+                });
+            });
+        </script>
+    </body>
+
+</html>

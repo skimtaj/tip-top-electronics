@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tip Top Electronics</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #4361EE;
+            --secondary: #7209B7;
+            --accent: #F72585;
+            --light-bg: #F8F9FA;
+            --dark-text: #212529;
+            --light-text: #6C757D;
+            --white: #ffffff;
+            --card-bg: #FFFFFF;
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            --hover-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+        }
+
+        body {
+            background-color: var(--light-bg);
+            color: var(--dark-text);
+            line-height: 1.6;
+            padding-top: 15px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+            margin-top: 30px;
+        }
+
+        /* ============================================================
+       HERO BANNER
+    ============================================================ */
+        .hero-banner {
+            margin: 0 0 15px 0;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            position: relative;
+            height: 350px;
+        }
+
+        .slider {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slides {
+            display: flex;
+            width: 400%;
+            height: 100%;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .slide {
+            width: 25%;
+            height: 100%;
+            position: relative;
+        }
+
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .slider-controls {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+        }
+
+        .slider-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            margin: 0 4px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .slider-dot.active {
+            background: var(--accent);
+        }
+
+        .prev-btn,
+        .next-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s;
+            z-index: 2;
+        }
+
+        .prev-btn:hover,
+        .next-btn:hover {
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        .prev-btn {
+            left: 10px;
+        }
+
+        .next-btn {
+            right: 10px;
+        }
+
+        /* ============================================================
+       SECTION SHARED
+    ============================================================ */
+        .products-section,
+        .new-arrivals-section,
+        .banner-section,
+        .category-section {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #eee;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--dark-text);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border-radius: 2px;
+        }
+
+        .view-all {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+            font-size: 13px;
+            white-space: nowrap;
+        }
+
+        .view-all:hover {
+            color: var(--secondary);
+        }
+
+        .view-all i {
+            margin-left: 4px;
+            font-size: 12px;
+        }
+
+        /* ============================================================
+       PRODUCTS GRID
+    ============================================================ */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 12px;
+        }
+
+        .product-card {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            background: var(--card-bg);
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--hover-shadow);
+        }
+
+        .product-image {
+            height: 140px;
+            background-color: #f5f5f5;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .image-link {
+            display: block;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.05);
+        }
+
+        .product-info {
+            padding: 10px;
+        }
+
+        .product-title {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            word-break: break-word;
+            font-size: 12px;
+            margin-bottom: 6px;
+            line-height: 1.4;
+            min-height: 34px;
+            text-decoration: none;
+            color: var(--dark-text);
+            transition: color 0.2s;
+        }
+
+        .product-title:hover {
+            color: var(--primary);
+        }
+
+        .product-price {
+            font-weight: 700;
+            font-size: 13px;
+            color: var(--dark-text);
+            margin-bottom: 4px;
+        }
+
+        .add-to-cart {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 5px;
+            width: 100%;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 11px;
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 4px;
+        }
+
+        .add-to-cart:hover {
+            transform: translateY(-1px);
+        }
+
+        .add-to-cart:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ============================================================
+       NEW ARRIVALS
+    ============================================================ */
+        .new-arrivals-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            justify-content: start;
+            gap: 12px;
+            padding: 8px 0;
+        }
+
+        .new-arrival-card {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s;
+            background: var(--card-bg);
+            position: relative;
+            min-width: 0; /* prevents grid overflow */
+        }
+
+        .new-arrival-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--hover-shadow);
+        }
+
+        .new-arrival-image {
+            height: 100px;
+            background-color: #f5f5f5;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .new-arrival-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .new-arrival-card:hover .new-arrival-image img {
+            transform: scale(1.05);
+        }
+
+        .new-arrival-badge {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--secondary) 100%);
+            color: white;
+            font-size: 10px;
+            padding: 3px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+            z-index: 2;
+        }
+
+        .new-arrival-info {
+            padding: 12px;
+        }
+
+        .new-arrival-title {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            word-break: break-word;
+            font-size: 13px;
+            margin-bottom: 4px;
+            line-height: 1.4;
+            min-height: 37px;
+            text-decoration: none;
+            color: var(--dark-text);
+            transition: color 0.2s;
+        }
+
+        .new-arrival-title:hover {
+            color: var(--primary);
+        }
+
+        .new-arrival-price {
+            font-weight: 700;
+            font-size: 13px;
+            color: var(--dark-text);
+            margin-bottom: 8px;
+        }
+
+        .new-arrivals-empty {
+            text-align: center;
+            padding: 30px 15px;
+            color: var(--light-text);
+            font-size: 14px;
+            background: #f9fafb;
+            border-radius: 8px;
+            border: 1px dashed #e0e3e7;
+        }
+
+        .new-arrivals-empty i {
+            font-size: 32px;
+            color: #cfd4da;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        /* ============================================================
+       BANNER SECTION
+    ============================================================ */
+        .banner-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .banner-card {
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s;
+            height: 150px;
+        }
+
+        .banner-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--hover-shadow);
+        }
+
+        .banner-card a {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .banner-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* ============================================================
+       SHOP BY CATEGORY — FULL IMAGE CARDS
+    ============================================================ */
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .category-card {
+            position: relative;
+            display: block;
+            height: 170px;
+            border-radius: 10px;
+            overflow: hidden;
+            text-decoration: none;
+            color: #fff;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s, box-shadow 0.3s;
+            background: #f5f5f5;
+        }
+
+        .category-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--hover-shadow);
+        }
+
+        .category-image {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .category-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.3s;
+        }
+
+        .category-card:hover .category-image img {
+            transform: scale(1.06);
+        }
+
+        .category-name {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 2;
+            padding: 32px 12px 12px;
+            font-size: 14px;
+            font-weight: 700;
+            color: #fff;
+            text-align: left;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.78), rgba(0, 0, 0, 0));
+        }
+
+        /* ============================================================
+       STICKY CONTACT
+    ============================================================ */
+        .sticky-contact {
+            position: fixed;
+            bottom: 15px;
+            right: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 99;
+        }
+
+        .whatsapp-btn,
+        .call-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-decoration: none;
+        }
+
+        .whatsapp-btn {
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+        }
+
+        .call-btn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+        }
+
+        .whatsapp-btn:hover,
+        .call-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        /* ============================================================
+       RESPONSIVE BREAKPOINTS
+    ============================================================ */
+        @media (max-width: 1200px) {
+            .products-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (max-width: 992px) {
+            .hero-banner {
+                height: 280px;
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .category-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .category-card {
+                height: 160px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-banner {
+                height: 200px;
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .product-image {
+                height: 110px;
+            }
+
+            .new-arrivals-container {
+                grid-template-columns: repeat(2, 1fr);
+                justify-content: start;
+                gap: 10px;
+            }
+
+            .new-arrival-image {
+                height: 130px;
+            }
+
+            .banner-container {
+                display: flex;
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                -webkit-overflow-scrolling: touch;
+                gap: 10px;
+                padding-bottom: 4px;
+            }
+
+            .banner-card {
+                min-width: calc(100% - 20px);
+                scroll-snap-align: start;
+                height: 120px;
+                flex-shrink: 0;
+            }
+
+            .products-section,
+            .new-arrivals-section,
+            .banner-section,
+            .category-section {
+                padding: 12px;
+                margin-bottom: 12px;
+            }
+
+            .product-info,
+            .new-arrival-info {
+                padding: 8px;
+            }
+
+            .section-header {
+                margin-bottom: 12px;
+            }
+
+            .product-title {
+                font-size: 11px;
+                min-height: 31px;
+            }
+
+            .product-price {
+                font-size: 12px;
+            }
+
+            .new-arrival-title,
+            .new-arrival-price {
+                font-size: 11px;
+            }
+
+            .new-arrival-title {
+                min-height: 31px;
+            }
+
+            .section-title {
+                font-size: 16px;
+            }
+
+            .view-all {
+                font-size: 12px;
+            }
+
+            .add-to-cart {
+                padding: 5px 8px;
+                font-size: 10px;
+            }
+
+            .sticky-contact {
+                bottom: 12px;
+                right: 12px;
+            }
+
+            .whatsapp-btn,
+            .call-btn {
+                width: 38px;
+                height: 38px;
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero-banner {
+                height: 150px;
+            }
+
+            .prev-btn,
+            .next-btn {
+                width: 28px;
+                height: 28px;
+                font-size: 12px;
+            }
+
+            .products-section,
+            .new-arrivals-section,
+            .banner-section,
+            .category-section {
+                padding: 10px;
+                margin-bottom: 10px;
+            }
+
+            .product-info,
+            .new-arrival-info {
+                padding: 6px;
+            }
+
+            .products-grid {
+                gap: 8px;
+            }
+
+            .product-image {
+                height: 90px;
+            }
+
+            .new-arrival-image {
+                height: 110px;
+            }
+
+            .banner-card {
+                height: 100px;
+            }
+
+            .category-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+
+            .category-card {
+                height: 140px;
+            }
+
+            .category-name {
+                font-size: 12px;
+                padding: 24px 8px 8px;
+            }
+
+            .whatsapp-btn,
+            .call-btn {
+                width: 36px;
+                height: 36px;
+                font-size: 15px;
+            }
+        }
+
+        /* ✅ Mobile: keep 2 new-arrival cards per row (was 1 per row before) */
+        @media (max-width: 420px) {
+            .hero-banner {
+                height: 130px;
+            }
+
+            .new-arrivals-container {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 8px;
+            }
+
+            .new-arrival-image {
+                height: 105px;
+            }
+
+            .new-arrival-info {
+                padding: 7px;
+            }
+
+            .new-arrival-title {
+                font-size: 11px;
+                min-height: 31px;
+            }
+
+            .new-arrival-price {
+                font-size: 12px;
+                margin-bottom: 6px;
+            }
+
+            .new-arrival-badge {
+                font-size: 9px;
+                padding: 2px 5px;
+                top: 6px;
+                left: 6px;
+            }
+
+            .new-arrival-card .add-to-cart {
+                padding: 5px 6px;
+                font-size: 9px;
+                gap: 4px;
+            }
+
+            .section-title {
+                font-size: 15px;
+            }
+
+            .section-title::after {
+                width: 32px;
+            }
+        }
+
+        /* ✅ Extra-small phones: still 2 per row, just slightly tighter */
+        @media (max-width: 360px) {
+            .new-arrivals-container {
+                gap: 7px;
+            }
+
+            .new-arrival-image {
+                height: 92px;
+            }
+
+            .new-arrival-info {
+                padding: 6px;
+            }
+
+            .new-arrival-title {
+                font-size: 10.5px;
+            }
+
+            .new-arrival-price {
+                font-size: 11px;
+            }
+
+            .new-arrival-card .add-to-cart {
+                font-size: 8.5px;
+                padding: 5px 4px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <%- include('header') %>
+
+    <% if (messages.success) { %>
+        <script>
+            Swal.fire({
+                toast: true,
+                position: "top-end",
+                icon: "success",
+                title: "<%= messages.success %>",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                background: "#ffffff",
+                iconColor: "#00b894",
+                color: "#333",
+                customClass: {
+                    popup: 'custom-swal-toast'
+                },
+                didOpen: (toast) => {
+                    toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
+                    toast.style.borderRadius = '8px';
+                    toast.style.padding = '0.75rem 1.25rem';
+                }
+            });
+        </script>
+    <% } %>
+
+    <% if (messages.error) { %>
+        <script>
+            Swal.fire({
+                toast: true,
+                position: "top-end",
+                icon: "error",
+                title: "<%= messages.error %>",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                background: "#ffffff",
+                iconColor: "#e74c3c",
+                color: "#333",
+                customClass: {
+                    popup: 'custom-swal-toast'
+                },
+                didOpen: (toast) => {
+                    toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
+                    toast.style.borderRadius = '8px';
+                    toast.style.padding = '0.75rem 1.25rem';
+                }
+            });
+        </script>
+    <% } %>
+
+    <main class="container">
+
+        <!-- Hero Banner -->
+        <section class="hero-banner">
+            <div class="slider">
+                <div class="slides">
+                    <div class="slide">
+                        <img src="https://rukminim1.flixcart.com/fk-p-flap/1620/270/image/707b1aae8941c3cc.jpg?q=80"
+                            alt="Hero Banner 1">
+                    </div>
+                    <div class="slide">
+                        <img src="https://rukminim1.flixcart.com/fk-p-flap/1620/270/image/3f1f95e183bcbd94.jpeg?q=80"
+                            alt="Hero Banner 2">
+                    </div>
+                    <div class="slide">
+                        <img src="https://rukminim1.flixcart.com/fk-p-flap/1620/270/image/104341249fe40f1d.jpg?q=80"
+                            alt="Hero Banner 3">
+                    </div>
+                    <div class="slide">
+                        <img src="https://rukminim1.flixcart.com/fk-p-flap/1620/270/image/d914343e662d6749.jpeg?q=80"
+                            alt="Hero Banner 4">
+                    </div>
+                </div>
+                <button class="prev-btn" id="prevBtn" aria-label="Previous slide">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="next-btn" id="nextBtn" aria-label="Next slide">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                <div class="slider-controls">
+                    <div class="slider-dot active" data-index="0"></div>
+                    <div class="slider-dot" data-index="1"></div>
+                    <div class="slider-dot" data-index="2"></div>
+                    <div class="slider-dot" data-index="3"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- New Arrivals -->
+        <% if (Array.isArray(allProducts) && allProducts.length > 0) { %>
+            <section class="new-arrivals-section">
+                <div class="section-header">
+                    <h2 class="section-title">New Arrivals</h2>
+                    <a href="#" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="new-arrivals-container" data-count="<%= allProducts.length %>">
+
+                    <% allProducts.forEach((ap, idx) => { %>
+
+                        <div class="new-arrival-card">
+                            <div class="new-arrival-image">
+                                <a href="/products/view-details/<%= ap._id %>" class="image-link">
+                                    <img src="/uploads/<%=ap.product_image %>" alt="<%= ap.product_name %>">
+                                </a>
+                                <div class="new-arrival-badge">NEW</div>
+                            </div>
+                            <div class="new-arrival-info">
+                                <a href="/products/view-details/<%= ap._id %>" class="new-arrival-title">
+                                    <%= ap.product_name %>
+                                </a>
+                                <div class="new-arrival-price">₹<%= ap.sale_price %></div>
+
+                                <!-- ✅ Corrected Add to Cart button -->
+                                <button
+                                    type="button"
+                                    class="add-to-cart"
+                                    data-cart-url="/add-to-cart/<%= ap._id %>"
+                                    data-product-name="<%= ap.product_name %>">
+                                    <i class="fas fa-shopping-cart"></i> Add to Cart
+                                </button>
+                            </div>
+                        </div>
+
+                    <% }) %>
+
+                </div>
+            </section>
+        <% } else { %>
+            <section class="new-arrivals-section">
+                <div class="section-header">
+                    <h2 class="section-title">New Arrivals</h2>
+                </div>
+                <div class="new-arrivals-empty">
+                    <i class="fas fa-box-open"></i>
+                    No new arrivals yet. Check back soon!
+                </div>
+            </section>
+        <% } %>
+
+        <!-- Featured Collections Banner -->
+        <section class="banner-section">
+            <div class="section-header">
+                <h2 class="section-title">Featured Collections</h2>
+            </div>
+            <div class="banner-container">
+                <div class="banner-card">
+                    <a href="#">
+                        <img src="https://images.unsplash.com/photo-1607082350899-7e105aa886ae?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                            alt="Electronics Collection">
+                    </a>
+                </div>
+                <div class="banner-card">
+                    <a href="#">
+                        <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                            alt="Fashion Collection">
+                    </a>
+                </div>
+                <div class="banner-card">
+                    <a href="#">
+                        <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                            alt="Home Decor Collection">
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Shop by Category -->
+        <section class="category-section">
+            <div class="section-header">
+                <h2 class="section-title">Shop by Category</h2>
+                <a href="#" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
+            </div>
+
+            <div class="category-grid">
+                <a href="/ac-category" class="category-card">
+                    <div class="category-image">
+                        <img src="https://images.unsplash.com/photo-1585771724684-38269d6639fd?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                            alt="Air Condition">
+                    </div>
+                    <div class="category-name">Air Condition</div>
+                </a>
+
+                <a href="/fridge-category" class="category-card">
+                    <div class="category-image">
+                        <img src="https://images.unsplash.com/photo-1571175443880-49e1d25b2bc5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                            alt="Fridge">
+                    </div>
+                    <div class="category-name">Fridge</div>
+                </a>
+
+                <a href="/mobile-category" class="category-card">
+                    <div class="category-image">
+                        <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                            alt="Mobile">
+                    </div>
+                    <div class="category-name">Mobile</div>
+                </a>
+
+                <a href="/mobile-acceseries-category" class="category-card">
+                    <div class="category-image">
+                        <img src="https://images.unsplash.com/photo-1583394838336-acd977736f90?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                            alt="Mobile Accessories">
+                    </div>
+                    <div class="category-name">Mobile Accessories</div>
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Sticky Contact Buttons -->
+    <div class="sticky-contact">
+        <a href="https://wa.me/1234567890" class="whatsapp-btn" target="_blank" aria-label="Contact on WhatsApp">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+        <a href="tel:+1234567890" class="call-btn" aria-label="Call us">
+            <i class="fas fa-phone"></i>
+        </a>
+    </div>
+
+    <script>
+        // ============================================
+        // Truncate product names to first 4 words
+        // ============================================
+        function truncateToWords(el, wordLimit = 4) {
+            const fullText = el.textContent.trim().replace(/\s+/g, ' ');
+            el.dataset.fullTitle = fullText;
+            el.setAttribute('title', fullText);
+
+            const words = fullText.split(' ');
+            if (words.length > wordLimit) {
+                el.textContent = words.slice(0, wordLimit).join(' ') + '…';
+            }
+        }
+
+        document
+            .querySelectorAll('.product-title, .new-arrival-title')
+            .forEach(el => truncateToWords(el, 4));
+
+        // ============================================
+        // Slider functionality (only if slider exists)
+        // ============================================
+        (function () {
+            const slidesEl = document.querySelector('.slides');
+            if (!slidesEl) return;
+
+            const slideCount = document.querySelectorAll('.slide').length;
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const dots = document.querySelectorAll('.slider-dot');
+            if (!slideCount || !prevBtn || !nextBtn) return;
+
+            let currentSlide = 0;
+
+            function goToSlide(index) {
+                if (index < 0) {
+                    currentSlide = slideCount - 1;
+                } else if (index >= slideCount) {
+                    currentSlide = 0;
+                } else {
+                    currentSlide = index;
+                }
+
+                slidesEl.style.transform = `translateX(-${currentSlide * 25}%)`;
+
+                dots.forEach(dot => dot.classList.remove('active'));
+                if (dots[currentSlide]) dots[currentSlide].classList.add('active');
+            }
+
+            function nextSlide() { goToSlide(currentSlide + 1); }
+            function prevSlide() { goToSlide(currentSlide - 1); }
+
+            let slideInterval = setInterval(nextSlide, 5000);
+
+            function resetInterval() {
+                clearInterval(slideInterval);
+                slideInterval = setInterval(nextSlide, 5000);
+            }
+
+            nextBtn.addEventListener('click', () => { nextSlide(); resetInterval(); });
+            prevBtn.addEventListener('click', () => { prevSlide(); resetInterval(); });
+
+            dots.forEach(dot => {
+                dot.addEventListener('click', () => {
+                    const index = parseInt(dot.getAttribute('data-index'));
+                    goToSlide(index);
+                    resetInterval();
+                });
+            });
+        })();
+
+        // ============================================
+        // Add to cart functionality
+        // ============================================
+        const addToCartButtons = document.querySelectorAll('.add-to-cart');
+        let cartItems = [];
+
+        addToCartButtons.forEach(button => {
+            button.addEventListener('click', () => {
+
+                // --- Server-side add to cart (New Arrivals) ---
+                if (button.dataset.cartUrl) {
+                    button.disabled = true;
+                    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Adding...';
+                    window.location.href = button.dataset.cartUrl;
+                    return;
+                }
+
+                // --- Client-side demo (static Best Selling cards) ---
+                const productCard = button.closest('.product-card, .new-arrival-card');
+                const titleEl = productCard.querySelector('.product-title, .new-arrival-title');
+                const productTitle = titleEl.dataset.fullTitle || titleEl.textContent.trim();
+                const productPrice = productCard.querySelector('.product-price, .new-arrival-price').textContent.trim();
+
+                cartItems.push({
+                    title: productTitle,
+                    price: productPrice
+                });
+
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'success',
+                    title: `${productTitle} added to cart!`,
+                    showConfirmButton: false,
+                    timer: 2000,
+                    timerProgressBar: true
+                });
+
+                console.log('Cart items:', cartItems);
+            });
+        });
+    </script>
+</body>
+
+</html>

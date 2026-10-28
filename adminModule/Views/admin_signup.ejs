@@ -2,727 +2,850 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Sign Up - Nababia Mission</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
-        }
-
-        html,
-        body {
-            height: 100%;
-            width: 100%;
-            background: #f2ebf5;
-        }
-
-        body {
-            display: flex;
-            min-height: 100vh;
-        }
-
-        .auth-container {
-            display: flex;
-            width: 100%;
-            min-height: 100vh;
-            flex-direction: row-reverse;
-        }
-
-        /* ----- LEFT PANEL : FULL COVER IMAGE, EDGE TO EDGE ----- */
-        .auth-left {
-            flex: 1 1 50%;
-            width: 50%;
-            height: 100vh;
-            background: #1e0a24;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            padding: 0;
-            margin: 0;
-            position: relative;
-        }
-
-        .auth-left-content {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0;
-            margin: 0;
-            line-height: 0;
-            flex-shrink: 0;
-        }
-
-        .auth-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-            border-radius: 0;
-            box-shadow: none;
-            margin: 0;
-            padding: 0;
-            vertical-align: bottom;
-            min-width: 100%;
-            min-height: 100%;
-            flex-shrink: 0;
-        }
-
-        /* ----- RIGHT PANEL (signup form) – takes other 50% ----- */
-        .auth-right {
-            flex: 1 1 50%;
-            width: 50%;
-            min-height: 100vh;
-            background-color: #f8f4fc;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .auth-right::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #510855, #2d1040);
-            clip-path: circle(40% at 90% 10%);
-            z-index: 1;
-            opacity: 0.06;
-        }
-
-        .auth-right::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #510855, #2d1040);
-            clip-path: circle(30% at 10% 90%);
-            z-index: 1;
-            opacity: 0.06;
-        }
-
-        .auth-content {
-            max-width: 400px;
-            width: 100%;
-            z-index: 2;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            margin-bottom: 2rem;
-        }
-
-        .logo img {
-            height: 40px;
-            margin-right: 10px;
-            border-radius: 8px;
-            border: 2px solid #510855;
-            object-fit: cover;
-        }
-
-        .logo h1 {
-            font-size: 1.5rem;
-            color: #1e0a24;
-            font-weight: 700;
-        }
-
-        .admin-badge {
-            background-color: #510855;
-            color: white;
-            padding: 0.2rem 0.7rem;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            margin-left: 0.5rem;
-            letter-spacing: 0.3px;
-        }
-
-        .auth-form {
-            background-color: #ffffff;
-            padding: 2rem;
-            border-radius: 18px;
-            box-shadow: 0 12px 30px rgba(81, 8, 85, 0.12);
-            border: 1px solid rgba(81, 8, 85, 0.06);
-        }
-
-        .auth-header {
-            margin-bottom: 1.5rem;
-        }
-
-        .auth-header h2 {
-            font-size: 1.5rem;
-            color: #1e0a24;
-            margin-bottom: 0.4rem;
-        }
-
-        .auth-header p {
-            color: #6b4a72;
-            font-size: 0.875rem;
-        }
-
-        .form-group {
-            margin-bottom: 1.25rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-size: 0.875rem;
-            color: #1e0a24;
-            font-weight: 500;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            border: 1px solid #dacce0;
-            border-radius: 10px;
-            font-size: 0.875rem;
-            transition: all 0.25s ease;
-            background-color: #fcf9fd;
-        }
-
-        .form-control:focus {
-            outline: none;
-            border-color: #510855;
-            box-shadow: 0 0 0 4px rgba(81, 8, 85, 0.15);
-            background-color: #ffffff;
-        }
-
-        .input-with-icon {
-            position: relative;
-        }
-
-        .input-with-icon .form-control {
-            padding-left: 2.8rem;
-        }
-
-        .input-icon {
-            position: absolute;
-            left: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #6b4a72;
-            font-size: 1rem;
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0.8rem 1.5rem;
-            border-radius: 30px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.25s ease;
-            border: none;
-            letter-spacing: 0.3px;
-        }
-
-        .btn-primary {
-            background-color: #510855;
-            color: white;
-            width: 100%;
-            box-shadow: 0 6px 14px rgba(81, 8, 85, 0.25);
-        }
-
-        .btn-primary:hover {
-            background-color: #7a2a7e;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(81, 8, 85, 0.3);
-        }
-
-        .btn-primary:active {
-            transform: translateY(0);
-        }
-
-        .auth-footer {
-            margin-top: 1.5rem;
-            text-align: center;
-            font-size: 0.875rem;
-            color: #6b4a72;
-        }
-
-        .auth-footer a {
-            color: #510855;
-            text-decoration: none;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .auth-footer a:hover {
-            text-decoration: underline;
-            color: #7a2a7e;
-        }
-
-        .password-toggle {
-            position: absolute;
-            right: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-            color: #6b4a72;
-            font-size: 1rem;
-        }
-
-        .password-toggle:hover {
-            color: #510855;
-        }
-
-        .error-message {
-            color: #e84c6b;
-            font-size: 0.75rem;
-            margin-top: 0.25rem;
-            display: none;
-        }
-
-        .form-group.error .error-message {
-            display: block;
-        }
-
-        .form-group.error .form-control {
-            border-color: #e84c6b;
-        }
-
-        .form-group.success .form-control {
-            border-color: #00b894;
-        }
-
-        /* Password strength */
-        .password-strength {
-            margin-top: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .strength-bar {
-            flex: 1;
-            height: 4px;
-            background: #e2e8f0;
-            border-radius: 20px;
-            overflow: hidden;
-        }
-
-        .strength-fill {
-            height: 100%;
-            width: 0%;
-            border-radius: 20px;
-            transition: width 0.3s ease, background 0.3s ease;
-        }
-
-        .strength-text {
-            font-size: 0.65rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            color: #94a3b8;
-            padding: 2px 10px;
-            border-radius: 40px;
-            white-space: nowrap;
-            min-width: 36px;
-            text-align: center;
-            background: #f1f5f9;
-        }
-
-        .requirements {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 4px 8px;
-            margin-top: 0.5rem;
-        }
-
-        .req-item {
-            font-size: 0.65rem;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            color: #94a3b8;
-            background: #f1f5f9;
-            padding: 2px 10px 2px 8px;
-            border-radius: 30px;
-            border: 1px solid transparent;
-            transition: all 0.25s ease;
-        }
-
-        .req-item i {
-            font-size: 0.5rem;
-            color: #cbd5e1;
-        }
-
-        .req-item.valid {
-            background: #ecfdf5;
-            border-color: #6ee7b7;
-            color: #065f46;
-        }
-
-        .req-item.valid i {
-            color: #10b981;
-        }
-
-        /* ----- MODALS (light) ----- */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(30, 10, 36, 0.5);
-            backdrop-filter: blur(4px);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-content {
-            background-color: white;
-            padding: 2rem 2rem 2.2rem;
-            border-radius: 24px;
-            width: 90%;
-            max-width: 440px;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
-            position: relative;
-            border: 1px solid rgba(81, 8, 85, 0.08);
-        }
-
-        .close-modal {
-            position: absolute;
-            top: 1rem;
-            right: 1.2rem;
-            font-size: 1.6rem;
-            cursor: pointer;
-            color: #6b4a72;
-            transition: 0.2s;
-            line-height: 1;
-        }
-
-        .close-modal:hover {
-            color: #1e0a24;
-            transform: rotate(90deg);
-        }
-
-        .modal-header {
-            margin-bottom: 1.5rem;
-        }
-
-        .modal-header h2 {
-            font-size: 1.5rem;
-            color: #1e0a24;
-            margin-bottom: 0.4rem;
-        }
-
-        .modal-header p {
-            color: #6b4a72;
-            font-size: 0.9rem;
-        }
-
-        /* ===== RESPONSIVE: on smaller screens stack vertically ===== */
-        @media (max-width: 1024px) {
-            .auth-container {
-                flex-direction: column;
-            }
-
-            .auth-left {
-                width: 100%;
-                height: 40vh;
-                flex: none;
-            }
-
-            .auth-right {
-                width: 100%;
-                min-height: 60vh;
-                flex: none;
-            }
-
-            .auth-image {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .auth-form {
-                padding: 1.25rem;
-            }
-
-            .auth-content {
-                padding: 0.25rem;
-            }
-
-            .logo h1 {
-                font-size: 1.2rem;
-            }
-
-            .auth-header h2 {
-                font-size: 1.2rem;
-            }
-
-            .form-control {
-                padding: 0.6rem 0.8rem;
-            }
-
-            .input-with-icon .form-control {
-                padding-left: 2.4rem;
-            }
-
-            .btn {
-                padding: 0.6rem 1rem;
-            }
-
-            .modal-content {
-                padding: 1.5rem;
-            }
-
-            .auth-right {
-                padding: 1rem;
-            }
-
-            .auth-left {
-                height: 30vh;
-                padding: 0;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tip Top Electronics — Create Admin Account</title>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    :root {
+      --text: #0f172a;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --primary: #4f46e5;
+      --error: #dc2626;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      color: var(--text);
+      background: #f6f7fb;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* ================= Animated background ================= */
+    .bg-decor {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+      background: linear-gradient(180deg, #f9faff 0%, #f3f4fb 100%);
+    }
+
+    .bg-decor::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(99, 102, 241, .22) 1px, transparent 1px);
+      background-size: 26px 26px;
+      opacity: .75;
+      -webkit-mask-image: radial-gradient(ellipse 75% 60% at 50% 42%, #000 25%, transparent 72%);
+      mask-image: radial-gradient(ellipse 75% 60% at 50% 42%, #000 25%, transparent 72%);
+    }
+
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(70px);
+      will-change: transform;
+    }
+
+    .blob-1 {
+      width: 540px;
+      height: 540px;
+      top: -170px;
+      left: -150px;
+      background: #818cf8;
+      opacity: .5;
+      animation: float-a 18s ease-in-out infinite;
+    }
+
+    .blob-2 {
+      width: 470px;
+      height: 470px;
+      bottom: -190px;
+      right: -130px;
+      background: #c084fc;
+      opacity: .45;
+      animation: float-b 22s ease-in-out infinite;
+    }
+
+    .blob-3 {
+      width: 380px;
+      height: 380px;
+      top: 38%;
+      left: 58%;
+      background: #22d3ee;
+      opacity: .28;
+      animation: float-c 26s ease-in-out infinite;
+    }
+
+    @keyframes float-a {
+
+      0%,
+      100% {
+        transform: translate3d(0, 0, 0) scale(1);
+      }
+
+      50% {
+        transform: translate3d(60px, 50px, 0) scale(1.12);
+      }
+    }
+
+    @keyframes float-b {
+
+      0%,
+      100% {
+        transform: translate3d(0, 0, 0) scale(1);
+      }
+
+      50% {
+        transform: translate3d(-70px, -45px, 0) scale(1.08);
+      }
+    }
+
+    @keyframes float-c {
+
+      0%,
+      100% {
+        transform: translate3d(0, 0, 0) scale(1);
+      }
+
+      50% {
+        transform: translate3d(-50px, 60px, 0) scale(1.15);
+      }
+    }
+
+    /* ================= Card ================= */
+    .card {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 440px;
+      background: rgba(255, 255, 255, .86);
+      backdrop-filter: blur(14px) saturate(140%);
+      -webkit-backdrop-filter: blur(14px) saturate(140%);
+      border: 1px solid rgba(238, 240, 246, .9);
+      border-radius: 20px;
+      padding: 34px 32px 26px;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, .04), 0 22px 45px -14px rgba(15, 23, 42, .16);
+      animation: rise .45s ease both;
+    }
+
+    @keyframes rise {
+      from {
+        opacity: 0;
+        transform: translateY(14px);
+      }
+
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    /* brand row */
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .logo {
+      width: 46px;
+      height: 46px;
+      flex: 0 0 auto;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: #fff;
+      font-weight: 700;
+      font-size: 17px;
+      letter-spacing: .3px;
+      box-shadow: 0 10px 20px -8px rgba(99, 102, 241, .85);
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.2;
+    }
+
+    /* highlighted brand title */
+    .brand-name {
+      display: inline-block;
+      font-size: 15.5px;
+      font-weight: 800;
+      letter-spacing: -.2px;
+      padding: 3px 9px;
+      border-radius: 8px;
+      color: #312e81;
+      background: linear-gradient(120deg, #c7d2fe 0%, #ddd6fe 50%, #a5f3fc 100%);
+      box-shadow: 0 2px 0 rgba(99, 102, 241, .25), inset 0 0 0 1px rgba(99, 102, 241, .18);
+      transform: rotate(-1deg);
+    }
+
+    .brand-tag {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 4px;
+      margin-left: 2px;
+    }
+
+    /* highlighted heading */
+    h1 {
+      font-size: 22px;
+      margin: 0 0 6px;
+      letter-spacing: -.3px;
+      display: inline-block;
+      background: linear-gradient(90deg, #4338ca, #7c3aed 55%, #0891b2);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .sub {
+      margin: 0 0 22px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .banner {
+      display: none;
+      margin-bottom: 16px;
+      padding: 11px 14px;
+      border-radius: 10px;
+      font-size: 13.5px;
+      line-height: 1.4;
+      background: #ecfdf5;
+      color: #047857;
+      border: 1px solid #a7f3d0;
+    }
+
+    .banner.show {
+      display: block;
+    }
+
+    .banner.is-error {
+      background: #fef2f2;
+      color: #b91c1c;
+      border-color: #fecaca;
+    }
+
+    .field {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #334155;
+      margin-bottom: 7px;
+    }
+
+    .control {
+      position: relative;
+    }
+
+    .control .icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 18px;
+      height: 18px;
+      color: #94a3b8;
+      pointer-events: none;
+      transition: color .18s;
+    }
+
+    input {
+      width: 100%;
+      height: 48px;
+      padding: 0 14px 0 42px;
+      border: 1.5px solid var(--line);
+      border-radius: 11px;
+      background: #fbfcfe;
+      font-family: inherit;
+      font-size: 14.5px;
+      color: var(--text);
+      outline: none;
+      transition: border-color .18s, box-shadow .18s, background .18s;
+    }
+
+    input::placeholder {
+      color: #a8b1c2;
+    }
+
+    input:focus {
+      border-color: var(--primary);
+      background: #fff;
+      box-shadow: 0 0 0 4px rgba(79, 70, 229, .12);
+    }
+
+    input:focus~.icon {
+      color: var(--primary);
+    }
+
+    .has-toggle input {
+      padding-right: 48px;
+    }
+
+    .toggle {
+      position: absolute;
+      right: 6px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      border: 0;
+      border-radius: 9px;
+      background: transparent;
+      color: #94a3b8;
+      cursor: pointer;
+      transition: background .15s, color .15s;
+    }
+
+    .toggle:hover {
+      background: #f1f5f9;
+      color: #475569;
+    }
+
+    .toggle svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .toggle .eye-off {
+      display: none;
+    }
+
+    .toggle.is-visible .eye-on {
+      display: none;
+    }
+
+    .toggle.is-visible .eye-off {
+      display: block;
+    }
+
+    .error-msg {
+      display: none;
+      margin: 6px 0 0;
+      font-size: 12.5px;
+      color: var(--error);
+    }
+
+    .field.invalid input {
+      border-color: var(--error);
+      background: #fff;
+    }
+
+    .field.invalid input:focus {
+      box-shadow: 0 0 0 4px rgba(220, 38, 38, .13);
+    }
+
+    .field.invalid .icon {
+      color: var(--error);
+    }
+
+    .field.invalid .error-msg {
+      display: block;
+    }
+
+    /* password strength meter + inline label */
+    .strength-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 9px;
+    }
+
+    .strength {
+      flex: 1;
+      display: flex;
+      gap: 6px;
+    }
+
+    .strength span {
+      flex: 1;
+      height: 4px;
+      border-radius: 99px;
+      background: #e9edf5;
+      transition: background .25s;
+    }
+
+    .strength[data-level="1"] span:nth-child(1) {
+      background: #ef4444;
+    }
+
+    .strength[data-level="2"] span:nth-child(-n+2) {
+      background: #f59e0b;
+    }
+
+    .strength[data-level="3"] span:nth-child(-n+3) {
+      background: #22c55e;
+    }
+
+    .strength[data-level="4"] span {
+      background: #16a34a;
+    }
+
+    .strength-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      min-width: 48px;
+      text-align: right;
+    }
+
+    .btn {
+      width: 100%;
+      height: 50px;
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      border: 0;
+      border-radius: 11px;
+      background: linear-gradient(135deg, #6366f1, #7c3aed);
+      color: #fff;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 12px 22px -10px rgba(99, 102, 241, .9);
+      transition: transform .18s, box-shadow .18s, opacity .18s;
+    }
+
+    .btn:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 16px 26px -10px rgba(99, 102, 241, .95);
+    }
+
+    .btn:active:not(:disabled) {
+      transform: translateY(0);
+    }
+
+    .btn:disabled {
+      opacity: .75;
+      cursor: not-allowed;
+    }
+
+    .spinner {
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255, 255, 255, .45);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .footer {
+      margin-top: 22px;
+      padding-top: 18px;
+      border-top: 1px solid #eef0f6;
+      text-align: center;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .footer a {
+      color: var(--primary);
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width:420px) {
+      .card {
+        padding: 28px 22px 22px;
+      }
+
+      h1 {
+        font-size: 20px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .blob {
+        animation: none;
+      }
+
+      .card {
+        animation: none;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-    <% if (messages.success) { %>
-        <script>
-            Swal.fire({
-                toast: true,
-                position: "top-end",
-                icon: "success",
-                title: "<%= messages.success %>",
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                background: "#ffffff",
-                iconColor: "#00b894",
-                color: "#333",
-                customClass: {
-                    popup: 'custom-swal-toast'
-                },
-                didOpen: (toast) => {
-                    toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
-                    toast.style.borderRadius = '8px';
-                    toast.style.padding = '0.75rem 1.25rem';
-                }
-            });
-        </script>
-    <% } %>
-
-    <% if (messages.error) { %>
-        <script>
-            Swal.fire({
-                toast: true,
-                position: "top-end",
-                icon: "error",
-                title: "<%= messages.error %>",
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                background: "#ffffff",
-                iconColor: "#e84c6b",
-                color: "#333",
-                customClass: {
-                    popup: 'custom-swal-toast'
-                },
-                didOpen: (toast) => {
-                    toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
-                    toast.style.borderRadius = '8px';
-                    toast.style.padding = '0.75rem 1.25rem';
-                }
-            });
-        </script>
-    <% } %>
-
-    <div class="auth-container">
-
-        <!-- LEFT PANEL : IMAGE FULL COVER -->
-        <div class="auth-left">
-            <div class="auth-left-content">
-                <img src="https://nababiamission.org/wp-content/uploads/2026/06/A2.jpeg"
-                    alt="Nababia Mission" class="auth-image">
-            </div>
-        </div>
-
-        <!-- RIGHT PANEL : SIGNUP FORM -->
-        <div class="auth-right">
-            <div class="auth-content">
-              
-                <div class="auth-form">
-                    <div class="auth-header">
-                        <h2>Admin Sign Up</h2>
-                       
-                    </div>
-
-                    <form id="signupForm" method="post" action="/nababiamission/admin-signup/SSSSS">
-                        <div class="form-group">
-                            <label for="signup-name">Full Name</label>
-                            <div class="input-with-icon">
-                                <i class="fas fa-user input-icon"></i>
-                                <input type="text" id="signup-name" class="form-control"
-                                    placeholder="Enter full name" required name="name">
-                            </div>
-                            <div class="error-message">Please enter your full name</div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="signup-email">Email Address</label>
-                            <div class="input-with-icon">
-                                <i class="fas fa-envelope input-icon"></i>
-                                <input type="email" id="signup-email" class="form-control"
-                                    placeholder="admin@domain.com" required name="email">
-                            </div>
-                            <div class="error-message">Please enter a valid email address</div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="signup-mobile">Mobile Number</label>
-                            <div class="input-with-icon">
-                                <i class="fas fa-phone input-icon"></i>
-                                <input type="tel" id="signup-mobile" class="form-control"
-                                    placeholder="Enter mobile number" required name="mobile">
-                            </div>
-                            <div class="error-message">Please enter a valid mobile number</div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="signup-password">Password</label>
-                            <div class="input-with-icon">
-                                <i class="fas fa-lock input-icon"></i>
-                                <input type="password" id="signup-password" class="form-control"
-                                    placeholder="Create a strong password" required name="password">
-                                <i class="fas fa-eye password-toggle" id="toggleSignupPassword"></i>
-                            </div>
-                            
-                           
-                            
-                            <div class="error-message">Password must meet all requirements above</div>
-                        </div>
-
-                        
-
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-user-plus" style="margin-right: 8px;"></i> Create Account
-                        </button>
-                    </form>
-
-                    <div class="auth-footer">
-                        <span>Secure connection</span> ·
-                        <a href="#" id="openHelp" style="color: #510855; font-weight: 600;">Need help?</a>
-                        <span style="margin:0 0.25rem;">·</span>
-                        <a href="/nababiamission/nm-admin" style="color: #510855; font-weight: 600;">
-                            <i class="fas fa-sign-in-alt"></i> Sign In
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- HELP MODAL (Need help?) -->
-    <div class="modal" id="helpModal">
-        <div class="modal-content">
-            <span class="close-modal" id="closeHelp">&times;</span>
-            <div class="modal-header">
-                <h2>Admin Support</h2>
-                <p>Contact the system administrator for assistance.</p>
-            </div>
-            <div style="padding: 0.5rem 0 0.8rem;">
-                <p style="color: #6b4a72;"><i class="fas fa-phone-alt" style="color: #510855;"></i> +917797593863 (Sk Imtaj)</p>
-            </div>
-            <button class="btn btn-primary" style="width: auto; padding: 0.5rem 2rem; margin-top: 0.5rem;" id="closeHelpBtn">Close</button>
-        </div>
-    </div>
-
+  <% if (messages.success) { %>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // DOM refs
-            const signupPassword = document.getElementById('signup-password');
-            const confirmPassword = document.getElementById('signup-confirm');
-            const toggleSignupPassword = document.getElementById('toggleSignupPassword');
-            const strengthFill = document.getElementById('strengthFill');
-            const strengthLabel = document.getElementById('strengthLabel');
+      Swal.fire({
+        toast: true,
+        position: "top-end",
+        icon: "success",
+        title: "<%= messages.success %>",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        background: "#ffffff",
+        iconColor: "#00b894",
+        color: "#333",
+        customClass: {
+          popup: 'custom-swal-toast'
+        },
+        didOpen: (toast) => {
+          toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
+          toast.style.borderRadius = '8px';
+          toast.style.padding = '0.75rem 1.25rem';
+        }
+      });
+    </script>
+    <% } %>
 
-            // Requirement elements
-            const reqLength = document.getElementById('reqLength');
-            const reqUpper = document.getElementById('reqUpper');
-            const reqLower = document.getElementById('reqLower');
-            const reqNumber = document.getElementById('reqNumber');
-            const reqSpecial = document.getElementById('reqSpecial');
 
-            const helpModal = document.getElementById('helpModal');
-            const openHelp = document.getElementById('openHelp');
-            const closeHelp = document.getElementById('closeHelp');
-            const closeHelpBtn = document.getElementById('closeHelpBtn');
-
-          
-            
-           
-      
-            // --- Open Help modal (Need help?) ---
-            if (openHelp) {
-                openHelp.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    helpModal.style.display = 'flex';
-                    document.body.style.overflow = 'hidden';
-                });
+      <% if (messages.error) { %>
+        <script>
+          Swal.fire({
+            toast: true,
+            position: "top-end",
+            icon: "error",
+            title: "<%= messages.error %>",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            background: "#ffffff",
+            iconColor: "#red",
+            color: "#333",
+            customClass: {
+              popup: 'custom-swal-toast'
+            },
+            didOpen: (toast) => {
+              toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
+              toast.style.borderRadius = '8px';
+              toast.style.padding = '0.75rem 1.25rem';
             }
+          });
+        </script>
+        <% } %>
 
-            // Close Help modal (X)
-            if (closeHelp) {
-                closeHelp.addEventListener('click', function() {
-                    helpModal.style.display = 'none';
-                    document.body.style.overflow = 'auto';
-                });
-            }
-            if (closeHelpBtn) {
-                closeHelpBtn.addEventListener('click', function() {
-                    helpModal.style.display = 'none';
-                    document.body.style.overflow = 'auto';
-                });
-            }
+          <!-- background decoration (purely visual) -->
+          <div class="bg-decor" aria-hidden="true">
+            <span class="blob blob-1"></span>
+            <span class="blob blob-2"></span>
+            <span class="blob blob-3"></span>
+          </div>
 
-            // Close modal on outside click
-            window.addEventListener('click', function(e) {
-                if (e.target === helpModal) {
-                    helpModal.style.display = 'none';
-                    document.body.style.overflow = 'auto';
-                }
+          <main class="card">
+            <!-- brand -->
+            <div class="brand">
+              <div class="logo" aria-hidden="true">TT</div>
+              <div class="brand-text">
+                <span class="brand-name">Tip Top Electronics</span>
+                <span class="brand-tag">Admin Panel</span>
+              </div>
+            </div>
+
+            <h1>Create Admin Account</h1>
+            <p class="sub">Set up your administrator credentials to get started.</p>
+
+            <div class="banner" id="banner" role="status" aria-live="polite"></div>
+
+            <form id="adminForm" method="post" action="/admin/auth/register" >
+
+              <!-- Full name -->
+              <div class="field">
+                <label for="name">Full Name</label>
+                <div class="control">
+                  <input id="name" name="name" type="text" placeholder="Enter admin name" autocomplete="name"
+                    aria-describedby="name-error" required />
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                  </svg>
+                </div>
+                <p class="error-msg" id="name-error" data-error-for="name"></p>
+              </div>
+
+              <!-- Mobile -->
+              <div class="field">
+                <label for="mobile">Mobile Number</label>
+                <div class="control">
+                  <input id="mobile" name="mobile" type="tel" inputmode="numeric" placeholder="9876543210"
+                    autocomplete="tel" aria-describedby="mobile-error" required />
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path
+                      d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z" />
+                  </svg>
+                </div>
+                <p class="error-msg" id="mobile-error" data-error-for="mobile"></p>
+              </div>
+
+              <!-- Email -->
+              <div class="field">
+                <label for="email">Email Address</label>
+                <div class="control">
+                  <input id="email" name="email" type="email" placeholder="admin@tiptopelectronics.com"
+                    autocomplete="email" aria-describedby="email-error" required />
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="4" width="20" height="16" rx="2" />
+                    <path d="m22 7-10 6L2 7" />
+                  </svg>
+                </div>
+                <p class="error-msg" id="email-error" data-error-for="email"></p>
+              </div>
+
+              <!-- Password -->
+              <div class="field">
+                <label for="password">Password</label>
+                <div class="control has-toggle">
+                  <input id="password" name="password" type="password" placeholder="Create a strong password"
+                    autocomplete="new-password" aria-describedby="password-error" required />
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="11" width="18" height="11" rx="2" />
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                  </svg>
+                  <button type="button" class="toggle" data-target="password" aria-label="Show password">
+                    <svg class="eye-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                      stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z" />
+                      <circle cx="12" cy="12" r="3" />
+                    </svg>
+                    <svg class="eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                      stroke-linecap="round" stroke-linejoin="round">
+                      <path d="m3 3 18 18" />
+                      <path d="M10.6 10.6a3 3 0 0 0 4.2 4.2" />
+                      <path d="M9.9 5.2A11 11 0 0 1 12 5c6.5 0 10 7 10 7a18 18 0 0 1-3 4" />
+                      <path d="M6.6 6.6C3.8 8.4 2 12 2 12s3.5 7 10 7a10.8 10.8 0 0 0 5.4-1.4" />
+                    </svg>
+                  </button>
+                </div>
+
+                <!-- strength meter (hint text removed) -->
+                <div class="strength-row">
+                  <div class="strength" id="strength" data-level="0" aria-hidden="true">
+                    <span></span><span></span><span></span><span></span>
+                  </div>
+                  <b class="strength-label" id="strength-label"></b>
+                </div>
+
+                <p class="error-msg" id="password-error" data-error-for="password"></p>
+              </div>
+
+              <button type="submit" class="btn" id="submitBtn">Create Admin Account</button>
+            </form>
+
+            <p class="footer">
+              Already have an account?
+              <a href="login.html">Please login</a>
+            </p>
+          </main>
+
+          <script>
+
+
+            /* ---------- Show / hide password ---------- */
+            document.querySelectorAll(".toggle").forEach(function (btn) {
+              btn.addEventListener("click", function () {
+                const input = document.getElementById(btn.dataset.target);
+                const show = input.type === "password";
+                input.type = show ? "text" : "password";
+                btn.classList.toggle("is-visible", show);
+                btn.setAttribute("aria-label", show ? "Hide password" : "Show password");
+                input.focus();
+              });
             });
 
-            
-            // Trigger initial strength check
-            if (signupPassword) {
-                signupPassword.dispatchEvent(new Event('input'));
-            }
+
+
+          </script>
+
+  <!-- ============================================================
+       ANTI-INSPECT PROTECTION LAYER
+       Paste this as the LAST thing before </body>
+       ============================================================ -->
+  <script>
+    (function () {
+      'use strict';
+
+      /* ---------- CONFIG: flip any of these to false to disable ---------- */
+      var CONFIG = {
+        blockRightClick: true,
+        blockShortcuts: true,
+        blockSelection: true,
+        blockCopyCut: true,
+        blockDrag: true,
+        detectDevTools: true,
+        guardMessage: 'Developer tools detected. Please close them to continue.'
+      };
+
+      /* Helper: is the event happening inside a form field? */
+      function isFormField(el) {
+        if (!el) return false;
+        var tag = (el.tagName || '').toUpperCase();
+        return tag === 'INPUT' || tag === 'TEXTAREA' || el.isContentEditable === true;
+      }
+
+      /* ---------- 1. Right-click / context menu ---------- */
+      if (CONFIG.blockRightClick) {
+        document.addEventListener('contextmenu', function (e) {
+          e.preventDefault();
+          return false;
+        }, false);
+      }
+
+      /* ---------- 2. Keyboard shortcuts ---------- */
+      if (CONFIG.blockShortcuts) {
+        document.addEventListener('keydown', function (e) {
+          var key = (e.key || '').toLowerCase();
+          var mod = e.ctrlKey || e.metaKey;
+
+          // F12
+          if (e.key === 'F12' || e.keyCode === 123) {
+            e.preventDefault(); e.stopPropagation();
+            return false;
+          }
+
+          // Ctrl/Cmd + Shift + I / J / C / K  (devtools, console, inspect, clear)
+          if (mod && e.shiftKey && ['i', 'j', 'c', 'k'].indexOf(key) !== -1) {
+            e.preventDefault(); e.stopPropagation();
+            return false;
+          }
+
+          // Ctrl/Cmd + U (view source), Ctrl/Cmd + S (save page)
+          if (mod && !e.shiftKey && ['u', 's'].indexOf(key) !== -1) {
+            e.preventDefault(); e.stopPropagation();
+            return false;
+          }
+
+          // Ctrl/Cmd + A (select all) — only outside form fields
+          if (mod && key === 'a' && CONFIG.blockSelection && !isFormField(e.target)) {
+            e.preventDefault();
+            return false;
+          }
+        }, true); // capture phase, so it fires before page handlers
+      }
+
+      /* ---------- 3. Text selection ---------- */
+      if (CONFIG.blockSelection) {
+        document.addEventListener('selectstart', function (e) {
+          if (!isFormField(e.target)) e.preventDefault();
+        }, false);
+
+        // CSS fallback (also prevents the drag-select highlight)
+        var s = document.createElement('style');
+        s.textContent =
+          'body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;}' +
+          'input,textarea,[contenteditable="true"]{-webkit-user-select:text;-moz-user-select:text;-ms-user-select:text;user-select:text;}';
+        document.head.appendChild(s);
+      }
+
+      /* ---------- 4. Copy / cut ---------- */
+      if (CONFIG.blockCopyCut) {
+        ['copy', 'cut'].forEach(function (evt) {
+          document.addEventListener(evt, function (e) {
+            if (!isFormField(e.target)) e.preventDefault();
+          }, false);
         });
-    </script>
+      }
+
+      /* ---------- 5. Drag (images, links, selected text) ---------- */
+      if (CONFIG.blockDrag) {
+        document.addEventListener('dragstart', function (e) {
+          e.preventDefault();
+        }, false);
+      }
+
+      /* ---------- 6. DevTools open detection (non-destructive overlay) ---------- */
+      if (CONFIG.detectDevTools) {
+        // Skip on touch devices — outerWidth/innerHeight differences cause false positives
+        var isTouch = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+        if (!isTouch) {
+          var guard = document.createElement('div');
+          guard.id = '__devtools_guard';
+          guard.setAttribute('aria-hidden', 'true');
+          guard.style.cssText = [
+            'position:fixed', 'inset:0', 'z-index:2147483647', 'display:none',
+            'align-items:center', 'justify-content:center', 'text-align:center',
+            'padding:32px', 'background:#f6f7fb',
+            'font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif'
+          ].join(';');
+          guard.innerHTML =
+            '<div>' +
+            '<div style="width:56px;height:56px;margin:0 auto 18px;border-radius:16px;' +
+            'display:grid;place-items:center;background:linear-gradient(135deg,#6366f1,#8b5cf6);' +
+            'color:#fff;font-weight:700;font-size:20px;">TT</div>' +
+            '<h2 style="margin:0 0 8px;font-size:19px;color:#0f172a;">' +
+            CONFIG.guardMessage.replace(/</g, '&lt;') + '</h2>' +
+            '<p style="margin:0;font-size:14px;color:#64748b;">' +
+            'This page reloads automatically once you do.</p>' +
+            '</div>';
+
+          var attachGuard = function () {
+            if (!document.body.contains(guard)) document.body.appendChild(guard);
+          };
+          if (document.body) attachGuard();
+          else document.addEventListener('DOMContentLoaded', attachGuard);
+
+          var THRESHOLD = 160;
+          var wasOpen = false;
+
+          var check = function () {
+            var wDiff = window.outerWidth - window.innerWidth;
+            var hDiff = window.outerHeight - window.innerHeight;
+            var open = wDiff > THRESHOLD || hDiff > THRESHOLD;
+
+            if (open !== wasOpen) {
+              wasOpen = open;
+              guard.style.display = open ? 'flex' : 'none';
+              if (open) {
+                // clear anything they may have logged
+                try { console.clear(); } catch (err) { }
+              }
+            }
+          };
+
+          setInterval(check, 800);
+          window.addEventListener('resize', check);
+        }
+      }
+    })();
+  </script>
 
 </body>
 

@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%-include('header')%>
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="<%= productSourse.product_name %> — price, description and delivery details.">
+        <title>
+            <%= productSourse.product_name %> | Product Details
+        </title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <style>
+            :root {
+                --primary: #4361EE;
+                --secondary: #7209B7;
+                --accent: #F72585;
+                --light-bg: #F8F9FA;
+                --dark-text: #212529;
+                --light-text: #6C757D;
+                --white: #ffffff;
+                --card-bg: #FFFFFF;
+                --shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+                --hover-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+                --border: #eaeaea;
+                --radius: 10px;
+            }
+
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            html {
+                -webkit-text-size-adjust: 100%;
+            }
+
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background-color: var(--light-bg);
+                color: var(--dark-text);
+                line-height: 1.6;
+                -webkit-font-smoothing: antialiased;
+                min-height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 30px 16px;
+            }
+
+            /* Page wrapper — centered */
+            .page {
+                width: 100%;
+                max-width: 1100px;
+                margin: 0 auto;
+            }
+
+            /* Back button */
+            .back-btn {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                padding: 10px 18px;
+                margin-bottom: 14px;
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                background: var(--card-bg);
+                color: var(--dark-text);
+                font-family: inherit;
+                font-size: 14px;
+                font-weight: 600;
+                cursor: pointer;
+                text-decoration: none;
+                box-shadow: var(--shadow);
+                transition: transform .25s ease, box-shadow .25s ease, color .25s ease, border-color .25s ease;
+            }
+
+            .back-btn i {
+                font-size: 13px;
+                color: var(--primary);
+                transition: transform .25s ease, color .25s ease;
+            }
+
+            .back-btn:hover {
+                transform: translateY(-1px);
+                box-shadow: var(--hover-shadow);
+                border-color: var(--primary);
+                color: var(--primary);
+            }
+
+            .back-btn:hover i {
+                transform: translateX(-3px);
+                color: var(--secondary);
+            }
+
+            .back-btn:active {
+                transform: translateY(0);
+            }
+
+            /* Product card */
+            .product-card {
+                background: var(--card-bg);
+                border-radius: var(--radius);
+                display: grid;
+                grid-template-columns: minmax(0, 420px) minmax(0, 1fr);
+                gap: 0;
+                overflow: hidden;
+                box-shadow: var(--shadow);
+                transition: box-shadow .3s ease;
+            }
+
+            .product-card:hover {
+                box-shadow: var(--hover-shadow);
+            }
+
+            /* Image side */
+            .image-wrap {
+                padding: 28px;
+                border-right: 1px solid var(--border);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: #fff;
+            }
+
+            .image-box {
+                width: 100%;
+                max-width: 360px;
+                aspect-ratio: 1 / 1;
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                overflow: hidden;
+                background: #f5f5f5;
+            }
+
+            .image-box img {
+                width: 88%;
+                height: 88%;
+                object-fit: contain;
+                transition: transform .3s ease;
+            }
+
+            .image-box img:hover {
+                transform: scale(1.05);
+            }
+
+            /* Info side */
+            .info {
+                padding: 30px 30px 34px;
+                display: flex;
+                flex-direction: column;
+                min-width: 0;
+            }
+
+            .title {
+                font-size: 22px;
+                font-weight: 700;
+                line-height: 1.35;
+                color: var(--dark-text);
+                word-wrap: break-word;
+            }
+
+            .price-block {
+                margin: 16px 0 6px;
+                display: flex;
+                align-items: baseline;
+                gap: 12px;
+                flex-wrap: wrap;
+            }
+
+            .price-current {
+                font-size: 30px;
+                font-weight: 700;
+                color: var(--dark-text);
+                line-height: 1;
+            }
+
+            .price-mrp {
+                font-size: 16px;
+                color: var(--light-text);
+                text-decoration: line-through;
+            }
+
+            .price-discount {
+                font-size: 15px;
+                font-weight: 700;
+                color: var(--accent);
+            }
+
+            /* Description */
+            .description {
+                margin: 22px 0 6px;
+                font-size: 14px;
+            }
+
+            .description h4 {
+                font-size: 15px;
+                font-weight: 700;
+                color: var(--dark-text);
+                position: relative;
+                padding-bottom: 12px;
+                margin-bottom: 12px;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .description h4::after {
+                content: '';
+                position: absolute;
+                bottom: -1px;
+                left: 0;
+                width: 40px;
+                height: 2px;
+                background: linear-gradient(to right, var(--primary), var(--secondary));
+                border-radius: 2px;
+            }
+
+            .description p {
+                color: var(--light-text);
+                line-height: 1.7;
+            }
+
+            .description p+p {
+                margin-top: 10px;
+            }
+
+            /* Buttons */
+            .actions {
+                display: flex;
+                gap: 12px;
+                margin-top: 28px;
+            }
+
+            .btn {
+                flex: 1;
+                padding: 15px 20px;
+                border: none;
+                border-radius: 8px;
+                font-size: 15px;
+                font-weight: 600;
+                cursor: pointer;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                transition: transform .3s, box-shadow .3s, opacity .3s;
+                text-decoration: none;
+                white-space: nowrap;
+                font-family: inherit;
+            }
+
+            .btn:hover {
+                transform: translateY(-1px);
+                box-shadow: var(--hover-shadow);
+            }
+
+            .btn:active {
+                transform: translateY(0);
+            }
+
+            .btn-cart {
+                background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+                color: #fff;
+            }
+
+            .btn-buy {
+                background: var(--accent);
+                color: #fff;
+            }
+
+            /* Delivery */
+            .delivery {
+                margin-top: 20px;
+                font-size: 13px;
+                color: var(--dark-text);
+                padding: 14px 16px;
+                background: linear-gradient(135deg, rgba(67, 97, 238, 0.06), rgba(114, 9, 183, 0.06));
+                border: 1px solid rgba(67, 97, 238, 0.12);
+                border-radius: 8px;
+                line-height: 1.6;
+            }
+
+            .delivery strong {
+                color: var(--dark-text);
+            }
+
+            /* ---------- Responsive ---------- */
+            @media (max-width: 820px) {
+                body {
+                    padding: 20px 12px;
+                    align-items: flex-start;
+                }
+
+                .product-card {
+                    grid-template-columns: 1fr;
+                }
+
+                .image-wrap {
+                    border-right: none;
+                    border-bottom: 1px solid var(--border);
+                    padding: 24px 16px;
+                }
+
+                .image-box {
+                    max-width: 320px;
+                }
+
+                .info {
+                    padding: 22px 20px 26px;
+                }
+
+                .title {
+                    font-size: 19px;
+                }
+
+                .price-current {
+                    font-size: 26px;
+                }
+
+                .back-btn {
+                    padding: 9px 16px;
+                    font-size: 13px;
+                    margin-bottom: 12px;
+                }
+            }
+
+            @media (max-width: 520px) {
+                body {
+                    padding: 12px 10px;
+                    margin-top: 140px;
+                }
+
+                .image-wrap {
+                    padding: 18px 12px;
+                }
+
+                .image-box {
+                    max-width: 260px;
+                }
+
+                .info {
+                    padding: 18px 16px 22px;
+                }
+
+                .title {
+                    font-size: 17px;
+                    line-height: 1.4;
+                    font-weight: 600;
+                }
+
+                .price-block {
+                    margin: 12px 0 4px;
+                    gap: 8px;
+                }
+
+                .price-current {
+                    font-size: 24px;
+                }
+
+                .price-mrp {
+                    font-size: 14px;
+                }
+
+                .price-discount {
+                    font-size: 14px;
+                }
+
+                .description {
+                    margin: 18px 0 4px;
+                    font-size: 13px;
+                }
+
+                .description h4 {
+                    font-size: 14px;
+                }
+
+                .actions {
+                    flex-direction: column;
+                    gap: 10px;
+                    margin-top: 24px;
+                }
+
+                .btn {
+                    padding: 14px 16px;
+                    font-size: 15px;
+                }
+
+                .delivery {
+                    margin-top: 16px;
+                    font-size: 12px;
+                    padding: 12px 14px;
+                }
+
+                .back-btn {
+                    padding: 8px 14px;
+                    font-size: 13px;
+                    margin-bottom: 10px;
+                    gap: 6px;
+                }
+
+                .back-btn i {
+                    font-size: 12px;
+                }
+            }
+
+            @media (max-width: 360px) {
+                .title {
+                    font-size: 16px;
+                }
+
+                .price-current {
+                    font-size: 22px;
+                }
+            }
+        </style>
+    </head>
+
+    <body>
+
+
+        <main class="page">
+
+            <!-- Back button -->
+            <button class="back-btn" type="button" onclick="goBack()" aria-label="Go back">
+                <i class="fas fa-arrow-left"></i>
+                Back
+            </button>
+
+            <section class="product-card">
+
+                <!-- Product image -->
+                <div class="image-wrap">
+                    <div class="image-box">
+                        <img src="/uploads/<%=productSourse.product_image%>" alt="<%=productSourse.product_name %>"
+                            loading="lazy">
+                    </div>
+                </div>
+
+                <!-- Product info -->
+                <div class="info">
+                    <h1 class="title">
+                        <%= productSourse.product_name %>
+                    </h1>
+
+
+
+                    <% if (productSourse.short_description) { %>
+                        <div class="description">
+                            <h4>Description</h4>
+                            <p>
+                                <%= productSourse.short_description %>
+                            </p>
+                        </div>
+                        <% } %>
+
+                            <div class="actions">
+                                <button class="btn btn-cart" type="button" onclick="window.location.href='/add-to-cart/<%=productSourse._id%>'" >
+                                    <i class="fas fa-cart-plus" aria-hidden="true"></i>
+                                    Add to Cart
+                                </button>
+                                
+                            </div>
+
+                            <p class="delivery">
+                                <strong>Free delivery</strong> by Tomorrow, 6 PM &nbsp;|&nbsp;
+                                <strong>7-day</strong> replacement policy
+                            </p>
+                </div>
+            </section>
+
+        </main>
+
+        <script>
+            function goBack() {
+                if (window.history.length > 1) {
+                    window.history.back();
+                } else {
+                    // Fallback if there's no history (e.g. opened directly)
+                    window.location.href = 'index.html';
+                }
+            }
+        </script>
+
+    </body>
+
+</html>

@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<%-include('header')%>
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>My Orders - ShopEasy</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            }
+
+            :root {
+                --primary: #4361EE;
+                --secondary: #7209B7;
+                --accent: #F72585;
+                --light-bg: #F8F9FA;
+                --dark-text: #212529;
+                --light-text: #6C757D;
+                --white: #ffffff;
+                --card-bg: #FFFFFF;
+                --shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+                --hover-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+                --danger: #dc2626;
+                --line: #e2e8f0;
+                --meesho-purple: #9f2089;
+            }
+
+            body {
+                background-color: var(--light-bg);
+                color: var(--dark-text);
+                line-height: 1.6;
+                padding-top: 15px;
+                overflow-x: hidden;
+            }
+
+            .container {
+                max-width: 1000px;
+                margin: 0 auto;
+                padding: 0 15px;
+                margin-top: 130px;
+            }
+
+            .orders-section {
+                background-color: var(--card-bg);
+                border-radius: 10px;
+                box-shadow: var(--shadow);
+                padding: 18px;
+                margin-bottom: 15px;
+            }
+
+            .section-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 18px;
+                padding-bottom: 12px;
+                border-bottom: 1px solid #eee;
+                gap: 10px;
+                flex-wrap: wrap;
+            }
+
+            .section-title {
+                font-size: 20px;
+                font-weight: 700;
+                color: var(--dark-text);
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .section-title i {
+                color: var(--primary);
+                font-size: 18px;
+            }
+
+            .order-count {
+                font-size: 14px;
+                font-weight: 500;
+                color: var(--light-text);
+            }
+
+            .continue-link {
+                color: var(--primary);
+                text-decoration: none;
+                font-weight: 600;
+                font-size: 13px;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                transition: color 0.3s;
+                white-space: nowrap;
+            }
+
+            .continue-link:hover {
+                color: var(--secondary);
+            }
+
+            .orders-list {
+                display: flex;
+                flex-direction: column;
+                gap: 14px;
+            }
+
+            .order-card {
+                display: flex;
+                align-items: center;
+                gap: 18px;
+                padding: 16px;
+                border: 1px solid #eee;
+                border-radius: 10px;
+                background: var(--card-bg);
+                transition: box-shadow 0.3s, transform 0.3s;
+                position: relative;
+            }
+
+            .order-card:hover {
+                box-shadow: var(--hover-shadow);
+                transform: translateY(-2px);
+            }
+
+            .order-image {
+                flex-shrink: 0;
+                width: 110px;
+                height: 110px;
+                border-radius: 10px;
+                overflow: hidden;
+                background: #f5f5f5;
+            }
+
+            .order-image img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                transition: transform 0.3s;
+                display: block;
+            }
+
+            .order-card:hover .order-image img {
+                transform: scale(1.05);
+            }
+
+            .order-info {
+                flex: 1;
+                min-width: 0;
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+            }
+
+            .order-name {
+                font-size: 16px;
+                font-weight: 600;
+                color: var(--dark-text);
+                line-height: 1.4;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
+
+            .order-meta {
+                display: flex;
+                align-items: center;
+                gap: 14px;
+                font-size: 12px;
+                color: var(--light-text);
+                flex-wrap: wrap;
+            }
+
+            .order-meta span {
+                display: flex;
+                align-items: center;
+                gap: 5px;
+            }
+
+            .order-meta i {
+                font-size: 11px;
+                opacity: 0.7;
+            }
+
+            .order-price {
+                font-size: 18px;
+                font-weight: 800;
+                color: var(--primary);
+                margin-top: 2px;
+            }
+
+            .order-status {
+                flex-shrink: 0;
+                font-size: 12.5px;
+                font-weight: 800;
+                color: var(--dark-text);
+                letter-spacing: 0.5px;
+                text-transform: uppercase;
+                white-space: nowrap;
+                align-self: flex-start;
+                padding: 6px 12px;
+                background: #eef1f5;
+                border: 1px solid #d8dee6;
+                border-radius: 6px;
+            }
+
+            /* ============================================================
+               ACTION MENU (three-dot kebab)
+            ============================================================ */
+            .order-actions {
+                position: relative;
+                flex-shrink: 0;
+            }
+
+            .kebab-btn {
+                width: 34px;
+                height: 34px;
+                border: 1.5px solid var(--line);
+                background: #fff;
+                color: #334155;
+                border-radius: 8px;
+                font-size: 15px;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: background 0.15s, border-color 0.15s;
+            }
+
+            .kebab-btn:hover {
+                background: #f8fafc;
+            }
+
+            .kebab-btn[aria-expanded="true"] {
+                background: #eef2ff;
+                border-color: #c7d2fe;
+                color: var(--primary);
+            }
+
+            .action-menu {
+                position: absolute;
+                top: calc(100% + 6px);
+                right: 0;
+                min-width: 170px;
+                background: #fff;
+                border: 1px solid var(--line);
+                border-radius: 10px;
+                box-shadow: 0 8px 24px -8px rgba(15, 23, 42, 0.25);
+                padding: 6px;
+                z-index: 30;
+                display: none;
+            }
+
+            .order-actions.open .action-menu {
+                display: block;
+                animation: menuIn 0.12s ease-out;
+            }
+
+            @keyframes menuIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(-4px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            .menu-item {
+                width: 100%;
+                text-align: left;
+                background: transparent;
+                border: 0;
+                padding: 9px 12px;
+                border-radius: 7px;
+                font: inherit;
+                font-size: 13.5px;
+                font-weight: 600;
+                color: var(--dark-text);
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                gap: 9px;
+                text-decoration: none;
+            }
+
+            .menu-item i {
+                font-size: 12px;
+                opacity: 0.85;
+                width: 14px;
+                text-align: center;
+            }
+
+            .menu-item:hover {
+                background: #f1f5f9;
+            }
+
+            .menu-item.danger {
+                color: var(--danger);
+            }
+
+            .menu-item.danger:hover {
+                background: #fef2f2;
+            }
+
+            .menu-item:disabled {
+                opacity: 0.55;
+                cursor: not-allowed;
+            }
+
+            /* ============================================================
+               COMPACT MEESHO EMPTY STATE UI
+            ============================================================ */
+            .meesho-empty-state {
+                text-align: center;
+                padding: 30px 15px;
+                /* Reduced from 60px */
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                width: 100%;
+            }
+
+            .meesho-empty-image {
+                width: 170px;
+                /* Reduced from 260px */
+                max-width: 100%;
+                height: auto;
+                margin-bottom: 15px;
+                /* Reduced from 24px */
+            }
+
+            .meesho-empty-title {
+                font-size: 20px;
+                /* Reduced from 24px */
+                font-weight: 600;
+                color: #333;
+                margin-bottom: 6px;
+            }
+
+            .meesho-empty-subtitle {
+                font-size: 14px;
+                /* Reduced from 15px */
+                color: #666;
+                margin-bottom: 20px;
+                line-height: 1.5;
+            }
+
+            .btn-start-shopping {
+                background-color: var(--meesho-purple);
+                color: white;
+                text-decoration: none;
+                padding: 10px 24px;
+                /* Reduced from 12px 32px */
+                border-radius: 4px;
+                font-size: 14px;
+                /* Reduced from 15px */
+                font-weight: 600;
+                transition: background-color 0.2s, transform 0.2s;
+                display: inline-block;
+            }
+
+            .btn-start-shopping:hover {
+                background-color: #8a1b76;
+                transform: translateY(-1px);
+            }
+
+            /* ============================================================
+               STICKY CONTACT
+            ============================================================ */
+            .sticky-contact {
+                position: fixed;
+                bottom: 15px;
+                right: 15px;
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+                z-index: 99;
+            }
+
+            .whatsapp-btn,
+            .call-btn {
+                width: 42px;
+                height: 42px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                font-size: 18px;
+                box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+                transition: transform 0.3s, box-shadow 0.3s;
+                text-decoration: none;
+            }
+
+            .whatsapp-btn {
+                background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+            }
+
+            .call-btn {
+                background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            }
+
+            .whatsapp-btn:hover,
+            .call-btn:hover {
+                transform: scale(1.05);
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            }
+
+            /* ============================================================
+               RESPONSIVE
+            ============================================================ */
+            @media (max-width: 768px) {
+                .orders-section {
+                    padding: 14px;
+                }
+
+                .section-title {
+                    font-size: 17px;
+                }
+
+                .order-card {
+                    gap: 14px;
+                    padding: 12px;
+                }
+
+                .order-image {
+                    width: 90px;
+                    height: 90px;
+                }
+
+                .order-name {
+                    font-size: 14px;
+                }
+
+                .order-price {
+                    font-size: 16px;
+                }
+
+                .order-status {
+                    font-size: 11px;
+                    padding: 5px 9px;
+                }
+
+                .kebab-btn {
+                    width: 30px;
+                    height: 30px;
+                    font-size: 14px;
+                }
+
+                .sticky-contact {
+                    bottom: 12px;
+                    right: 12px;
+                }
+
+                .whatsapp-btn,
+                .call-btn {
+                    width: 38px;
+                    height: 38px;
+                    font-size: 16px;
+                }
+            }
+
+            @media (max-width: 540px) {
+                .order-card {
+                    flex-wrap: wrap;
+                    gap: 12px;
+                    padding: 12px;
+                }
+
+                .order-image {
+                    width: 80px;
+                    height: 80px;
+                }
+
+                .order-info {
+                    flex-basis: calc(100% - 100px);
+                }
+
+                .order-status {
+                    margin-left: 100px;
+                    margin-top: -6px;
+                }
+
+                .order-actions {
+                    position: absolute;
+                    top: 10px;
+                    right: 10px;
+                }
+
+                .order-name {
+                    font-size: 13px;
+                    padding-right: 40px;
+                }
+
+                .order-price {
+                    font-size: 15px;
+                }
+
+                .order-meta {
+                    font-size: 11px;
+                    gap: 10px;
+                }
+
+                /* Even smaller on mobile */
+                .meesho-empty-image {
+                    width: 130px;
+                }
+
+                .meesho-empty-title {
+                    font-size: 18px;
+                }
+
+                .meesho-empty-subtitle {
+                    font-size: 13px;
+                }
+
+                .btn-start-shopping {
+                    padding: 8px 20px;
+                    font-size: 13px;
+                }
+            }
+
+            @media (max-width: 400px) {
+                .order-image {
+                    width: 70px;
+                    height: 70px;
+                }
+
+                .order-info {
+                    flex-basis: calc(100% - 90px);
+                }
+
+                .order-status {
+                    margin-left: 90px;
+                }
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <% if (messages.success) { %>
+            <script>
+                Swal.fire({
+                    toast: true,
+                    position: "top-end",
+                    icon: "success",
+                    title: "<%= messages.success %>",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    background: "#ffffff",
+                    iconColor: "#00b894",
+                    color: "#333",
+                    customClass: {
+                        popup: 'custom-swal-toast'
+                    },
+                    didOpen: (toast) => {
+                        toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
+                        toast.style.borderRadius = '8px';
+                        toast.style.padding = '0.75rem 1.25rem';
+                    }
+                });
+            </script>
+            <% } %>
+
+                <% if (messages.error) { %>
+                    <script>
+                        Swal.fire({
+                            toast: true,
+                            position: "top-end",
+                            icon: "error",
+                            title: "<%= messages.error %>",
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            background: "#ffffff",
+                            iconColor: "#red",
+                            color: "#333",
+                            customClass: {
+                                popup: 'custom-swal-toast'
+                            },
+                            didOpen: (toast) => {
+                                toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
+                                toast.style.borderRadius = '8px';
+                                toast.style.padding = '0.75rem 1.25rem';
+                            }
+                        });
+                    </script>
+                    <% } %>
+
+                        <main class="container">
+                            <section class="orders-section">
+                                <div class="section-header">
+                                    <h2 class="section-title">
+                                        <i class="fas fa-box"></i>
+                                        My Orders
+                                        <span class="order-count">(<span id="orderCount">0</span>)</span>
+                                    </h2>
+                                    <a href="/" class="continue-link">
+                                        Continue Shopping <i class="fas fa-arrow-right"></i>
+                                    </a>
+                                </div>
+
+                                <div class="orders-list" id="ordersList">
+                                    <!-- Safe EJS check to prevent crashes if userSourse or order is undefined -->
+                                    <% if (typeof userSourse !=='undefined' && userSourse && userSourse.order &&
+                                        userSourse.order.length> 0) { %>
+                                        <% userSourse.order.forEach(function(op) { %>
+                                            <% if(op.items && op.items.length> 0) { %>
+                                                <% op.items.forEach(function(i) { %>
+                                                    <% const st=(op.order_status || '' ).toLowerCase(); %>
+
+                                                        <div class="order-card" data-order-id="<%= op._id %>"
+                                                            data-item-id="<%= i._id %>">
+                                                            <div class="order-image">
+                                                                <img src="/uploads/<%= i.product_image %>"
+                                                                    alt="<%= i.item_name %>">
+                                                            </div>
+
+                                                            <div class="order-info">
+                                                                <div class="order-name">
+                                                                    <%= i.item_name %>
+                                                                </div>
+                                                                <div class="order-meta">
+                                                                    <span><i class="fas fa-hashtag"></i>
+                                                                        <%= op.invoice_no %>
+                                                                    </span>
+                                                                    <span><i class="fas fa-calendar"></i>
+                                                                        <%= op.order_date %>
+                                                                    </span>
+                                                                </div>
+                                                                <div class="order-price">₹<%= i.price %>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="order-status">
+                                                                <%=i.item_status%>
+                                                            </div>
+
+                                                            <!-- three-dot action menu -->
+                                                            <div class="order-actions">
+                                                                <button type="button" class="kebab-btn"
+                                                                    aria-haspopup="true" aria-expanded="false"
+                                                                    aria-label="Order actions">
+                                                                    <i class="fas fa-ellipsis-vertical"></i>
+                                                                </button>
+
+                                                                <div class="action-menu" role="menu">
+                                                                    <% if (i.item_status==='In Progress' ) { %>
+                                                                        <span class="menu-item">Cancellation Request
+                                                                            Sent</span>
+                                                                        <% } %>
+
+                                                                            <% if (i.item_status==='Item Delivered' ) {
+                                                                                %>
+                                                                                <a href="/order-return/<%= i._id %>/<%= op._id %>"
+                                                                                    onclick="return confirm('Send return request?')"
+                                                                                    class="menu-item danger">
+                                                                                    <i class="fas fa-undo"></i>
+                                                                                    Return
+                                                                                </a>
+                                                                                <% } else { %>
+                                                                                    <span class="menu-item">Return
+                                                                                        Not Available</span>
+                                                                                    <% } %>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <% }) %>
+                                                            <% } %>
+                                                                <% }) %>
+                                                                    <% } %>
+                                </div>
+
+                                <!-- Compact Meesho Style Empty State UI -->
+                                <div class="meesho-empty-state" id="emptyState" style="display:none;">
+                                    <img src="https://cdni.iconscout.com/illustration/premium/thumb/empty-cart-7359557-6024626.png"
+                                        alt="Empty Orders" class="meesho-empty-image">
+                                    <h2 class="meesho-empty-title">No orders yet</h2>
+                                    <p class="meesho-empty-subtitle">Just relax, let us help you find some first-class
+                                        products</p>
+                                    <a href="/" class="btn-start-shopping">Start Shopping</a>
+                                </div>
+
+                            </section>
+                        </main>
+
+                        <div class="sticky-contact">
+                            <a href="https://wa.me/1234567890" class="whatsapp-btn" target="_blank"
+                                aria-label="Contact on WhatsApp">
+                                <i class="fab fa-whatsapp"></i>
+                            </a>
+                            <a href="tel:+1234567890" class="call-btn" aria-label="Call us">
+                                <i class="fas fa-phone"></i>
+                            </a>
+                        </div>
+
+                        <script>
+                            'use strict';
+
+                            const list = document.getElementById('ordersList');
+                            const emptyState = document.getElementById('emptyState');
+                            const orderCount = document.getElementById('orderCount');
+
+                            /* ---------- count + empty state logic ---------- */
+                            const n = list.querySelectorAll('.order-card').length;
+                            orderCount.textContent = n;
+
+                            // Toggle display based on whether there are order cards
+                            if (n === 0) {
+                                emptyState.style.display = 'flex'; // Use flex for centering the Meesho UI
+                                list.style.display = 'none';
+                            } else {
+                                emptyState.style.display = 'none';
+                                list.style.display = 'flex';
+                            }
+
+                            /* ---------- close all open menus ---------- */
+                            function closeAllMenus() {
+                                list.querySelectorAll('.order-actions.open').forEach(w => {
+                                    w.classList.remove('open');
+                                    w.querySelector('.kebab-btn').setAttribute('aria-expanded', 'false');
+                                });
+                            }
+
+                            /* ---------- toggle menu ---------- */
+                            list.addEventListener('click', e => {
+                                const kebab = e.target.closest('.kebab-btn');
+                                if (!kebab) return;
+                                e.stopPropagation();
+
+                                const wrap = kebab.closest('.order-actions');
+                                const willOpen = !wrap.classList.contains('open');
+
+                                closeAllMenus();
+                                wrap.classList.toggle('open', willOpen);
+                                kebab.setAttribute('aria-expanded', String(willOpen));
+                            });
+
+                            /* ---------- close on outside click ---------- */
+                            document.addEventListener('click', e => {
+                                if (!e.target.closest('.order-actions')) closeAllMenus();
+                            });
+
+                            /* ---------- close on Escape ---------- */
+                            document.addEventListener('keydown', e => {
+                                if (e.key === 'Escape') closeAllMenus();
+                            });
+                        </script>
+    </body>
+
+</html>

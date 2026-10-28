@@ -20,7 +20,7 @@ const adminAuth = (req, res, next) => {
     const verified = jwt.verify(token, process.env.Admin_Token_Password);
 
     req.adminId = verified._id;
-    next();
+   return next();
 }
 
 module.exports = adminAuth;
