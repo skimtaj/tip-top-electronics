@@ -37,8 +37,7 @@ route.post('/auth/login', userLoginPost);
 route.get('/add-to-cart/:productid', userAuth, addTocard);
 
 route.get('/user/carts', userAuth, cart);
-route.get('/user/order', userAuth, order)
-
+route.get('/user/order', userAuth, order);
 
 
 route.get('/user/remove-card/:productid', userAuth, removeCart)

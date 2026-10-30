@@ -378,7 +378,8 @@ const mobileAcceseriesCategory = async (req, res) => {
 
 const order = async (req, res) => {
 
-    const userSourse = await user_account_model.findById(req.userId).populate('order')
+    const userSourse = await user_account_model.findById(req.userId).populate('order');
+    
 
     res.render('../userModule/Views/order_page', { userSourse })
 }
