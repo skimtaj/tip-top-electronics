@@ -11,7 +11,6 @@ const productSchema = mongoose.Schema({
     product_image: {
 
         type: String,
-        trim: true
     },
 
     category: {

@@ -121,9 +121,10 @@ const deleteProduct = async (req, res) => {
 
 const editProduct = async (req, res) => {
 
-    const productSourse = await insert_product_model.findById(req.params.productid)
+    const productSourse = await insert_product_model.findById(req.params.productid);
+    const totalUnreadOrder = await order_model.find({ is_read: false }).countDocuments();
 
-    res.render('../adminModule/Views/edit_product_form', { productSourse })
+    res.render('../adminModule/Views/edit_product_form', { productSourse, totalUnreadOrder })
 };
 
 const editProductPost = async (req, res) => {

@@ -14,13 +14,13 @@ const adminAuth = (req, res, next) => {
     if (!token) {
 
         req.flash('error', 'You have to login');
-        return res.redirect('/nm/admin-login')
+        return res.redirect('/admin/auth/login')
     }
 
     const verified = jwt.verify(token, process.env.Admin_Token_Password);
 
     req.adminId = verified._id;
-   return next();
+    return next();
 }
 
 module.exports = adminAuth;

@@ -417,6 +417,25 @@ const cancelOrderReq = async (req, res) => {
 
 const returnOrderReq = async (req, res) => {
 
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const orderSourse = await order_model.findById(req.params.orderid);
+
+    const orderDate = new Date(orderSourse.order_date);
+    orderDate.setHours(0, 0, 0, 0);
+
+    const orderDayGap = Math.floor(
+        (today - orderDate) / (1000 * 60 * 60 * 24)
+    );
+
+    if (orderDayGap > 3) {
+
+        req.flash('error', 'Return period expired. Returns are allowed within 3 days only');
+        return res.redirect('/user/orders')
+    }
+
     await order_model.findOneAndUpdate(
         {
             _id: req.params.orderid,

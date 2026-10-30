@@ -1178,11 +1178,11 @@
                                                 style="width:100%">
                                                 <thead>
                                                     <tr>
+                                                        <th>Product Image</th>
                                                         <th>Product Name</th>
                                                         <th>Category</th>
                                                         <th>Sale Price</th>
                                                         <th>Stock</th>
-                                                        <th>Status</th>
                                                         <th>Actions</th>
                                                     </tr>
                                                 </thead>
@@ -1191,6 +1191,12 @@
                                                     <% productList.forEach((pl)=>{ %>
 
                                                         <tr>
+
+                                                            <td class="product-name-cell">
+                                                                <img src="/uploads/<%=pl.product_image%>" alt="Image"
+                                                                    width="50" height="50">
+                                                            </td>
+
                                                             <td class="product-name-cell">
                                                                 <%=pl.product_name%>
                                                             </td>
@@ -1202,9 +1208,7 @@
                                                             <td class="stock-cell">
                                                                 <%=pl.stock_qty%>
                                                             </td>
-                                                            <td><span class="status-badge in-stock">
-                                                                    <%=pl.stock_status%>
-                                                                </span></td>
+
                                                             <td class="action-cell">
                                                                 <div class="dropdown">
                                                                     <!-- ✅ No data-toggle — custom JS handles open/close -->
