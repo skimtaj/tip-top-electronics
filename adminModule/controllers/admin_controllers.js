@@ -198,7 +198,7 @@ const viewOrder = async (req, res) => {
     const totalUnreadOrder = await order_model.find({ is_read: false }).countDocuments();
 
 
-    res.render('../adminModule/Views/view_order', { orderSourse }, { totalUnreadOrder })
+    res.render('../adminModule/Views/view_order', { orderSourse, totalUnreadOrder })
 };
 
 const approveCancel = async (req, res) => {
