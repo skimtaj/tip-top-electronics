@@ -655,8 +655,12 @@
 
                                                                 <div class="action-menu" role="menu">
                                                                     <% if (i.item_status==='In Progress' ) { %>
-                                                                        <span class="menu-item">Cancellation Request
-                                                                            Sent</span>
+                                                                        <a href="/order-cancel/<%=i._id%>/<%=op._id%>"
+                                                                            onclick="return confirm('Send cancel request?')"
+                                                                            class="menu-item danger">
+                                                                            <i class="fas fa-undo"></i>
+                                                                            Send Cancel Request
+                                                                        </a>
                                                                         <% } %>
 
                                                                             <% if (i.item_status==='Item Delivered' ) {
