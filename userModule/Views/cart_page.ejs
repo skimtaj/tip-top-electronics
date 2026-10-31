@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <title>Order Form — order_model</title>
+    <title>Order Form — Tip Top Electronics</title>
     <style>
         :root {
             --bg: #f5f7fb;
@@ -21,8 +21,13 @@
             --shadow: 0 1px 2px rgba(15, 23, 42, .06), 0 14px 34px -20px rgba(15, 23, 42, .35);
         }
 
-        * { box-sizing: border-box; }
-        [hidden] { display: none !important; }
+        * {
+            box-sizing: border-box;
+        }
+
+        [hidden] {
+            display: none !important;
+        }
 
         html {
             -webkit-text-size-adjust: 100%;
@@ -53,7 +58,9 @@
         }
 
         @media (min-width: 640px) {
-            .wrap { padding: 28px 18px 72px; }
+            .wrap {
+                padding: 28px 18px 72px;
+            }
         }
 
         /* iPhone notch / home indicator safe area */
@@ -83,7 +90,9 @@
             line-height: 1.2;
         }
 
-        .head h1 span { color: var(--brand); }
+        .head h1 span {
+            color: var(--brand);
+        }
 
         .brand-badge {
             width: 44px;
@@ -98,11 +107,19 @@
         }
 
         @media (min-width: 640px) {
-            .head { margin-bottom: 26px; }
-            .head h1 { font-size: clamp(24px, 3vw, 30px); }
+            .head {
+                margin-bottom: 26px;
+            }
+
+            .head h1 {
+                font-size: clamp(24px, 3vw, 30px);
+            }
+
             .brand-badge {
-                width: 56px; height: 56px;
-                border-radius: 18px; font-size: 26px;
+                width: 56px;
+                height: 56px;
+                border-radius: 18px;
+                font-size: 26px;
             }
         }
 
@@ -150,8 +167,13 @@
         }
 
         @media (min-width: 640px) {
-            .section-head { margin-bottom: 14px; }
-            .section-head h2 { font-size: 14px; }
+            .section-head {
+                margin-bottom: 14px;
+            }
+
+            .section-head h2 {
+                font-size: 14px;
+            }
         }
 
         .pill {
@@ -198,14 +220,31 @@
             margin-top: 2px;
         }
 
-        .pc-body { padding: 14px; }
+        .pc-body {
+            padding: 14px;
+        }
 
         @media (min-width: 640px) {
-            .product-card { border-radius: var(--radius); }
-            .pc-head { padding: 16px 20px; }
-            .pc-head h3 { font-size: 16px; }
-            .pc-head small { font-size: 12px; margin-top: 3px; }
-            .pc-body { padding: 18px 20px 20px; }
+            .product-card {
+                border-radius: var(--radius);
+            }
+
+            .pc-head {
+                padding: 16px 20px;
+            }
+
+            .pc-head h3 {
+                font-size: 16px;
+            }
+
+            .pc-head small {
+                font-size: 12px;
+                margin-top: 3px;
+            }
+
+            .pc-body {
+                padding: 18px 20px 20px;
+            }
         }
 
         .hint {
@@ -215,10 +254,16 @@
             line-height: 1.55;
         }
 
-        .hint b { color: #334155; }
+        .hint b {
+            color: #334155;
+        }
 
         @media (min-width: 640px) {
-            .hint { margin: 0 0 14px; font-size: 12.5px; line-height: 1.6; }
+            .hint {
+                margin: 0 0 14px;
+                font-size: 12.5px;
+                line-height: 1.6;
+            }
         }
 
         /* ============================================================
@@ -251,7 +296,9 @@
             transition: opacity .2s, background .15s;
         }
 
-        .product-row:last-child { border-bottom: 0; }
+        .product-row:last-child {
+            border-bottom: 0;
+        }
 
         .product-row.invalid {
             background: #fef2f2;
@@ -265,12 +312,29 @@
             pointer-events: none;
         }
 
-        .product-row .thumb        { grid-area: thumb; }
-        .product-row .p-item_name  { grid-area: name; }
-        .product-row .p-price      { grid-area: price; }
-        .product-row .p-qty        { grid-area: qty; }
-        .product-row .p-item_amount { grid-area: amount; }
-        .product-row .remove-btn   { grid-area: remove; }
+        .product-row .thumb {
+            grid-area: thumb;
+        }
+
+        .product-row .p-item_name {
+            grid-area: name;
+        }
+
+        .product-row .p-price {
+            grid-area: price;
+        }
+
+        .product-row .p-qty {
+            grid-area: qty;
+        }
+
+        .product-row .p-item_amount {
+            grid-area: amount;
+        }
+
+        .product-row .remove-btn {
+            grid-area: remove;
+        }
 
         /* Inputs inside product rows */
         .product-row input:not([type="hidden"]) {
@@ -338,7 +402,9 @@
             transition: transform .3s;
         }
 
-        .product-row:hover .thumb img { transform: scale(1.05); }
+        .product-row:hover .thumb img {
+            transform: scale(1.05);
+        }
 
         .p-item_amount {
             text-align: right;
@@ -369,15 +435,26 @@
             padding: 0;
         }
 
-        .remove-btn:hover:not(:disabled) { background: #fef2f2; }
-        .remove-btn:active:not(:disabled) { transform: scale(.92); }
-        .remove-btn:disabled { opacity: .5; cursor: not-allowed; }
+        .remove-btn:hover:not(:disabled) {
+            background: #fef2f2;
+        }
+
+        .remove-btn:active:not(:disabled) {
+            transform: scale(.92);
+        }
+
+        .remove-btn:disabled {
+            opacity: .5;
+            cursor: not-allowed;
+        }
 
         /* ============================================================
            MOBILE PRODUCT ROW  (<= 640px)  — compact card
            ============================================================ */
         @media (max-width: 640px) {
-            .pf-labels { display: none; }
+            .pf-labels {
+                display: none;
+            }
 
             .product-row {
                 grid-template-columns: 64px 1fr 1fr 36px;
@@ -413,7 +490,8 @@
             }
 
             .product-row input:not([type="hidden"]) {
-                font-size: 16px;   /* stops iOS Safari auto-zoom */
+                font-size: 16px;
+                /* stops iOS Safari auto-zoom */
                 padding: 8px 10px;
                 min-height: 42px;
                 border-radius: 9px;
@@ -432,7 +510,10 @@
                 white-space: nowrap;
             }
 
-            .p-item_name:focus { background: #f8fafc; border-color: var(--line); }
+            .p-item_name:focus {
+                background: #f8fafc;
+                border-color: var(--line);
+            }
 
             .p-item_amount {
                 text-align: left;
@@ -465,18 +546,33 @@
                 margin-top: 14px;
             }
 
-            .pc-total .value { font-size: 18px; }
-            .pc-total .label { font-size: 11px; }
+            .pc-total .value {
+                font-size: 18px;
+            }
+
+            .pc-total .label {
+                font-size: 11px;
+            }
         }
 
         /* ============================================================
            VERY SMALL PHONES (<= 380px)
            ============================================================ */
         @media (max-width: 380px) {
-            .wrap { padding-left: 10px; padding-right: 10px; }
+            .wrap {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
 
-            .head h1 { font-size: 20px; }
-            .brand-badge { width: 40px; height: 40px; font-size: 18px; }
+            .head h1 {
+                font-size: 20px;
+            }
+
+            .brand-badge {
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
+            }
 
             .product-row {
                 grid-template-columns: 56px 1fr 1fr 34px;
@@ -484,13 +580,24 @@
                 padding: 10px 8px;
             }
 
-            .thumb { width: 56px; height: 56px; }
+            .thumb {
+                width: 56px;
+                height: 56px;
+            }
 
-            .pc-body { padding: 12px; }
+            .pc-body {
+                padding: 12px;
+            }
 
-            .remove-btn { width: 34px; height: 34px; font-size: 18px; }
+            .remove-btn {
+                width: 34px;
+                height: 34px;
+                font-size: 18px;
+            }
 
-            .pc-total .value { font-size: 16px; }
+            .pc-total .value {
+                font-size: 16px;
+            }
         }
 
         /* ============================================================
@@ -525,9 +632,17 @@
         }
 
         @media (min-width: 640px) {
-            .pc-total { padding: 16px 18px; }
-            .pc-total .label { font-size: 12px; }
-            .pc-total .value { font-size: 22px; }
+            .pc-total {
+                padding: 16px 18px;
+            }
+
+            .pc-total .label {
+                font-size: 12px;
+            }
+
+            .pc-total .value {
+                font-size: 22px;
+            }
         }
 
         /* ============================================================
@@ -547,7 +662,9 @@
             text-decoration: none;
         }
 
-        .empty-cart a:hover { text-decoration: underline; }
+        .empty-cart a:hover {
+            text-decoration: underline;
+        }
 
         /* ============================================================
            CUSTOMER PANEL
@@ -561,7 +678,10 @@
         }
 
         @media (min-width: 640px) {
-            .panel { border-radius: var(--radius); padding: 22px; }
+            .panel {
+                border-radius: var(--radius);
+                padding: 22px;
+            }
         }
 
         @media (min-width: 981px) {
@@ -578,16 +698,23 @@
         }
 
         @media (min-width: 640px) {
-            .panel h2 { margin: 0 0 18px; font-size: 18px; }
+            .panel h2 {
+                margin: 0 0 18px;
+                font-size: 18px;
+            }
         }
 
         /* ============================================================
            FIELDS
            ============================================================ */
-        .field { margin-bottom: 12px; }
+        .field {
+            margin-bottom: 12px;
+        }
 
         @media (min-width: 640px) {
-            .field { margin-bottom: 14px; }
+            .field {
+                margin-bottom: 14px;
+            }
         }
 
         .field label {
@@ -605,13 +732,16 @@
             margin-left: 4px;
         }
 
-        .req { color: var(--danger); }
+        .req {
+            color: var(--danger);
+        }
 
         .field input,
         .field textarea {
             width: 100%;
             font: inherit;
-            font-size: 16px;           /* stop iOS auto-zoom */
+            font-size: 16px;
+            /* stop iOS auto-zoom */
             padding: 11px 13px;
             border: 1.5px solid var(--line);
             border-radius: 10px;
@@ -623,8 +753,11 @@
         }
 
         @media (min-width: 640px) {
+
             .field input,
-            .field textarea { font-size: 14px; }
+            .field textarea {
+                font-size: 14px;
+            }
         }
 
         .field textarea {
@@ -677,7 +810,9 @@
             cursor: pointer;
         }
 
-        .field.date-field { position: relative; }
+        .field.date-field {
+            position: relative;
+        }
 
         /* Error text */
         .err {
@@ -693,7 +828,9 @@
             background: #fef2f2;
         }
 
-        .field.invalid .err { display: block; }
+        .field.invalid .err {
+            display: block;
+        }
 
         /* ============================================================
            SUBMIT BUTTON
@@ -715,9 +852,18 @@
             transition: .18s;
         }
 
-        .btn-primary:hover { filter: brightness(1.07); }
-        .btn-primary:active { transform: scale(.985); }
-        .btn-primary:disabled { opacity: .7; cursor: not-allowed; }
+        .btn-primary:hover {
+            filter: brightness(1.07);
+        }
+
+        .btn-primary:active {
+            transform: scale(.985);
+        }
+
+        .btn-primary:disabled {
+            opacity: .7;
+            cursor: not-allowed;
+        }
 
         /* Make sure SweetAlert2 is mobile friendly */
         .swal2-popup {
@@ -726,7 +872,9 @@
         }
 
         @media (max-width: 480px) {
-            .swal2-popup { width: 90% !important; }
+            .swal2-popup {
+                width: 90% !important;
+            }
         }
     </style>
 </head>
@@ -736,555 +884,571 @@
     <!-- Header partial -->
     <%- include('header') %>
 
-    <% const msgs = (typeof locals !== 'undefined' && locals.messages) || {}; %>
-    <% const safeMsg = v => JSON.stringify(String(v == null ? '' : v)).replace(/</g, '\\u003c'); %>
+        <% const msgs=(typeof locals !=='undefined' && locals.messages) || {}; %>
+            <% const safeMsg=v=> JSON.stringify(String(v == null ? '' : v)).replace(/</g, '\\u003c' ); %>
 
-    <% if (msgs.success) { %>
-    <script>
-        Swal.fire({
-            toast: true, position: "top-end", icon: "success",
-            title: <%- safeMsg(msgs.success) %>, showConfirmButton: false,
-            timer: 3000, timerProgressBar: true,
-            background: "#ffffff", iconColor: "#00b894", color: "#333",
-            customClass: { popup: 'custom-swal-toast' },
-            didOpen: (toast) => {
-                toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
-                toast.style.borderRadius = '8px';
-                toast.style.padding = '0.75rem 1.25rem';
-            }
-        });
-    </script>
-    <% } %>
+                <% if (msgs.success) { %>
+                    <script>
+                        Swal.fire({
+                            toast: true, position: "top-end", icon: "success",
+                            title: <% - safeMsg(msgs.success) %>, showConfirmButton: false,
+                            timer: 3000, timerProgressBar: true,
+                            background: "#ffffff", iconColor: "#00b894", color: "#333",
+                            customClass: { popup: 'custom-swal-toast' },
+                            didOpen: (toast) => {
+                                toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
+                                toast.style.borderRadius = '8px';
+                                toast.style.padding = '0.75rem 1.25rem';
+                            }
+                        });
+                    </script>
+                    <% } %>
 
-    <% if (msgs.error) { %>
-    <script>
-        Swal.fire({
-            toast: true, position: "top-end", icon: "error",
-            title: <%- safeMsg(msgs.error) %>, showConfirmButton: false,
-            timer: 3000, timerProgressBar: true,
-            background: "#ffffff", iconColor: "#dc2626", color: "#333",
-            customClass: { popup: 'custom-swal-toast' },
-            didOpen: (toast) => {
-                toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
-                toast.style.borderRadius = '8px';
-                toast.style.padding = '0.75rem 1.25rem';
-            }
-        });
-    </script>
-    <% } %>
+                        <% if (msgs.error) { %>
+                            <script>
+                                Swal.fire({
+                                    toast: true, position: "top-end", icon: "error",
+                                    title: <% - safeMsg(msgs.error) %>, showConfirmButton: false,
+                                    timer: 3000, timerProgressBar: true,
+                                    background: "#ffffff", iconColor: "#dc2626", color: "#333",
+                                    customClass: { popup: 'custom-swal-toast' },
+                                    didOpen: (toast) => {
+                                        toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
+                                        toast.style.borderRadius = '8px';
+                                        toast.style.padding = '0.75rem 1.25rem';
+                                    }
+                                });
+                            </script>
+                            <% } %>
 
-    <div class="wrap">
-        <header class="head">
-            <div>
-                <h1>Quick<span>Cart</span> Order Form</h1>
-            </div>
-            <div class="brand-badge">🧾</div>
-        </header>
+                                <div class="wrap">
+                                    <header class="head">
+                                        <div>
+                                            <h1>Quick<span>Cart</span> Order Form</h1>
+                                        </div>
+                                        <div class="brand-badge">🧾</div>
+                                    </header>
 
-        <form id="orderForm" method="post" action="/user/orders" novalidate>
-            <input type="hidden" name="order_token" id="orderToken" value="" />
+                                    <form id="orderForm" method="post" action="/user/orders" novalidate>
+                                        <input type="hidden" name="order_token" id="orderToken" value="" />
 
-            <div class="layout" id="mainLayout">
+                                        <div class="layout" id="mainLayout">
 
-                <section>
-                    <div class="section-head">
-                        <h2>Order Items</h2>
-                        <span class="pill" id="itemCount">0 items</span>
-                    </div>
+                                            <section>
+                                                <div class="section-head">
+                                                    <h2>Order Items</h2>
+                                                    <span class="pill" id="itemCount">0 items</span>
+                                                </div>
 
-                    <div class="product-card">
-                        <div class="pc-head">
-                            <div>
-                                <h3>Product Entry</h3>
-                                <small id="billDate">—</small>
-                            </div>
-                        </div>
+                                                <div class="product-card">
+                                                    <div class="pc-head">
+                                                        <div>
+                                                            <h3>Product Entry</h3>
+                                                            <small id="billDate">—</small>
+                                                        </div>
+                                                    </div>
 
-                        <div class="pc-body">
-                            <p class="hint">
-                                Loaded from your cart: <b>product_image</b>, <b>product_name</b>,
-                                <b>sale_price</b>.
-                                Click <b>×</b> to remove an item from your cart.
-                            </p>
+                                                    <div class="pc-body">
+                                                        <p class="hint">
+                                                            Loaded from your cart: <b>product_image</b>,
+                                                            <b>product_name</b>,
+                                                            <b>sale_price</b>.
+                                                            Click <b>×</b> to remove an item from your cart.
+                                                        </p>
 
-                            <div class="pf-labels">
-                                <span></span>
-                                <span>item_name</span>
-                                <span>price</span>
-                                <span>qty</span>
-                                <span>item_amount</span>
-                                <span></span>
-                            </div>
+                                                        <div class="pf-labels">
+                                                            <span></span>
+                                                            <span>item_name</span>
+                                                            <span>price</span>
+                                                            <span>qty</span>
+                                                            <span>item_amount</span>
+                                                            <span></span>
+                                                        </div>
 
-                            <div id="productRows">
-                                <% if (userSourse.cart && userSourse.cart.length > 0) { %>
-                                <% userSourse.cart.forEach(function(product, index) { %>
-                                <div class="product-row"
-                                    data-product-id="<%= product._id %>"
-                                    data-product-image="<%= product.product_image %>">
+                                                        <div id="productRows">
+                                                            <% if (userSourse.cart && userSourse.cart.length> 0) { %>
+                                                                <% userSourse.cart.forEach(function(product, index) { %>
+                                                                    <div class="product-row"
+                                                                        data-product-id="<%= product._id %>"
+                                                                        data-product-image="<%= product.product_image %>">
 
-                                    <input type="hidden" class="p-image-input"
-                                        name="items[<%= index %>][product_image]"
-                                        value="<%= product.product_image %>" />
-                                    <input type="hidden" class="p-product-id-input"
-                                        name="items[<%= index %>][product_id]"
-                                        value="<%= product._id %>" />
-                                    <input type="hidden" class="p-item_amount_input"
-                                        name="items[<%= index %>][item_amount]" value="0" />
+                                                                        <input type="hidden" class="p-image-input"
+                                                                            name="items[<%= index %>][product_image]"
+                                                                            value="<%= product.product_image %>" />
+                                                                        <input type="hidden" class="p-product-id-input"
+                                                                            name="items[<%= index %>][product_id]"
+                                                                            value="<%= product._id %>" />
+                                                                        <input type="hidden" class="p-item_amount_input"
+                                                                            name="items[<%= index %>][item_amount]"
+                                                                            value="0" />
 
-                                    <span class="thumb">
-                                        <img src="/uploads/<%= product.product_image %>"
-                                             alt="<%= product.product_name %>"
-                                             loading="lazy" />
-                                    </span>
+                                                                        <span class="thumb">
+                                                                            <img src="/uploads/<%= product.product_image %>"
+                                                                                alt="<%= product.product_name %>"
+                                                                                loading="lazy" />
+                                                                        </span>
 
-                                    <input class="p-item_name" type="text"
-                                        name="items[<%= index %>][item_name]"
-                                        value="<%= product.product_name %>" readonly />
-                                    <input class="p-price" type="number" min="0" step="0.01"
-                                        name="items[<%= index %>][price]"
-                                        value="<%= product.sale_price %>"  readonly />
-                                    <input class="p-qty" type="number" min="1" step="1"
-                                        name="items[<%= index %>][qty]" value="1" />
-                                    <output class="p-item_amount"></output>
-                                    <button type="button" class="remove-btn" aria-label="Remove">×</button>
+                                                                        <input class="p-item_name" type="text"
+                                                                            name="items[<%= index %>][item_name]"
+                                                                            value="<%= product.product_name %>"
+                                                                            readonly />
+                                                                        <input class="p-price" type="number" min="0"
+                                                                            step="0.01"
+                                                                            name="items[<%= index %>][price]"
+                                                                            value="<%= product.sale_price %>"
+                                                                            readonly />
+                                                                        <input class="p-qty" type="number" min="1"
+                                                                            step="1" name="items[<%= index %>][qty]"
+                                                                            value="1" />
+                                                                        <output class="p-item_amount"></output>
+                                                                        <button type="button" class="remove-btn"
+                                                                            aria-label="Remove">×</button>
+                                                                    </div>
+                                                                    <% }); %>
+                                                                        <% } %>
+                                                        </div>
+
+                                                        <div class="pc-total">
+                                                            <span class="label">total_amount</span>
+                                                            <span class="value" id="grandTotal">₹0</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
+
+                                            <aside class="panel">
+                                                <h2>Customer Details</h2>
+
+                                                <div class="field date-field">
+                                                    <label for="order_date">Order Date <span
+                                                            class="req">*</span><code>order_date</code></label>
+                                                    <input id="order_date" name="order_date" type="date" readonly />
+                                                    <p class="err"></p>
+                                                </div>
+
+                                                <div class="field">
+                                                    <label for="customer_name">Full Name <span
+                                                            class="req">*</span><code>customer_name</code></label>
+                                                    <input id="customer_name" name="customer_name" type="text"
+                                                        value="<%= userSourse.name %>" readonly />
+                                                    <p class="err"></p>
+                                                </div>
+
+                                                <div class="field">
+                                                    <label for="mobile">Mobile Number <span
+                                                            class="req">*</span><code>mobile</code></label>
+                                                    <input id="mobile" name="mobile" type="tel" maxlength="10"
+                                                        value="<%= userSourse.mobile %>" readonly />
+                                                    <p class="err"></p>
+                                                </div>
+
+                                                <div class="field">
+                                                    <label for="email">Email Address <span
+                                                            class="req">*</span><code>email</code></label>
+                                                    <input id="email" name="email" type="email"
+                                                        value="<%= userSourse.email %>" readonly />
+                                                    <p class="err"></p>
+                                                </div>
+
+                                                <div class="field">
+                                                    <label for="full_address">Full Address <span
+                                                            class="req">*</span><code>full_address</code></label>
+                                                    <textarea id="full_address" name="full_address"
+                                                        placeholder="Flat / House no, Street, Landmark, City, Pincode"></textarea>
+                                                    <p class="err"></p>
+                                                </div>
+
+                                                <div class="field">
+                                                    <label for="total_amount">Total Amount
+                                                        <code>total_amount</code></label>
+                                                    <input id="total_amount" type="text" readonly value="₹0" />
+                                                    <input type="hidden" id="total_amount_value" name="total_amount"
+                                                        value="0" />
+                                                    <p class="err"></p>
+                                                </div>
+
+                                                <button type="submit" class="btn-primary" id="submitBtn">Place
+                                                    Order</button>
+                                            </aside>
+
+                                        </div>
+                                    </form>
                                 </div>
-                                <% }); %>
-                                <% } %>
-                            </div>
 
-                            <div class="pc-total">
-                                <span class="label">total_amount</span>
-                                <span class="value" id="grandTotal">₹0</span>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+                                <script>
+                                    'use strict';
 
-                <aside class="panel">
-                    <h2>Customer Details</h2>
+                                    /* =========================================================
+                                       CONFIG
+                                       ========================================================= */
+                                    const CONFIG = {
+                                        REMOVE_URL: '/user/remove-card/',
+                                        REMOVE_METHOD: 'GET',
+                                    };
 
-                    <div class="field date-field">
-                        <label for="order_date">Order Date <span class="req">*</span><code>order_date</code></label>
-                        <input id="order_date" name="order_date" type="date" readonly />
-                        <p class="err"></p>
-                    </div>
+                                    /* =========================================================
+                                       HELPERS
+                                       ========================================================= */
+                                    const inr = new Intl.NumberFormat('en-IN', {
+                                        style: 'currency', currency: 'INR',
+                                        minimumFractionDigits: 0, maximumFractionDigits: 2
+                                    });
+                                    const money = n => Math.round((+n || 0) * 100) / 100;
+                                    const fmt = n => inr.format(+n || 0);
 
-                    <div class="field">
-                        <label for="customer_name">Full Name <span class="req">*</span><code>customer_name</code></label>
-                        <input id="customer_name" name="customer_name" type="text"
-                            value="<%= userSourse.name %>" readonly />
-                        <p class="err"></p>
-                    </div>
+                                    const todayISO = () => {
+                                        const d = new Date();
+                                        const p = n => String(n).padStart(2, '0');
+                                        return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
+                                    };
 
-                    <div class="field">
-                        <label for="mobile">Mobile Number <span class="req">*</span><code>mobile</code></label>
-                        <input id="mobile" name="mobile" type="tel" maxlength="10"
-                            value="<%= userSourse.mobile %>" readonly />
-                        <p class="err"></p>
-                    </div>
+                                    const $ = id => document.getElementById(id);
 
-                    <div class="field">
-                        <label for="email">Email Address <span class="req">*</span><code>email</code></label>
-                        <input id="email" name="email" type="email" value="<%= userSourse.email %>" readonly />
-                        <p class="err"></p>
-                    </div>
+                                    /* =========================================================
+                                       DOM (cached once)
+                                       ========================================================= */
+                                    const el = {
+                                        form: $('orderForm'),
+                                        rows: $('productRows'),
+                                        grand: $('grandTotal'),
+                                        count: $('itemCount'),
+                                        billDate: $('billDate'),
+                                        date: $('order_date'),
+                                        name: $('customer_name'),
+                                        mobile: $('mobile'),
+                                        email: $('email'),
+                                        addr: $('full_address'),
+                                        total: $('total_amount'),
+                                        totalSubmit: $('total_amount_value'),
+                                        submit: $('submitBtn'),
+                                    };
 
-                    <div class="field">
-                        <label for="full_address">Full Address <span class="req">*</span><code>full_address</code></label>
-                        <textarea id="full_address" name="full_address"
-                            placeholder="Flat / House no, Street, Landmark, City, Pincode"></textarea>
-                        <p class="err"></p>
-                    </div>
+                                    /* =========================================================
+                                       ROW INDEXING
+                                       ========================================================= */
+                                    const liveRows = new Set();
 
-                    <div class="field">
-                        <label for="total_amount">Total Amount <code>total_amount</code></label>
-                        <input id="total_amount" type="text" readonly value="₹0" />
-                        <input type="hidden" id="total_amount_value" name="total_amount" value="0" />
-                        <p class="err"></p>
-                    </div>
+                                    function indexRow(row) {
+                                        row._refs = {
+                                            productId: row.querySelector('.p-product-id-input'),
+                                            name: row.querySelector('.p-item_name'),
+                                            price: row.querySelector('.p-price'),
+                                            qty: row.querySelector('.p-qty'),
+                                            amount: row.querySelector('.p-item_amount'),
+                                            amountInput: row.querySelector('.p-item_amount_input'),
+                                            imageInput: row.querySelector('.p-image-input'),
+                                            btn: row.querySelector('.remove-btn'),
+                                        };
+                                        row._amount = 0;
+                                        liveRows.add(row);
+                                    }
 
-                    <button type="submit" class="btn-primary" id="submitBtn">Place Order</button>
-                </aside>
+                                    /* =========================================================
+                                       RECALC
+                                       ========================================================= */
+                                    let rafId = null;
+                                    function scheduleRecalc() {
+                                        if (rafId) return;
+                                        rafId = requestAnimationFrame(() => { rafId = null; recalc(); });
+                                    }
 
-            </div>
-        </form>
-    </div>
+                                    function recalc() {
+                                        let total = 0, qtySum = 0;
 
-    <script>
-        'use strict';
+                                        for (const row of liveRows) {
+                                            const r = row._refs;
+                                            const price = Math.max(0, money(r.price.value));
+                                            const qty = Math.max(0, Math.floor(+r.qty.value) || 0);
+                                            const amount = money(price * qty);
 
-        /* =========================================================
-           CONFIG
-           ========================================================= */
-        const CONFIG = {
-            REMOVE_URL: '/user/remove-card/',
-            REMOVE_METHOD: 'GET',
-        };
+                                            if (row._amount !== amount) {
+                                                r.amount.textContent = fmt(amount);
+                                                r.amountInput.value = amount;
+                                                row._amount = amount;
+                                            }
+                                            total += amount;
+                                            qtySum += qty;
+                                        }
 
-        /* =========================================================
-           HELPERS
-           ========================================================= */
-        const inr = new Intl.NumberFormat('en-IN', {
-            style: 'currency', currency: 'INR',
-            minimumFractionDigits: 0, maximumFractionDigits: 2
-        });
-        const money = n => Math.round((+n || 0) * 100) / 100;
-        const fmt = n => inr.format(+n || 0);
+                                        const totalAmount = money(total);
+                                        if (el.grand._v !== totalAmount) {
+                                            el.grand.textContent = fmt(totalAmount);
+                                            el.total.value = fmt(totalAmount);
+                                            el.totalSubmit.value = totalAmount;
+                                            el.grand._v = totalAmount;
+                                        }
+                                        el.count.textContent = `${qtySum} item${qtySum === 1 ? '' : 's'}`;
 
-        const todayISO = () => {
-            const d = new Date();
-            const p = n => String(n).padStart(2, '0');
-            return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
-        };
+                                        if (totalAmount > 0) setFieldError(el.total, '');
+                                        return totalAmount;
+                                    }
 
-        const $ = id => document.getElementById(id);
+                                    /* =========================================================
+                                       EMPTY STATE
+                                       ========================================================= */
+                                    function syncEmptyState() {
+                                        if (liveRows.size > 0) {
+                                            el.submit.disabled = false;
+                                            el.submit.textContent = 'Place Order';
+                                            return;
+                                        }
+                                        el.rows.innerHTML = `<div class="empty-cart">Your cart is empty. <a href="/products">Browse products</a> to add items.</div>`;
+                                        el.submit.disabled = true;
+                                        el.submit.textContent = 'Add items to cart first';
+                                    }
 
-        /* =========================================================
-           DOM (cached once)
-           ========================================================= */
-        const el = {
-            form: $('orderForm'),
-            rows: $('productRows'),
-            grand: $('grandTotal'),
-            count: $('itemCount'),
-            billDate: $('billDate'),
-            date: $('order_date'),
-            name: $('customer_name'),
-            mobile: $('mobile'),
-            email: $('email'),
-            addr: $('full_address'),
-            total: $('total_amount'),
-            totalSubmit: $('total_amount_value'),
-            submit: $('submitBtn'),
-        };
+                                    /* =========================================================
+                                       VALIDATION
+                                       ========================================================= */
+                                    function setFieldError(input, message) {
+                                        const field = input.closest('.field');
+                                        if (!field) return;
+                                        field.classList.toggle('invalid', !!message);
+                                        const err = field.querySelector('.err');
+                                        if (err) err.textContent = message || '';
+                                    }
 
-        /* =========================================================
-           ROW INDEXING
-           ========================================================= */
-        const liveRows = new Set();
+                                    el.date.addEventListener('input', () => setFieldError(el.date, ''));
+                                    el.addr.addEventListener('input', () => setFieldError(el.addr, ''));
 
-        function indexRow(row) {
-            row._refs = {
-                productId: row.querySelector('.p-product-id-input'),
-                name: row.querySelector('.p-item_name'),
-                price: row.querySelector('.p-price'),
-                qty: row.querySelector('.p-qty'),
-                amount: row.querySelector('.p-item_amount'),
-                amountInput: row.querySelector('.p-item_amount_input'),
-                imageInput: row.querySelector('.p-image-input'),
-                btn: row.querySelector('.remove-btn'),
-            };
-            row._amount = 0;
-            liveRows.add(row);
-        }
+                                    function validate() {
+                                        const errors = [];
 
-        /* =========================================================
-           RECALC
-           ========================================================= */
-        let rafId = null;
-        function scheduleRecalc() {
-            if (rafId) return;
-            rafId = requestAnimationFrame(() => { rafId = null; recalc(); });
-        }
+                                        if (!el.date.value) {
+                                            setFieldError(el.date, 'Please select the order date.');
+                                            errors.push(el.date);
+                                        } else setFieldError(el.date, '');
 
-        function recalc() {
-            let total = 0, qtySum = 0;
+                                        let firstRowInput = null;
+                                        for (const row of liveRows) {
+                                            const r = row._refs;
+                                            const nameOk = r.name.value.trim().length > 0;
+                                            const priceOk = +r.price.value > 0;
+                                            const qtyOk = Number.isInteger(+r.qty.value) && +r.qty.value >= 1;
+                                            const ok = nameOk && priceOk && qtyOk;
 
-            for (const row of liveRows) {
-                const r = row._refs;
-                const price = Math.max(0, money(r.price.value));
-                const qty = Math.max(0, Math.floor(+r.qty.value) || 0);
-                const amount = money(price * qty);
+                                            row.classList.toggle('invalid', !ok);
+                                            if (!ok && !firstRowInput) {
+                                                firstRowInput = row.querySelector(
+                                                    !nameOk ? '.p-item_name' : !priceOk ? '.p-price' : '.p-qty'
+                                                );
+                                            }
+                                        }
 
-                if (row._amount !== amount) {
-                    r.amount.textContent = fmt(amount);
-                    r.amountInput.value = amount;
-                    row._amount = amount;
-                }
-                total += amount;
-                qtySum += qty;
-            }
+                                        const total = recalc();
+                                        if (!firstRowInput && total <= 0) {
+                                            setFieldError(el.total, 'Add valid items to calculate total_amount.');
+                                            errors.push(el.total);
+                                        } else if (!firstRowInput) setFieldError(el.total, '');
+                                        if (firstRowInput) errors.push(firstRowInput);
 
-            const totalAmount = money(total);
-            if (el.grand._v !== totalAmount) {
-                el.grand.textContent = fmt(totalAmount);
-                el.total.value = fmt(totalAmount);
-                el.totalSubmit.value = totalAmount;
-                el.grand._v = totalAmount;
-            }
-            el.count.textContent = `${qtySum} item${qtySum === 1 ? '' : 's'}`;
+                                        if (!el.addr.value.trim()) {
+                                            setFieldError(el.addr, 'full_address is required for delivery.');
+                                            errors.push(el.addr);
+                                        } else setFieldError(el.addr, '');
 
-            if (totalAmount > 0) setFieldError(el.total, '');
-            return totalAmount;
-        }
+                                        return errors;
+                                    }
 
-        /* =========================================================
-           EMPTY STATE
-           ========================================================= */
-        function syncEmptyState() {
-            if (liveRows.size > 0) {
-                el.submit.disabled = false;
-                el.submit.textContent = 'Place Order';
-                return;
-            }
-            el.rows.innerHTML = `<div class="empty-cart">Your cart is empty. <a href="/products">Browse products</a> to add items.</div>`;
-            el.submit.disabled = true;
-            el.submit.textContent = 'Add items to cart first';
-        }
+                                    /* =========================================================
+                                       REINDEX
+                                       ========================================================= */
+                                    function reindexRows() {
+                                        let i = 0;
+                                        for (const row of liveRows) {
+                                            const r = row._refs;
+                                            r.productId.name = `items[${i}][product_id]`;
+                                            r.imageInput.name = `items[${i}][product_image]`;
+                                            r.name.name = `items[${i}][item_name]`;
+                                            r.price.name = `items[${i}][price]`;
+                                            r.qty.name = `items[${i}][qty]`;
+                                            r.amountInput.name = `items[${i}][item_amount]`;
+                                            r.amountInput.value = row._amount;
+                                            i++;
+                                        }
+                                    }
 
-        /* =========================================================
-           VALIDATION
-           ========================================================= */
-        function setFieldError(input, message) {
-            const field = input.closest('.field');
-            if (!field) return;
-            field.classList.toggle('invalid', !!message);
-            const err = field.querySelector('.err');
-            if (err) err.textContent = message || '';
-        }
+                                    /* =========================================================
+                                       EVENT DELEGATION
+                                       ========================================================= */
+                                    el.rows.addEventListener('input', e => {
+                                        if (!e.target.matches('.p-price, .p-qty')) return;
+                                        e.target.closest('.product-row').classList.remove('invalid');
+                                        scheduleRecalc();
+                                    });
 
-        el.date.addEventListener('input', () => setFieldError(el.date, ''));
-        el.addr.addEventListener('input', () => setFieldError(el.addr, ''));
+                                    el.rows.addEventListener('click', async e => {
+                                        const btn = e.target.closest('.remove-btn');
+                                        if (!btn || btn.disabled) return;
 
-        function validate() {
-            const errors = [];
+                                        const row = btn.closest('.product-row');
+                                        const id = row.dataset.productId;
 
-            if (!el.date.value) {
-                setFieldError(el.date, 'Please select the order date.');
-                errors.push(el.date);
-            } else setFieldError(el.date, '');
+                                        if (!id) { removeRow(row); return; }
 
-            let firstRowInput = null;
-            for (const row of liveRows) {
-                const r = row._refs;
-                const nameOk = r.name.value.trim().length > 0;
-                const priceOk = +r.price.value > 0;
-                const qtyOk = Number.isInteger(+r.qty.value) && +r.qty.value >= 1;
-                const ok = nameOk && priceOk && qtyOk;
+                                        const originalText = btn.textContent;
+                                        btn.disabled = true;
+                                        btn.textContent = '…';
+                                        row.classList.add('removing');
 
-                row.classList.toggle('invalid', !ok);
-                if (!ok && !firstRowInput) {
-                    firstRowInput = row.querySelector(
-                        !nameOk ? '.p-item_name' : !priceOk ? '.p-price' : '.p-qty'
-                    );
-                }
-            }
+                                        try {
+                                            const res = await fetch(CONFIG.REMOVE_URL + encodeURIComponent(id), {
+                                                method: CONFIG.REMOVE_METHOD,
+                                                headers: { Accept: 'application/json' },
+                                            });
+                                            if (!res.ok) throw new Error(`HTTP ${res.status} ${res.statusText}`);
+                                            removeRow(row);
+                                        } catch (err) {
+                                            console.error('remove-card failed:', err);
+                                            row.classList.remove('removing');
+                                            btn.disabled = false;
+                                            btn.textContent = originalText;
+                                        }
+                                    });
 
-            const total = recalc();
-            if (!firstRowInput && total <= 0) {
-                setFieldError(el.total, 'Add valid items to calculate total_amount.');
-                errors.push(el.total);
-            } else if (!firstRowInput) setFieldError(el.total, '');
-            if (firstRowInput) errors.push(firstRowInput);
+                                    function removeRow(row) {
+                                        liveRows.delete(row);
+                                        row.remove();
+                                        reindexRows();
+                                        recalc();
+                                        syncEmptyState();
+                                    }
 
-            if (!el.addr.value.trim()) {
-                setFieldError(el.addr, 'full_address is required for delivery.');
-                errors.push(el.addr);
-            } else setFieldError(el.addr, '');
+                                    /* =========================================================
+                                       DUPLICATE ORDER GUARD
+                                       ========================================================= */
+                                    const DUP_KEY = 'qc_order_fp';
+                                    const DUP_WINDOW_MS = 60 * 1000;
+                                    let submitting = false;
+                                    const origReadOnly = new WeakMap();
 
-            return errors;
-        }
+                                    (function setOrderToken() {
+                                        const tokenInput = $('orderToken');
+                                        if (!tokenInput) return;
+                                        tokenInput.value =
+                                            (window.crypto && crypto.randomUUID && crypto.randomUUID()) ||
+                                            ('t' + Date.now() + Math.random().toString(36).slice(2));
+                                    })();
 
-        /* =========================================================
-           REINDEX
-           ========================================================= */
-        function reindexRows() {
-            let i = 0;
-            for (const row of liveRows) {
-                const r = row._refs;
-                r.productId.name = `items[${i}][product_id]`;
-                r.imageInput.name = `items[${i}][product_image]`;
-                r.name.name = `items[${i}][item_name]`;
-                r.price.name = `items[${i}][price]`;
-                r.qty.name = `items[${i}][qty]`;
-                r.amountInput.name = `items[${i}][item_amount]`;
-                r.amountInput.value = row._amount;
-                i++;
-            }
-        }
+                                    function rawFingerprint() {
+                                        const parts = [el.addr.value.trim().toLowerCase()];
+                                        for (const row of liveRows) {
+                                            const r = row._refs;
+                                            parts.push(
+                                                (r.productId.value || '') + ':' +
+                                                money(r.price.value) + ':' +
+                                                (parseInt(r.qty.value, 10) || 0)
+                                            );
+                                        }
+                                        parts.push(money(el.totalSubmit.value));
+                                        return parts.join('|');
+                                    }
 
-        /* =========================================================
-           EVENT DELEGATION
-           ========================================================= */
-        el.rows.addEventListener('input', e => {
-            if (!e.target.matches('.p-price, .p-qty')) return;
-            e.target.closest('.product-row').classList.remove('invalid');
-            scheduleRecalc();
-        });
+                                    async function fingerprint() {
+                                        const raw = rawFingerprint();
+                                        try {
+                                            if (!(window.crypto && crypto.subtle)) throw new Error('no subtle crypto');
+                                            const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(raw));
+                                            return Array.from(new Uint8Array(buf))
+                                                .map(b => b.toString(16).padStart(2, '0'))
+                                                .join('');
+                                        } catch {
+                                            return 'raw:' + raw;
+                                        }
+                                    }
 
-        el.rows.addEventListener('click', async e => {
-            const btn = e.target.closest('.remove-btn');
-            if (!btn || btn.disabled) return;
+                                    function lockForm() {
+                                        el.form.querySelectorAll('input, textarea, button').forEach(node => {
+                                            if (!origReadOnly.has(node)) {
+                                                origReadOnly.set(node, ('readOnly' in node) ? node.readOnly : false);
+                                            }
+                                            if ('readOnly' in node) node.readOnly = true;
+                                            if (node instanceof HTMLButtonElement) node.disabled = true;
+                                        });
+                                    }
 
-            const row = btn.closest('.product-row');
-            const id = row.dataset.productId;
+                                    function unlockForm() {
+                                        el.form.querySelectorAll('input, textarea, button').forEach(node => {
+                                            if (origReadOnly.has(node) && 'readOnly' in node) {
+                                                node.readOnly = origReadOnly.get(node);
+                                            }
+                                        });
+                                        if (liveRows.size > 0) {
+                                            el.submit.disabled = false;
+                                            el.submit.textContent = 'Place Order';
+                                        }
+                                    }
 
-            if (!id) { removeRow(row); return; }
+                                    /* =========================================================
+                                       SUBMIT
+                                       ========================================================= */
+                                    el.form.addEventListener('submit', async e => {
 
-            const originalText = btn.textContent;
-            btn.disabled = true;
-            btn.textContent = '…';
-            row.classList.add('removing');
+                                        if (submitting) {
+                                            e.preventDefault();
+                                            return;
+                                        }
 
-            try {
-                const res = await fetch(CONFIG.REMOVE_URL + encodeURIComponent(id), {
-                    method: CONFIG.REMOVE_METHOD,
-                    headers: { Accept: 'application/json' },
-                });
-                if (!res.ok) throw new Error(`HTTP ${res.status} ${res.statusText}`);
-                removeRow(row);
-            } catch (err) {
-                console.error('remove-card failed:', err);
-                row.classList.remove('removing');
-                btn.disabled = false;
-                btn.textContent = originalText;
-            }
-        });
+                                        const errors = validate();
+                                        if (errors.length) {
+                                            e.preventDefault();
+                                            errors[0].focus();
+                                            return;
+                                        }
 
-        function removeRow(row) {
-            liveRows.delete(row);
-            row.remove();
-            reindexRows();
-            recalc();
-            syncEmptyState();
-        }
+                                        const fp = await fingerprint();
+                                        const now = Date.now();
+                                        let previous = null;
+                                        try { previous = JSON.parse(sessionStorage.getItem(DUP_KEY) || 'null'); } catch { }
 
-        /* =========================================================
-           DUPLICATE ORDER GUARD
-           ========================================================= */
-        const DUP_KEY = 'qc_order_fp';
-        const DUP_WINDOW_MS = 60 * 1000;
-        let submitting = false;
-        const origReadOnly = new WeakMap();
-
-        (function setOrderToken() {
-            const tokenInput = $('orderToken');
-            if (!tokenInput) return;
-            tokenInput.value =
-                (window.crypto && crypto.randomUUID && crypto.randomUUID()) ||
-                ('t' + Date.now() + Math.random().toString(36).slice(2));
-        })();
-
-        function rawFingerprint() {
-            const parts = [el.addr.value.trim().toLowerCase()];
-            for (const row of liveRows) {
-                const r = row._refs;
-                parts.push(
-                    (r.productId.value || '') + ':' +
-                    money(r.price.value) + ':' +
-                    (parseInt(r.qty.value, 10) || 0)
-                );
-            }
-            parts.push(money(el.totalSubmit.value));
-            return parts.join('|');
-        }
-
-        async function fingerprint() {
-            const raw = rawFingerprint();
-            try {
-                if (!(window.crypto && crypto.subtle)) throw new Error('no subtle crypto');
-                const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(raw));
-                return Array.from(new Uint8Array(buf))
-                    .map(b => b.toString(16).padStart(2, '0'))
-                    .join('');
-            } catch {
-                return 'raw:' + raw;
-            }
-        }
-
-        function lockForm() {
-            el.form.querySelectorAll('input, textarea, button').forEach(node => {
-                if (!origReadOnly.has(node)) {
-                    origReadOnly.set(node, ('readOnly' in node) ? node.readOnly : false);
-                }
-                if ('readOnly' in node) node.readOnly = true;
-                if (node instanceof HTMLButtonElement) node.disabled = true;
-            });
-        }
-
-        function unlockForm() {
-            el.form.querySelectorAll('input, textarea, button').forEach(node => {
-                if (origReadOnly.has(node) && 'readOnly' in node) {
-                    node.readOnly = origReadOnly.get(node);
-                }
-            });
-            if (liveRows.size > 0) {
-                el.submit.disabled = false;
-                el.submit.textContent = 'Place Order';
-            }
-        }
-
-        /* =========================================================
-           SUBMIT
-           ========================================================= */
-        el.form.addEventListener('submit', async e => {
-
-            if (submitting) {
-                e.preventDefault();
-                return;
-            }
-
-            const errors = validate();
-            if (errors.length) {
-                e.preventDefault();
-                errors[0].focus();
-                return;
-            }
-
-            const fp = await fingerprint();
-            const now = Date.now();
-            let previous = null;
-            try { previous = JSON.parse(sessionStorage.getItem(DUP_KEY) || 'null'); } catch {}
-
-            if (previous && previous.fp === fp && (now - previous.ts) < DUP_WINDOW_MS) {
-                e.preventDefault();
-                const remaining = Math.ceil((DUP_WINDOW_MS - (now - previous.ts)) / 1000);
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Duplicate order',
-                    html: `This order was just submitted. Please do not submit it again.<br>
+                                        if (previous && previous.fp === fp && (now - previous.ts) < DUP_WINDOW_MS) {
+                                            e.preventDefault();
+                                            const remaining = Math.ceil((DUP_WINDOW_MS - (now - previous.ts)) / 1000);
+                                            Swal.fire({
+                                                icon: 'warning',
+                                                title: 'Duplicate order',
+                                                html: `This order was just submitted. Please do not submit it again.<br>
                            <small>You can try again in ${remaining} seconds.</small>`,
-                    confirmButtonText: 'OK',
-                    confirmButtonColor: '#4f46e5'
-                });
-                return;
-            }
+                                                confirmButtonText: 'OK',
+                                                confirmButtonColor: '#4f46e5'
+                                            });
+                                            return;
+                                        }
 
-            submitting = true;
-            try { sessionStorage.setItem(DUP_KEY, JSON.stringify({ fp, ts: now })); } catch {}
+                                        submitting = true;
+                                        try { sessionStorage.setItem(DUP_KEY, JSON.stringify({ fp, ts: now })); } catch { }
 
-            reindexRows();
-            lockForm();
-            el.submit.disabled = true;
-            el.submit.textContent = 'Processing…';
-        });
+                                        reindexRows();
+                                        lockForm();
+                                        el.submit.disabled = true;
+                                        el.submit.textContent = 'Processing…';
+                                    });
 
-        window.addEventListener('pageshow', () => {
-            submitting = false;
-            unlockForm();
-            if (liveRows.size === 0) syncEmptyState();
-        });
+                                    window.addEventListener('pageshow', () => {
+                                        submitting = false;
+                                        unlockForm();
+                                        if (liveRows.size === 0) syncEmptyState();
+                                    });
 
-        /* =========================================================
-           INIT
-           ========================================================= */
-        (function init() {
-            el.date.value = todayISO();
-            el.date.max = todayISO();
-            el.billDate.textContent =
-                'Date: ' + new Date().toLocaleDateString('en-IN', {
-                    day: '2-digit', month: 'short', year: 'numeric'
-                });
+                                    /* =========================================================
+                                       INIT
+                                       ========================================================= */
+                                    (function init() {
+                                        el.date.value = todayISO();
+                                        el.date.max = todayISO();
+                                        el.billDate.textContent =
+                                            'Date: ' + new Date().toLocaleDateString('en-IN', {
+                                                day: '2-digit', month: 'short', year: 'numeric'
+                                            });
 
-            for (const row of el.rows.querySelectorAll('.product-row')) {
-                indexRow(row);
-            }
+                                        for (const row of el.rows.querySelectorAll('.product-row')) {
+                                            indexRow(row);
+                                        }
 
-            recalc();
-            syncEmptyState();
-        })();
-    </script>
+                                        recalc();
+                                        syncEmptyState();
+                                    })();
+                                </script>
 </body>
 
 </html>

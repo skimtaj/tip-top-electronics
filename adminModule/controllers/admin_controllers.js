@@ -161,7 +161,7 @@ const orderList = async (req, res) => {
     await order_model.updateMany({ is_read: false }, { $set: { is_read: true } })
 
 
-    const { search } = req.query;
+    const { search, order_status } = req.query;
     const page = Number(req.query.page) || 1;
 
     const limit = 10;
@@ -178,18 +178,22 @@ const orderList = async (req, res) => {
         query.$or = [
             { customer_name: { $regex: search, $options: 'i' } },
             { invoice_no: { $regex: search, $options: 'i' } },
-            { order_status: { $regex: search, $options: 'i' } },
             { order_date: { $regex: search, $options: 'i' } },
 
         ];
+    };
+
+    if (order_status) {
+        query.order_status = order_status;
     }
+
 
     const allOrder = await order_model.find(query).skip(skip).limit(limit).lean();
 
     const totalUnreadOrder = await order_model.find({ is_read: false }).countDocuments();
 
 
-    res.render('../adminModule/Views/order_list', { totalUnreadOrder, totalPage, search, allOrder, currentPage: page, previousPage: page > 1 ? page - 1 : null, nextPage: page < totalPage ? page + 1 : null })
+    res.render('../adminModule/Views/order_list', { order_status, totalUnreadOrder, totalPage, search, allOrder, currentPage: page, previousPage: page > 1 ? page - 1 : null, nextPage: page < totalPage ? page + 1 : null })
 };
 
 const viewOrder = async (req, res) => {
@@ -200,6 +204,24 @@ const viewOrder = async (req, res) => {
 
     res.render('../adminModule/Views/view_order', { orderSourse, totalUnreadOrder })
 };
+
+
+const deleteOrder = async (req, res) => {
+
+    try {
+        await order_model.findByIdAndDelete(req.params.orderid);
+        req.flash('success', 'Order deleted successfully');
+        return res.redirect('/admin-dashboard/orders')
+    }
+
+    catch (err) {
+
+        console.log('Delete order error', err);
+        req.flash('error', 'Something is wrong');
+        return res.redirect('/admin-dashboard/orders')
+    }
+
+}
 
 const approveCancel = async (req, res) => {
 
@@ -348,7 +370,9 @@ const adminDsahboard = async (req, res) => {
 
     // Today's total orders
     const todayTotalOrder = await order_model.countDocuments({
-        order_date: today
+
+        order_date: today,
+        order_status: 'Order Delivered'
     });
 
 
@@ -380,15 +404,16 @@ const adminDsahboard = async (req, res) => {
     const totalLastWeekorders = await order_model.countDocuments({
         order_date: {
             $gte: lastWeek,
-            $lt: today
-        }
+            $lte: today
+        },
+        order_status: 'Order Delivered'
     });
 
     // Last 7 days (excluding today)
     const lastWeekOrders = await order_model.find({
         order_date: {
             $gte: lastWeek,
-            $lt: today
+            $lte: today
         },
         order_status: 'Order Delivered'
     }).select('items.item_profit items.item_amount');
@@ -412,7 +437,7 @@ const adminDsahboard = async (req, res) => {
     // Last 30 days (excluding today)
 
     const totallastMonthOrders = await order_model.find({
-        order_date: { $gte: lastMonth, $lt: today }
+        order_date: { $gte: lastMonth, $lte: today }, order_status: 'Order Delivered'
     }).countDocuments();
 
 
@@ -421,7 +446,7 @@ const adminDsahboard = async (req, res) => {
     const lastMonthOrders = await order_model.find({
         order_date: {
             $gte: lastMonth,
-            $lt: today
+            $lte: today
         },
         order_status: 'Order Delivered'
     }).select('items.item_profit items.item_amount');
@@ -761,4 +786,4 @@ const adminLoginPost = async (req, res) => {
 
 
 
-module.exports = { adminLoginPost, adminLogin, adminRegisterPost, adminRegister, downloadSalesReport, approvereturn, downloadUserList, doenloadStockBalance, adminDsahboard, makeDeliver, approveCancel, viewOrder, orderList, editProductPost, editProduct, deleteProduct, productList, addNewProduct, addNewProductPost };
+module.exports = { deleteOrder, adminLoginPost, adminLogin, adminRegisterPost, adminRegister, downloadSalesReport, approvereturn, downloadUserList, doenloadStockBalance, adminDsahboard, makeDeliver, approveCancel, viewOrder, orderList, editProductPost, editProduct, deleteProduct, productList, addNewProduct, addNewProductPost };

@@ -55,7 +55,7 @@ const upload = multer({ storage: storage })
 
 
 
-const { adminLoginPost, adminLogin, adminRegisterPost, adminRegister, downloadSalesReport, approvereturn, downloadUserList, doenloadStockBalance, adminDsahboard, makeDeliver, approveCancel, viewOrder, orderList, editProductPost, editProduct, deleteProduct, productList, addNewProduct, addNewProductPost } = require('../controllers/admin_controllers')
+const { deleteOrder, adminLoginPost, adminLogin, adminRegisterPost, adminRegister, downloadSalesReport, approvereturn, downloadUserList, doenloadStockBalance, adminDsahboard, makeDeliver, approveCancel, viewOrder, orderList, editProductPost, editProduct, deleteProduct, productList, addNewProduct, addNewProductPost } = require('../controllers/admin_controllers')
 
 
 
@@ -85,6 +85,8 @@ route.post('/admin-dashbaord/products/edit/:productid', upload.single('product_i
 route.get('/admin-dashboard/orders', adminAuth, orderList);
 
 route.get('/admin-dashbaord/order/view/:orderid', adminAuth, viewOrder);
+
+route.get('/delete-order/:orderid', adminAuth, deleteOrder)
 
 route.get('/admin-dashboard/orders/:orderid/items/:productid/approve-cancellation', adminAuth, approveCancel);
 
