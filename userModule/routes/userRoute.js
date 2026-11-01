@@ -45,8 +45,6 @@ route.get('/user/remove-card/:productid', userAuth, removeCart)
 route.post('/user/orders', userAuth, upload.single('product_image'), orderPost);
 
 
-
-
 route.get('/mobile-category', mobileCategory);
 route.get('/ac-category', acCategory);
 

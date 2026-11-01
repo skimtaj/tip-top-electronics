@@ -316,7 +316,6 @@ const orderPost = async (req, res) => {
 
         await userSourse.save();
 
-        console.log(new_order_model);
 
         req.flash('success', 'Order placed successfully');
 
