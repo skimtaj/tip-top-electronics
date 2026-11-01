@@ -226,14 +226,39 @@ const removeCart = async (req, res) => {
     return res.redirect('/')
 }
 
-
 const orderPost = async (req, res) => {
-
     try {
 
         const orderData = req.body;
 
-        for (const i of orderData.items) {
+        // Check cart items
+        if (!orderData.items || orderData.items.length === 0) {
+            req.flash('error', 'Your cart is empty');
+            return res.redirect('/user/carts');
+        }
+
+        // Find user
+        const userSourse = await user_account_model.findById(req.userId);
+
+        if (!userSourse) {
+            req.flash('error', 'User not found');
+            return res.redirect('/user/carts');
+        }
+
+        // Create order instance
+        const new_order_model = new order_model(orderData);
+
+        // Generate invoice number
+        const totalOrder = await order_model.countDocuments();
+
+        const today = new Date();
+        const currentYear = today.getFullYear();
+
+        new_order_model.invoice_no =
+            `TTE-${currentYear}-${String(totalOrder + 1).padStart(5, '0')}`;
+
+        // Check and process all products
+        for (const i of new_order_model.items) {
 
             const productSourse = await insert_product_model.findOne({
                 product_name: i.item_name,
@@ -245,8 +270,14 @@ const orderPost = async (req, res) => {
                 return res.redirect('/user/carts');
             }
 
-            if (Number(i.qty) > productSourse.stock_qty) {
+            const qty = Number(i.qty);
 
+            if (!Number.isInteger(qty) || qty <= 0) {
+                req.flash('error', 'Invalid product quantity');
+                return res.redirect('/user/carts');
+            }
+
+            if (qty > productSourse.stock_qty) {
                 req.flash(
                     'error',
                     `Not enough stock available. Only ${productSourse.stock_qty} items are available`
@@ -255,58 +286,43 @@ const orderPost = async (req, res) => {
                 return res.redirect('/user/carts');
             }
 
-            productSourse.stock_qty -= Number(i.qty);
+            // Calculate item profit
+            i.item_profit =
+                Number(i.item_amount) -
+                productSourse.purchase_price * qty;
 
-            await productSourse.save();
+            // Reduce stock
+            productSourse.stock_qty -= qty;
 
+            // Update stock status
             if (productSourse.stock_qty >= 5) {
-                productSourse.stock_status = 'In Stock'
+                productSourse.stock_status = 'In Stock';
             }
-
-            else if (productSourse.stock_qty >= 3) {
-                productSourse.stock_status = 'Low Stock'
+            else if (productSourse.stock_qty > 0) {
+                productSourse.stock_status = 'Low Stock';
             }
-
-            else if (productSourse.stock_qty === 0) {
-                productSourse.stock_status = 'Out of Stock'
-            };
+            else {
+                productSourse.stock_status = 'Out of Stock';
+            }
 
             await productSourse.save();
-
-            i.item_profit = Number(i.item_amount) - productSourse.purchase_price * Number(i.qty)
-
         }
 
-        const today = new Date();
-        const currentYear = today.getFullYear();
+        // Save order once
+        await new_order_model.save();
 
-        const totalOrder = await order_model.countDocuments();
-
-        orderData.invoice_no =
-            `TTE-${currentYear}-${String(totalOrder + 1).padStart(5, '0')}`;
-
-        const new_order_model = await order_model.create(orderData);
-
-        const userSourse = await user_account_model.findById(req.userId);
-
-        if (!userSourse) {
-            throw new Error('User not found');
-        }
-
+        // Update user order history once
         userSourse.order.push(new_order_model._id);
 
         await userSourse.save();
 
-
-        console.log(new_order_model)
+        console.log(new_order_model);
 
         req.flash('success', 'Order placed successfully');
 
         return res.redirect('/user/carts');
 
     }
-
-
     catch (err) {
 
         console.log('Order post error:', err);
@@ -314,11 +330,8 @@ const orderPost = async (req, res) => {
         req.flash('error', 'Something went wrong');
 
         return res.redirect('/user/carts');
-
     }
-
 };
-
 
 const mobileCategory = async (req, res) => {
 
@@ -379,7 +392,7 @@ const mobileAcceseriesCategory = async (req, res) => {
 const order = async (req, res) => {
 
     const userSourse = await user_account_model.findById(req.userId).populate('order');
-    
+
 
     res.render('../userModule/Views/order_page', { userSourse })
 }
